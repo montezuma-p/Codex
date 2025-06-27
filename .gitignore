@@ -1,0 +1,33 @@
+# Arquivos e pastas a serem ignorados pelo Git
+
+# Banco de dados local
+memoria_codex.db
+
+# Arquivos de ambiente e segredos
+.env
+*.env
+
+# Cache e arquivos temporários do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Diretórios de ambientes virtuais
+venv/
+ENV/
+env/
+.venv/
+
+# Arquivos de log
+*.log
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Pasta de uploads ou arquivos gerados
+uploads/
+
+# Outros arquivos pessoais
+*.sqlite3
