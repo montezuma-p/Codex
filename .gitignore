@@ -31,3 +31,9 @@ uploads/
 
 # Outros arquivos pessoais
 *.sqlite3
+
+# VSCode
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
