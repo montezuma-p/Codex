@@ -94,6 +94,19 @@ Se tiver dúvidas, procure tutoriais ou peça ajuda para alguém mais experiente
 
 ---
 
+## Por que migramos do Flask para CLI?
+
+Optamos por abandonar a interface web (Flask) e adotar uma interface de linha de comando (CLI) por alguns motivos principais:
+
+- **Simplicidade:** A CLI é mais fácil de manter, instalar e rodar, sem depender de navegador ou servidor web.
+- **Multiplataforma:** Funciona igual em Linux, Windows e Mac, direto no terminal.
+- **Foco em automação:** Facilita a integração com scripts, automação e uso técnico, que é o objetivo do Codex.
+- **Acessível para desenvolvedores:** Quem programa geralmente já está confortável no terminal, tornando a experiência mais natural.
+
+Se no futuro surgir a necessidade de uma interface gráfica, podemos evoluir para uma GUI desktop. Por enquanto, a CLI atende melhor ao propósito do projeto!
+
+---
+
 **Autor:** montezuma-p
 
 **Licença:** MIT

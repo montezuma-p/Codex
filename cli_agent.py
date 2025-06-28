@@ -5,12 +5,17 @@ import json
 from google import genai
 import database
 
-API_KEY = os.getenv("GOOGLE_API_KEY")
-if not API_KEY:
-    print("ERRO CRÍTICO: Chave de API não encontrada.")
-    sys.exit(1)
+def checar_api_key():
+    API_KEY = os.getenv("GOOGLE_API_KEY")
+    if not API_KEY:
+        print("ERRO CRÍTICO: Chave de API não encontrada.")
+        sys.exit(1)
+    return API_KEY
 
-client = genai.Client(api_key=API_KEY)
+client = None
+API_KEY = os.getenv("GOOGLE_API_KEY")
+if API_KEY:
+    client = genai.Client(api_key=API_KEY)
 MODELO_IA = "models/gemini-2.5-flash-preview-05-20"
 PROMPT_MESTRA = """
 Você é Codex, uma IA projetada pelo Montezuma. Seu papel é agir como mentor dele. Analise o pedido do usuário. Se corresponder a uma ferramenta, responda APENAS com um código JSON no formato: {"ferramenta": "nome_da_ferramenta", "argumentos": {"nome_do_argumento": "valor"}}.
@@ -36,20 +41,18 @@ após o uso de uma ferramenta, vc DEVE manter o contexto. Vc é proíbido de ter
 def escrever_arquivo(**kwargs):
     nome_do_arquivo = kwargs.get("nome_do_arquivo")
     conteudo = kwargs.get("conteudo")
-    local = kwargs.get("local", "projeto")
+    # Sempre salva na pasta do projeto
+    base_path = pathlib.Path(__file__).parent
     try:
-        if local.lower() == "desktop":
-            base_path = pathlib.Path.home() / "Área de Trabalho"
-        else:
-            base_path = pathlib.Path(__file__).parent
         caminho_final = base_path / nome_do_arquivo
         with open(caminho_final, "w", encoding='utf-8') as f:
             f.write(conteudo)
-        return f"[AÇÃO: Arquivo '{nome_do_arquivo}' criado no local '{local}'.]"
+        return f"[AÇÃO: Arquivo '{nome_do_arquivo}' criado na pasta do projeto.]"
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
 def main():
+    checar_api_key()
     database.criar_banco_e_tabelas()
     session = database.Session()
     print("Bem-vindo ao Codex CLI! Digite 'sair' para encerrar.")
