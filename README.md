@@ -1,6 +1,6 @@
-# IA_Pessoal – Aprendizado com APIs, IA e Automação de Projetos
+# Codex – Aprendizado com APIs, IA e Automação de Projetos
 
-Bem-vindo(a) ao IA_Pessoal! Este projeto marca minha primeira experiência desenvolvendo e consumindo APIs, além de ser um laboratório para criar um agente de IA pessoal focado em programação e automação de projetos.
+Bem-vindo(a) ao Codex! Este projeto marca minha primeira experiência desenvolvendo e consumindo APIs, além de ser um laboratório para criar um agente de IA pessoal focado em programação e automação de projetos.
 
 ## Sobre o Projeto
 O repositório nasceu com o objetivo de aprender e estudar:
@@ -69,6 +69,30 @@ Veja o arquivo [`docs/roadmap.md`](docs/roadmap.md) para saber o que já foi imp
 - Projeto didático e experimental, aberto a sugestões!
 - Não compartilhe sua chave real da API.
 - O parâmetro `check_same_thread=False` permite integração com frameworks web como Flask.
+
+---
+
+## Como Participar (Passo a Passo Didático)
+
+Quer contribuir com o desenvolvimento deste projeto? Aqui vai um passo a passo bem simples, como se você estivesse aprendendo agora:
+
+1. Peça permissão para usar o computador e a internet, se necessário.
+2. Crie uma conta no GitHub (se ainda não tiver).
+3. Instale o Git no seu computador. Procure no Google: "como instalar o Git" se precisar de ajuda.
+4. Abra o terminal (aquele programa de linha de comando).
+5. Para baixar o projeto, digite:
+   ```bash
+   git clone https://github.com/SEU_USUARIO/Codex.git
+   ```
+   Isso vai criar uma pasta chamada Codex com todos os arquivos do projeto.
+6. Para atualizar o projeto no futuro, entre na pasta do projeto e digite:
+   ```bash
+   git pull
+   ```
+   Assim você recebe as novidades e melhorias feitas por outras pessoas.
+7. Explore, aprenda, teste e, se quiser, contribua com ideias ou código!
+
+Se tiver dúvidas, procure tutoriais ou peça ajuda para alguém mais experiente. O importante é aprender e se divertir no processo!
 
 ---
 
