@@ -31,11 +31,15 @@ após o uso de uma ferramenta, vc DEVE manter o contexto. Vc é proíbido de ter
 - Pedido do Usuário: "o que nós conversamos sobre o projeto Quantum Leap?"
 - Sua Resposta: {"ferramenta": "buscar_no_historico", "argumentos": {"termo_chave": "Quantum Leap"}}
 
+- Pedido do Usuário: "liste os arquivos da pasta docs"
+- Sua Resposta: {"ferramenta": "listar_arquivos", "argumentos": {"caminho": "docs"}}
+
 ---
 
 ### Ferramentas disponíveis:
 1. `escrever_arquivo`: Usada para criar ou sobrescrever arquivos de texto.
 2. `buscar_no_historico`: Usada para responder perguntas sobre o que já foi conversado no passado.
+3. `listar_arquivos`: Usada para listar arquivos e pastas de um diretório do projeto.
 """
 
 def escrever_arquivo(**kwargs):
@@ -51,13 +55,42 @@ def escrever_arquivo(**kwargs):
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
+def listar_arquivos(**kwargs):
+    """
+    Lista arquivos e pastas do diretório informado (relativo ao projeto).
+    Parâmetro extra 'base_path' (Path) para facilitar testes.
+    """
+    caminho = kwargs.get("caminho", ".")
+    base_path = kwargs.get("base_path", pathlib.Path(__file__).parent)
+    dir_path = (base_path / caminho).resolve()
+    if not dir_path.exists() or not dir_path.is_dir():
+        return f"[ERRO]: Diretório '{caminho}' não encontrado."
+    itens = sorted(os.listdir(dir_path))
+    if not itens:
+        return f"[INFO]: Diretório '{caminho}' está vazio."
+    return f"Conteúdo de '{caminho}':\n" + "\n".join(itens)
+
+def sugerir_pergunta_frequente(session):
+    """
+    Sugere ao usuário uma das perguntas/comandos mais frequentes do histórico.
+    """
+    sugestoes = database.perguntas_mais_frequentes(session, limite=1)
+    if sugestoes:
+        print(f"[Sugestão Codex] Você costuma perguntar: '{sugestoes[0]}' (pressione Enter para repetir)")
+        return sugestoes[0]
+    return None
+
 def main():
     checar_api_key()
     database.criar_banco_e_tabelas()
     session = database.Session()
     print("Bem-vindo ao Codex CLI! Digite 'sair' para encerrar.")
     while True:
+        sugestao = sugerir_pergunta_frequente(session)
         prompt_usuario = input("Você: ")
+        if prompt_usuario.strip() == '' and sugestao:
+            prompt_usuario = sugestao
+            print(f"(Repetindo pergunta frequente: {prompt_usuario})")
         if prompt_usuario.strip().lower() == 'sair':
             print("Até logo!")
             break
@@ -76,6 +109,8 @@ def main():
                 resposta_ia = nova_response.text
             elif ferramenta == "escrever_arquivo":
                 resposta_ia = escrever_arquivo(**decodificado.get('argumentos', {}))
+            elif ferramenta == "listar_arquivos":
+                resposta_ia = listar_arquivos(**decodificado.get('argumentos', {}))
             else:
                 historico = database.carregar_historico(session)
                 historico_formatado = "\n".join([f"- {msg.role}: {msg.content}" for msg in historico])

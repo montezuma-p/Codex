@@ -31,6 +31,21 @@ def buscar_no_historico(db_session, termo_chave: str):
     print(f"[MEMÓRIA]: {len(resultados)} resultados encontrados.")
     return resultados
 
+def perguntas_mais_frequentes(db_session, limite=3):
+    """
+    Retorna as perguntas/comandos do usuário mais frequentes no histórico.
+    """
+    from sqlalchemy import func
+    resultados = (
+        db_session.query(Conversa.content, func.count(Conversa.content).label('freq'))
+        .filter(Conversa.role == 'user')
+        .group_by(Conversa.content)
+        .order_by(func.count(Conversa.content).desc())
+        .limit(limite)
+        .all()
+    )
+    return [r[0] for r in resultados]
+
 if __name__ == "__main__":
     print("Inicializando a infraestrutura do banco de dados...")
     criar_banco_e_tabelas()

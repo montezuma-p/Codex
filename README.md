@@ -63,6 +63,9 @@ for msg in resultados:
 ## Roadmap e Visão de Futuro
 Veja o arquivo [`docs/roadmap.md`](docs/roadmap.md) para saber o que já foi implementado e os próximos passos, incluindo a visão de um agente de IA que automatiza tarefas, gerencia projetos e aprende com o uso.
 
+## Documentação complementar
+- Veja o [diário de bordo](docs/diario_de_bordo.md) para acompanhar as decisões, avanços e novas funcionalidades do projeto.
+
 ## Observações
 - Projeto didático e experimental, aberto a sugestões!
 - Não compartilhe sua chave real da API.

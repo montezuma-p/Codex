@@ -123,3 +123,37 @@ def test_cli_agent_branch_else(mock_client, monkeypatch):
         cli_main()
     except SystemExit:
         pass
+
+def test_sugerir_pergunta_frequente(monkeypatch):
+    from cli_agent import sugerir_pergunta_frequente
+    class DummySession:
+        def query(self, *a, **kw):
+            class DummyQuery:
+                def filter(self, *a, **kw): return self
+                def group_by(self, *a, **kw): return self
+                def order_by(self, *a, **kw): return self
+                def limit(self, n): return self
+                def all(self): return [("pergunta frequente", 5)]
+            return DummyQuery()
+    session = DummySession()
+    # Deve sugerir a pergunta frequente
+    assert sugerir_pergunta_frequente(session) == "pergunta frequente"
+
+def test_listar_arquivos(tmp_path):
+    from cli_agent import listar_arquivos
+    # Cria estrutura de diretório temporária
+    pasta = tmp_path / "docs"
+    pasta.mkdir()
+    (pasta / "arquivo1.txt").write_text("abc")
+    (pasta / "arquivo2.txt").write_text("def")
+    # Testa listagem
+    resultado = listar_arquivos(caminho="docs", base_path=tmp_path)
+    assert "arquivo1.txt" in resultado and "arquivo2.txt" in resultado
+    # Testa diretório vazio
+    pasta_vazia = tmp_path / "vazio"
+    pasta_vazia.mkdir()
+    resultado_vazio = listar_arquivos(caminho="vazio", base_path=tmp_path)
+    assert "está vazio" in resultado_vazio
+    # Testa diretório inexistente
+    resultado_erro = listar_arquivos(caminho="nao_existe", base_path=tmp_path)
+    assert "não encontrado" in resultado_erro
