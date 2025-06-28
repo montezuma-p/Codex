@@ -82,7 +82,7 @@ Quer contribuir com o desenvolvimento deste projeto? Aqui vai um passo a passo b
 4. Abra o terminal (aquele programa de linha de comando).
 5. Para baixar o projeto, digite:
    ```bash
-   git clone https://github.com/SEU_USUARIO/Codex.git
+   git clone https://github.com/montezuma-p/Codex.git
    ```
    Isso vai criar uma pasta chamada Codex com todos os arquivos do projeto.
 6. Para atualizar o projeto no futuro, entre na pasta do projeto e digite:
