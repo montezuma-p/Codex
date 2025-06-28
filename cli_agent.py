@@ -1,12 +1,9 @@
-
-
 import os
 import sys
 import pathlib
 import json
-from flask import Flask, render_template, request, session
 from google import genai
-import database 
+import database
 
 API_KEY = os.getenv("GOOGLE_API_KEY")
 if not API_KEY:
@@ -36,7 +33,6 @@ após o uso de uma ferramenta, vc DEVE manter o contexto. Vc é proíbido de ter
 2. `buscar_no_historico`: Usada para responder perguntas sobre o que já foi conversado no passado.
 """
 
-# --- FERRAMENTAS ---
 def escrever_arquivo(**kwargs):
     nome_do_arquivo = kwargs.get("nome_do_arquivo")
     conteudo = kwargs.get("conteudo")
@@ -44,7 +40,7 @@ def escrever_arquivo(**kwargs):
     try:
         if local.lower() == "desktop":
             base_path = pathlib.Path.home() / "Área de Trabalho"
-        else: 
+        else:
             base_path = pathlib.Path(__file__).parent
         caminho_final = base_path / nome_do_arquivo
         with open(caminho_final, "w", encoding='utf-8') as f:
@@ -53,54 +49,43 @@ def escrever_arquivo(**kwargs):
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
-# --- APLICAÇÃO WEB FLASK ---
-app = Flask(__name__)
-app.secret_key = os.urandom(24)
-
-@app.route('/', methods=['GET', 'POST'])
-def chat():
-    db_session = database.Session()
-    if request.method == 'POST':
-        prompt_usuario = request.form['prompt']
-        
+def main():
+    database.criar_banco_e_tabelas()
+    session = database.Session()
+    print("Bem-vindo ao Codex CLI! Digite 'sair' para encerrar.")
+    while True:
+        prompt_usuario = input("Você: ")
+        if prompt_usuario.strip().lower() == 'sair':
+            print("Até logo!")
+            break
         prompt_para_decidir = PROMPT_MESTRA + "\n\nPedido do Usuário: " + prompt_usuario
         response_decisao = client.models.generate_content(model=MODELO_IA, contents=prompt_para_decidir)
-        
         resposta_ia = ""
         try:
             decodificado = json.loads(response_decisao.text)
             ferramenta = decodificado.get("ferramenta")
-
             if ferramenta == "buscar_no_historico":
                 termo = decodificado.get('argumentos', {}).get('termo_chave')
-                resultados = database.buscar_no_historico(db_session, termo_chave=termo)
+                resultados = database.buscar_no_historico(session, termo_chave=termo)
                 contexto = "\n".join([f"- {res.role}: {res.content}" for res in resultados])
                 prompt_sintese = f"Contexto de conversas passadas:\n{contexto}\n\nBaseado nesse contexto, responda à pergunta original: '{prompt_usuario}'"
                 nova_response = client.models.generate_content(model=MODELO_IA, contents=prompt_sintese)
                 resposta_ia = nova_response.text
-            
             elif ferramenta == "escrever_arquivo":
                 resposta_ia = escrever_arquivo(**decodificado.get('argumentos', {}))
-            
-            else: 
-                historico = database.carregar_historico(db_session)
+            else:
+                historico = database.carregar_historico(session)
                 historico_formatado = "\n".join([f"- {msg.role}: {msg.content}" for msg in historico])
                 prompt_conversa = f"Você é Codex, um mentor de IA. Histórico da conversa:\n{historico_formatado}\n\nResponda ao usuário: {prompt_usuario}"
                 nova_response = client.models.generate_content(model=MODELO_IA, contents=prompt_conversa)
                 resposta_ia = nova_response.text
-        
         except (json.JSONDecodeError, TypeError):
             resposta_ia = response_decisao.text
-
+        print(f"Codex: {resposta_ia}")
         # Salva a interação no banco de dados
-        db_session.add(database.Conversa(role="user", content=prompt_usuario))
-        db_session.add(database.Conversa(role="model", content=resposta_ia))
-        db_session.commit()
+        session.add(database.Conversa(role="user", content=prompt_usuario))
+        session.add(database.Conversa(role="model", content=resposta_ia))
+        session.commit()
 
-    historico_para_exibir = db_session.query(database.Conversa).order_by(database.Conversa.id).all()
-    db_session.close()
-    return render_template('chat.html', historico=historico_para_exibir)
-
-if __name__ == '__main__':
-    database.criar_banco_e_tabelas()
-    app.run(debug=True, port=5001)
+if __name__ == "__main__":
+    main()

@@ -6,26 +6,24 @@ Bem-vindo(a) ao Codex! Este projeto marca minha primeira experiência desenvolve
 O repositório nasceu com o objetivo de aprender e estudar:
 - Como funcionam APIs e integração de serviços.
 - Persistência de dados com SQLite e SQLAlchemy.
-- Criação de interfaces web com Flask.
+- Criação de interfaces de linha de comando (CLI) em Python.
 - Automação de tarefas e uso de IA para auxiliar no desenvolvimento de projetos.
 
 ## Funcionalidades Atuais
 - Armazena conversas entre usuário e IA em um banco SQLite, com histórico consultável.
 - Permite busca por palavras-chave no histórico de interações.
-- Interface web (Flask) para chat com a IA.
+- Interação com a IA diretamente pelo terminal (CLI).
 - Integração com modelo Gemini da Google para respostas inteligentes.
 - Implementação de ferramentas customizadas, como escrita de arquivos e busca no histórico, acionadas por prompt.
 
 ## Estrutura dos Arquivos
 - `database.py`: Gerenciamento da memória (criação do banco, salvar e buscar conversas).
 - `memoria_codex.db`: Banco de dados SQLite.
-- `web_agent.py`: Aplicação web Flask, integra IA, banco e ferramentas customizadas.
-- `templates/`: Templates HTML para interface web (ex: `chat.html`).
+- `cli_agent.py`: Interface de linha de comando para interação com a IA.
 - `docs/`: Documentação e roadmap do projeto.
 
 ## Tecnologias Utilizadas
 - **Python** 🐍
-- **Flask** – Interface web
 - **SQLAlchemy** – ORM para SQLite
 - **Google Gemini API** – IA generativa
 - Outras: requests, json, etc.
@@ -33,7 +31,7 @@ O repositório nasceu com o objetivo de aprender e estudar:
 ## Como Usar
 1. **Instale as dependências:**
    ```bash
-   pip install sqlalchemy flask
+   pip install sqlalchemy
    ```
 2. **Configure a variável de ambiente da API:**
    ```bash
@@ -43,9 +41,9 @@ O repositório nasceu com o objetivo de aprender e estudar:
    ```bash
    python database.py
    ```
-4. **Rode a aplicação web:**
+4. **Rode a aplicação de linha de comando:**
    ```bash
-   python web_agent.py
+   python cli_agent.py
    ```
 
 ## Exemplo de Uso em Python
