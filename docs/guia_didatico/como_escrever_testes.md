@@ -36,6 +36,32 @@ def test_criar_e_buscar_conversa(session):
 
 ---
 
+## Testando Ferramentas Externas
+
+O Codex CLI possui testes automatizados para todas as integrações com APIs externas:
+- Google Search
+- Stack Overflow
+- GitHub
+- WolframAlpha
+
+### Exemplo de teste para API externa
+```python
+@patch("cli_agent.requests.get")
+def test_consultar_google_sucesso(mock_get, monkeypatch):
+    from cli_agent import consultar_google
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {"items": [{"title": "Python", "link": "https://python.org", "snippet": "..."}]}
+    mock_resp.status_code = 200
+    mock_get.return_value = mock_resp
+    monkeypatch.setenv("GOOGLE_SEARCH_API_KEY", "fake-key")
+    monkeypatch.setenv("GOOGLE_SEARCH_CX", "fake-cx")
+    resultado = consultar_google(termo="python")
+    assert "Python" in resultado
+```
+- Use mocks para simular respostas das APIs e garantir testes rápidos e confiáveis.
+
+---
+
 ## Lógica dos Testes
 1. **Preparação:** Crie o que precisa (ex: uma mensagem, um arquivo, etc).
 2. **Ação:** Execute a função que quer testar.
@@ -49,6 +75,12 @@ def test_criar_e_buscar_conversa(session):
 - Use nomes claros para as funções de teste.
 - Separe os testes por arquivo conforme o módulo (ex: banco, ferramentas, CLI).
 - Use fixtures do pytest para preparar ambientes temporários (ex: banco de dados em memória).
+
+---
+
+## Dicas
+- Sempre cubra casos de sucesso, erro, falta de parâmetro e falha de API.
+- Veja exemplos completos em `tests/test_cli_agent.py`.
 
 ---
 

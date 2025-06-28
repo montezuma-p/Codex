@@ -1,122 +1,74 @@
-# Codex – Aprendizado com APIs, IA e Automação de Projetos
+# Codex CLI – Ferramentas de IA, APIs e Automação
 
-Bem-vindo(a) ao Codex! Este projeto marca minha primeira experiência desenvolvendo e consumindo APIs, além de ser um laboratório para criar um agente de IA pessoal focado em programação e automação de projetos.
+Bem-vindo(a) ao Codex! Este projeto é um laboratório de integração de IA, automação e APIs para desenvolvedores.
 
-## Sobre o Projeto
-O repositório nasceu com o objetivo de aprender e estudar:
-- Como funcionam APIs e integração de serviços.
-- Persistência de dados com SQLite e SQLAlchemy.
-- Criação de interfaces de linha de comando (CLI) em Python.
-- Automação de tarefas e uso de IA para auxiliar no desenvolvimento de projetos.
-
-## Funcionalidades Atuais
-- Armazena conversas entre usuário e IA em um banco SQLite, com histórico consultável.
-- Permite busca por palavras-chave no histórico de interações.
-- Interação com a IA diretamente pelo terminal (CLI).
-- Integração com modelo Gemini da Google para respostas inteligentes.
-- Implementação de ferramentas customizadas, como escrita de arquivos e busca no histórico, acionadas por prompt.
-
-## Estrutura dos Arquivos
-- `database.py`: Gerenciamento da memória (criação do banco, salvar e buscar conversas).
-- `memoria_codex.db`: Banco de dados SQLite.
-- `cli_agent.py`: Interface de linha de comando para interação com a IA.
-- `docs/`: Documentação e roadmap do projeto.
-
-## Tecnologias Utilizadas
-- **Python** 🐍
-- **SQLAlchemy** – ORM para SQLite
-- **Google Gemini API** – IA generativa
-- Outras: requests, json, etc.
+## Funcionalidades Principais
+- Armazena conversas e histórico em SQLite.
+- Busca por palavras-chave no histórico.
+- Interação com IA Gemini (Google) via CLI.
+- Ferramentas integradas:
+  - **escrever_arquivo**: cria/sobrescreve arquivos de texto.
+  - **listar_arquivos**: lista arquivos e pastas do projeto.
+  - **ler_arquivo**: lê arquivos de texto do projeto.
+  - **consultar_wikipedia**: busca resumos na Wikipedia.
+  - **consultar_stackoverflow**: busca perguntas e respostas técnicas.
+  - **consultar_google**: retorna os 3 primeiros resultados do Google Search.
+  - **consultar_github**: mostra repositórios populares sobre um termo.
+  - **consultar_wolframalpha**: responde perguntas matemáticas/científicas.
 
 ## Como Usar
-1. **Instale as dependências:**
+1. Instale as dependências:
    ```bash
-   pip install sqlalchemy
+   pip install -r requirements-dev.txt
    ```
-2. **Configure a variável de ambiente da API:**
+2. Configure as variáveis de ambiente necessárias:
    ```bash
-   export GOOGLE_API_KEY='sua-api-key-aqui'
+   export GOOGLE_API_KEY='sua-api-key-gemini'
+   export GOOGLE_SEARCH_API_KEY='sua-api-key-google-search'
+   export GOOGLE_SEARCH_CX='seu-cx-google-search'
+   export GITHUB_TOKEN='seu-token-github'  # (opcional, para mais requisições)
+   export WOLFRAMALPHA_APPID='seu-appid-wolframalpha'
    ```
-3. **Inicialize o banco de dados:**
+3. Inicialize o banco de dados:
    ```bash
    python database.py
    ```
-4. **Rode a aplicação de linha de comando:**
+4. Rode o CLI:
    ```bash
    python cli_agent.py
    ```
 
-## Exemplo de Uso em Python
-```python
-from database import Session, Conversa, criar_banco_e_tabelas, carregar_historico, buscar_no_historico
+## Exemplos de Uso
+- "Codex, crie um arquivo chamado 'exemplo.txt' com o conteúdo 'olá mundo'"
+- "Liste os arquivos da pasta docs"
+- "Leia o arquivo README.md"
+- "Pesquise no Google por 'Python asyncio'"
+- "Busque repositórios sobre 'machine learning' no GitHub"
+- "Qual a raiz quadrada de 144 no WolframAlpha?"
+- "O que significa API segundo a Wikipedia?"
+- "Como faço um request HTTP em Python? (Stack Overflow)"
 
-criar_banco_e_tabelas()
-session = Session()
-nova_msg = Conversa(role='user', content='Olá, IA!')
-session.add(nova_msg)
-session.commit()
-resultados = buscar_no_historico(session, 'Olá')
-for msg in resultados:
-    print(msg.timestamp, msg.role, msg.content)
-```
+Veja mais exemplos e dicas em `docs/guia_didatico/ferramentas_externas.md`.
 
-## Roadmap e Visão de Futuro
-Veja o arquivo [`docs/roadmap.md`](docs/roadmap.md) para saber o que já foi implementado e os próximos passos, incluindo a visão de um agente de IA que automatiza tarefas, gerencia projetos e aprende com o uso.
+## Roadmap
+Consulte `docs/roadmap.md` para próximos passos e visão de futuro.
 
-## Documentação complementar
-- Veja o [diário de bordo](docs/diario_de_bordo.md) para acompanhar as decisões, avanços e novas funcionalidades do projeto.
+## Licença
+MIT
 
-## Observações
-- Projeto didático e experimental, aberto a sugestões!
-- Não compartilhe sua chave real da API.
-- O parâmetro `check_same_thread=False` permite integração com frameworks web como Flask.
+## ⚠️ ALERTA DE FUNCIONALIDADE (28/06/2025)
 
----
+Algumas integrações externas podem apresentar falhas temporárias:
 
-## Como Participar (Passo a Passo Didático)
+- **Google Search, Stack Overflow, WolframAlpha:**
+  - Podem retornar `[ERRO]: Nenhum termo informado para consulta` mesmo quando o termo é informado, devido a limitações do parsing do prompt ou resposta inesperada da IA.
+- **Wikipedia:**
+  - Pode retornar `[ERRO DA FERRAMENTA]: ... Read timed out ...` por instabilidade de rede ou limitação da API.
 
-Quer contribuir com o desenvolvimento deste projeto? Aqui vai um passo a passo bem simples, como se você estivesse aprendendo agora:
+Esses problemas já foram identificados e serão tratados na próxima sessão de desenvolvimento.
 
-1. Peça permissão para usar o computador e a internet, se necessário.
-2. Crie uma conta no GitHub (se ainda não tiver).
-3. Instale o Git no seu computador. Procure no Google: "como instalar o Git" se precisar de ajuda.
-4. Abra o terminal (aquele programa de linha de comando).
-5. Para baixar o projeto, digite:
-   ```bash
-   git clone https://github.com/montezuma-p/Codex.git
-   ```
-   Isso vai criar uma pasta chamada Codex com todos os arquivos do projeto.
-6. Para atualizar o projeto no futuro, entre na pasta do projeto e digite:
-   ```bash
-   git pull
-   ```
-   Assim você recebe as novidades e melhorias feitas por outras pessoas.
-7. Explore, aprenda, teste e, se quiser, contribua com ideias ou código!
-
-Se tiver dúvidas, procure tutoriais ou peça ajuda para alguém mais experiente. O importante é aprender e se divertir no processo!
+Se você encontrar esse erro, tente novamente mais tarde ou consulte o diário de bordo para atualizações.
 
 ---
 
-## Por que migramos do Flask para CLI?
-
-Optamos por abandonar a interface web (Flask) e adotar uma interface de linha de comando (CLI) por alguns motivos principais:
-
-- **Simplicidade:** A CLI é mais fácil de manter, instalar e rodar, sem depender de navegador ou servidor web.
-- **Multiplataforma:** Funciona igual em Linux, Windows e Mac, direto no terminal.
-- **Foco em automação:** Facilita a integração com scripts, automação e uso técnico, que é o objetivo do Codex.
-- **Acessível para desenvolvedores:** Quem programa geralmente já está confortável no terminal, tornando a experiência mais natural.
-
-Se no futuro surgir a necessidade de uma interface gráfica, podemos evoluir para uma GUI desktop. Por enquanto, a CLI atende melhor ao propósito do projeto!
-
----
-
-## Quer entender mais um pouco?
-
-Veja em:
-- `docs/guia_didatico/`
-
----
-
-**Autor:** montezuma-p
-
-**Licença:** MIT
+Projeto didático, aberto a sugestões e contribuições!

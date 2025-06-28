@@ -40,3 +40,17 @@ pytest --cov=.
 ```
 
 Assim você garante que tudo está funcionando e pode evoluir o projeto com tranquilidade!
+
+---
+
+## pytest e APIs externas
+
+No Codex CLI, usamos pytest para testar integrações com APIs como Google Search, Stack Overflow, GitHub e WolframAlpha. Utilizamos mocks para simular respostas das APIs e garantir que o código funcione mesmo sem acesso real à internet.
+
+- Veja exemplos de testes para APIs externas em `tests/test_cli_agent.py`.
+- Para aprender a criar seus próprios mocks, consulte a documentação do pytest e do unittest.mock.
+
+---
+
+## Dica
+Sempre rode os testes antes de subir mudanças! Assim, você garante que todas as integrações continuam funcionando.

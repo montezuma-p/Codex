@@ -25,6 +25,32 @@ Este documento serve para registrar os avanços, decisões, aprendizados e próx
 
 ---
 
+## 28/06/2025 (continuação 3)
+- Adicionada a ferramenta `ler_arquivo` ao Codex CLI, permitindo ao agente ler e mostrar o conteúdo de arquivos de texto do projeto. Documentação didática criada em `docs/guia_didatico/ler_arquivo.md`.
+- Testes automatizados garantem o funcionamento correto e seguro da leitura de arquivos.
+
+---
+
+## 28/06/2025 (sessão de evolução e integração)
+- Adicionadas e integradas as ferramentas externas: `consultar_stackoverflow`, `consultar_google`, `consultar_github`, `consultar_wolframalpha` ao Codex CLI, seguindo padrão modular.
+- Atualizado o prompt mestre e toda a documentação para refletir as novas integrações.
+- Criados testes automatizados para todas as ferramentas externas, cobrindo casos de sucesso, erro, falta de parâmetro e falha de API.
+- Atualizados guias didáticos (`percepcao_arquivos.md`, `como_escrever_testes.md`, `pytest.md`, `ferramentas_externas.md`) para incluir exemplos e dicas de uso das novas integrações.
+- Implementada função de documentação automática das ferramentas, gerando o arquivo `auto_documentacao_ferramentas.md` a partir do código.
+- Automatizada a geração da documentação via comando CLI (`python cli_agent.py --doc-ferramentas`) e Makefile (`make doc-ferramentas`).
+- Estruturado o código para facilitar futuras expansões, centralizando as ferramentas no dicionário `FERRAMENTAS`.
+- Roadmap atualizado para refletir o novo escopo, próximos passos e visão de futuro do projeto.
+
+---
+
+## 28/06/2025 (alerta de má funcionabilidade)
+- Identificadas falhas de funcionamento em algumas integrações externas:
+    - Google Search, Stack Overflow e WolframAlpha podem retornar `[ERRO]: Nenhum termo informado para consulta` mesmo quando o termo é informado, dependendo do parsing do prompt ou resposta da IA.
+    - Wikipedia pode retornar `[ERRO DA FERRAMENTA]: ... Read timed out ...` devido a instabilidades de rede ou limitação da API.
+- Esses problemas serão tratados e corrigidos na próxima sessão. Fica registrado o alerta para acompanhamento.
+
+---
+
 ## Como usar este diário
 - Registre aqui cada avanço, decisão importante, bug resolvido ou ideia para o futuro.
 - Use datas para organizar as entradas.

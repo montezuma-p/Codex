@@ -37,7 +37,7 @@ Criar um agente de IA pessoal que atue como assistente de programação, automat
 - **Justificativa:** Expandir o escopo de atuação do agente para além do ambiente local.
 
 ## Metas de Curto Prazo
-- Finalizar a implementação das ferramentas de escrita de arquivos e busca no histórico.
+- Finalizar a implementação das ferramentas de escrita de arquivos, busca no histórico, listagem e leitura de arquivos.
 - Garantir que o agente mantenha contexto entre interações.
 - Documentar o código existente e criar exemplos de uso detalhados.
 

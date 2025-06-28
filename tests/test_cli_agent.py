@@ -1,6 +1,8 @@
-import pytest
 import sys
 import os
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + '/../'))
+
+import pytest
 from unittest.mock import patch, MagicMock
 from cli_agent import main as cli_main, escrever_arquivo, checar_api_key
 
@@ -157,3 +159,220 @@ def test_listar_arquivos(tmp_path):
     # Testa diretório inexistente
     resultado_erro = listar_arquivos(caminho="nao_existe", base_path=tmp_path)
     assert "não encontrado" in resultado_erro
+
+def test_ler_arquivo(tmp_path):
+    from cli_agent import ler_arquivo
+    # Cria arquivo de teste
+    arquivo = tmp_path / "exemplo.txt"
+    arquivo.write_text("conteudo de teste")
+    # Testa leitura normal
+    resultado = ler_arquivo(nome_do_arquivo="exemplo.txt", base_path=tmp_path)
+    assert "conteudo de teste" in resultado
+    # Testa arquivo vazio
+    arquivo_vazio = tmp_path / "vazio.txt"
+    arquivo_vazio.write_text("")
+    resultado_vazio = ler_arquivo(nome_do_arquivo="vazio.txt", base_path=tmp_path)
+    assert "está vazio" in resultado_vazio
+    # Testa arquivo inexistente
+    resultado_erro = ler_arquivo(nome_do_arquivo="nao_existe.txt", base_path=tmp_path)
+    assert "não encontrado" in resultado_erro
+    # Testa sem nome
+    resultado_sem_nome = ler_arquivo(base_path=tmp_path)
+    assert "não informado" in resultado_sem_nome
+    # Testa arquivo grande
+    arquivo_grande = tmp_path / "grande.txt"
+    arquivo_grande.write_text("a" * 3000)
+    resultado_grande = ler_arquivo(nome_do_arquivo="grande.txt", base_path=tmp_path)
+    assert "primeiras 2000 letras" in resultado_grande
+
+@patch("cli_agent.requests.get")
+def test_consultar_stackoverflow_sucesso(mock_get):
+    from cli_agent import consultar_stackoverflow
+    # Mock da busca de perguntas
+    mock_resp_perg = MagicMock()
+    mock_resp_perg.json.return_value = {
+        "items": [{
+            "title": "Como usar pytest?",
+            "link": "https://stackoverflow.com/q/123",
+            "question_id": 123
+        }]
+    }
+    mock_resp_perg.status_code = 200
+    # Mock da busca de respostas
+    mock_resp_resp = MagicMock()
+    mock_resp_resp.json.return_value = {
+        "items": [{"body": "<p>Use o comando <code>pytest</code> no terminal.</p>"}]
+    }
+    mock_resp_resp.status_code = 200
+    mock_get.side_effect = [mock_resp_perg, mock_resp_resp]
+    resultado = consultar_stackoverflow(termo="pytest")
+    assert "Como usar pytest?" in resultado
+    assert "https://stackoverflow.com/q/123" in resultado
+    assert "pytest" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_stackoverflow_sem_resultado(mock_get):
+    from cli_agent import consultar_stackoverflow
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {"items": []}
+    mock_resp.status_code = 200
+    mock_get.return_value = mock_resp
+    resultado = consultar_stackoverflow(termo="termo_inexistente_abcxyz")
+    assert "Nenhuma pergunta encontrada" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_stackoverflow_sem_termo(mock_get):
+    from cli_agent import consultar_stackoverflow
+    resultado = consultar_stackoverflow()
+    assert "Nenhum termo informado" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_stackoverflow_erro_api(mock_get):
+    from cli_agent import consultar_stackoverflow
+    mock_get.side_effect = Exception("Erro de conexão")
+    resultado = consultar_stackoverflow(termo="pytest")
+    assert "ERRO DA FERRAMENTA" in resultado
+
+from unittest.mock import patch, MagicMock
+
+@patch("cli_agent.requests.get")
+def test_consultar_google_sucesso(mock_get, monkeypatch):
+    from cli_agent import consultar_google
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {
+        "items": [
+            {"title": "Python Docs", "link": "https://python.org", "snippet": "Documentação oficial do Python."},
+            {"title": "PyPI", "link": "https://pypi.org", "snippet": "Repositório de pacotes Python."},
+            {"title": "Stack Overflow", "link": "https://stackoverflow.com", "snippet": "Perguntas e respostas sobre Python."}
+        ]
+    }
+    mock_resp.status_code = 200
+    mock_get.return_value = mock_resp
+    monkeypatch.setenv("GOOGLE_SEARCH_API_KEY", "fake-key")
+    monkeypatch.setenv("GOOGLE_SEARCH_CX", "fake-cx")
+    resultado = consultar_google(termo="python")
+    assert "Python Docs" in resultado
+    assert "PyPI" in resultado
+    assert "Stack Overflow" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_google_sem_resultado(mock_get, monkeypatch):
+    from cli_agent import consultar_google
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {"items": []}
+    mock_resp.status_code = 200
+    mock_get.return_value = mock_resp
+    monkeypatch.setenv("GOOGLE_SEARCH_API_KEY", "fake-key")
+    monkeypatch.setenv("GOOGLE_SEARCH_CX", "fake-cx")
+    resultado = consultar_google(termo="termo_inexistente_abcxyz")
+    assert "Nenhum resultado encontrado" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_google_sem_termo(mock_get, monkeypatch):
+    from cli_agent import consultar_google
+    monkeypatch.setenv("GOOGLE_SEARCH_API_KEY", "fake-key")
+    monkeypatch.setenv("GOOGLE_SEARCH_CX", "fake-cx")
+    resultado = consultar_google()
+    assert "Nenhum termo informado" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_google_sem_api_key_ou_cx(mock_get, monkeypatch):
+    from cli_agent import consultar_google
+    monkeypatch.delenv("GOOGLE_SEARCH_API_KEY", raising=False)
+    monkeypatch.delenv("GOOGLE_SEARCH_CX", raising=False)
+    resultado = consultar_google(termo="python")
+    assert "GOOGLE_SEARCH_API_KEY ou GOOGLE_SEARCH_CX não configurados" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_google_erro_api(mock_get, monkeypatch):
+    from cli_agent import consultar_google
+    monkeypatch.setenv("GOOGLE_SEARCH_API_KEY", "fake-key")
+    monkeypatch.setenv("GOOGLE_SEARCH_CX", "fake-cx")
+    mock_get.side_effect = Exception("Erro de conexão")
+    resultado = consultar_google(termo="python")
+    assert "ERRO DA FERRAMENTA" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_github_sucesso(mock_get):
+    from cli_agent import consultar_github
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {
+        "items": [
+            {"full_name": "psf/requests", "html_url": "https://github.com/psf/requests", "description": "HTTP for Humans."},
+            {"full_name": "pallets/flask", "html_url": "https://github.com/pallets/flask", "description": "Web framework."},
+            {"full_name": "pytest-dev/pytest", "html_url": "https://github.com/pytest-dev/pytest", "description": "Testing framework."}
+        ]
+    }
+    mock_resp.status_code = 200
+    mock_get.return_value = mock_resp
+    resultado = consultar_github(termo="python")
+    assert "psf/requests" in resultado
+    assert "pallets/flask" in resultado
+    assert "pytest-dev/pytest" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_github_sem_resultado(mock_get):
+    from cli_agent import consultar_github
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {"items": []}
+    mock_resp.status_code = 200
+    mock_get.return_value = mock_resp
+    resultado = consultar_github(termo="termo_inexistente_abcxyz")
+    assert "Nenhum repositório encontrado" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_github_sem_termo(mock_get):
+    from cli_agent import consultar_github
+    resultado = consultar_github()
+    assert "Nenhum termo informado" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_github_erro_api(mock_get):
+    from cli_agent import consultar_github
+    mock_get.side_effect = Exception("Erro de conexão")
+    resultado = consultar_github(termo="python")
+    assert "ERRO DA FERRAMENTA" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_wolframalpha_sucesso(mock_get, monkeypatch):
+    from cli_agent import consultar_wolframalpha
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.text = "42"
+    mock_get.return_value = mock_resp
+    monkeypatch.setenv("WOLFRAMALPHA_APPID", "fake-appid")
+    resultado = consultar_wolframalpha(termo="meaning of life")
+    assert "42" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_wolframalpha_sem_termo(mock_get, monkeypatch):
+    from cli_agent import consultar_wolframalpha
+    monkeypatch.setenv("WOLFRAMALPHA_APPID", "fake-appid")
+    resultado = consultar_wolframalpha()
+    assert "Nenhum termo informado" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_wolframalpha_sem_appid(mock_get, monkeypatch):
+    from cli_agent import consultar_wolframalpha
+    monkeypatch.delenv("WOLFRAMALPHA_APPID", raising=False)
+    resultado = consultar_wolframalpha(termo="2+2")
+    assert "WOLFRAMALPHA_APPID não configurado" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_wolframalpha_erro_api(mock_get, monkeypatch):
+    from cli_agent import consultar_wolframalpha
+    monkeypatch.setenv("WOLFRAMALPHA_APPID", "fake-appid")
+    mock_get.side_effect = Exception("Erro de conexão")
+    resultado = consultar_wolframalpha(termo="2+2")
+    assert "ERRO DA FERRAMENTA" in resultado
+
+@patch("cli_agent.requests.get")
+def test_consultar_wolframalpha_nao_sabe(mock_get, monkeypatch):
+    from cli_agent import consultar_wolframalpha
+    mock_resp = MagicMock()
+    mock_resp.status_code = 501
+    mock_resp.text = "WolframAlpha does not understand your input"
+    mock_get.return_value = mock_resp
+    monkeypatch.setenv("WOLFRAMALPHA_APPID", "fake-appid")
+    resultado = consultar_wolframalpha(termo="pergunta impossível")
+    assert "não sabe responder" in resultado
