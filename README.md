@@ -107,6 +107,13 @@ Se no futuro surgir a necessidade de uma interface gráfica, podemos evoluir par
 
 ---
 
+## Quer entender mais um pouco?
+
+Veja em:
+- `docs/guia_didatico/`
+
+---
+
 **Autor:** montezuma-p
 
 **Licença:** MIT
