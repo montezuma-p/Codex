@@ -37,3 +37,22 @@ uploads/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Build e distribuição
+build/
+dist/
+*.egg-info/
+
+# Cobertura de testes
+.coverage
+htmlcov/
+
+# Cache do pytest
+.pytest_cache/
+
+# Arquivos temporários de editor
+*.swp
+*.swo
+
+# Proteção extra para arquivos sensíveis
+# (já cobre .env, memoria_codex.db, etc)
