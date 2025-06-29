@@ -3,7 +3,7 @@ import os
 import requests
 import logging
 from urllib.parse import quote
-from src.log_config import setup_logging
+from codex.log_config import setup_logging
 
 setup_logging()
 

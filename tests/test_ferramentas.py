@@ -1,7 +1,7 @@
 import os
 import pathlib
 import pytest
-from src.cli_core import escrever_arquivo
+from codex.cli_core import escrever_arquivo
 
 # Correção: garantir que todos os imports e patches nos testes estejam corretos após a modularização.
 # Exemplo de import correto para testes:

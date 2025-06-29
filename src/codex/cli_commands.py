@@ -11,10 +11,10 @@ import sys
 import pathlib
 import json
 import logging
-from src import database
-from src.suggestions import sugerir_pergunta_contextual, buscar_contexto_relevante
-from src.cli_core import PROMPT_MESTRA, FERRAMENTAS, gerar_documentacao_ferramentas
-from src.log_config import setup_logging
+from codex import database
+from codex.suggestions import sugerir_pergunta_contextual, buscar_contexto_relevante
+from codex.cli_core import PROMPT_MESTRA, FERRAMENTAS, gerar_documentacao_ferramentas
+from codex.log_config import setup_logging
 
 # Configuração global de logging
 setup_logging()
@@ -25,7 +25,17 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
     """
     Interpreta argumentos e executa comandos especiais ou inicia o loop CLI.
     """
+    modo_limpo = '--clean' in args
+    modo_verbose = '--verbose' in args
+    modo_quiet = '--quiet' in args
+    if modo_quiet:
+        setup_logging(level="ERROR")
+    elif modo_verbose:
+        setup_logging(level="INFO")
+    else:
+        setup_logging(level="WARNING")
     logger.info(f"Iniciando execução do CLI com args: {args}")
+    primeira_interacao = True
     if len(args) > 1 and args[1] == "--doc-ferramentas":
         doc: str = gerar_documentacao_ferramentas()
         doc_path = pathlib.Path(__file__).parent / "docs/guia_didatico/auto_documentacao_ferramentas.md"
@@ -56,28 +66,41 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
     session = database.Session()
     logger.info("Bem-vindo ao Codex CLI! Loop principal iniciado.")
     print("Bem-vindo ao Codex CLI! Digite 'sair' para encerrar.")
+    print("Digite '/sugestoes' para ver sugestões, '/historico' para ver contexto, ou 'ajuda' para comandos.")
     while True:
-        sugestoes: List[str] = sugerir_pergunta_contextual(session)
-        if sugestoes:
-            logger.debug(f"Sugestões apresentadas ao usuário: {sugestoes}")
-            print("[Sugestões Codex]")
-            for s in sugestoes:
-                print(f"- {s}")
-        prompt_usuario: str = input("Você: ")
-        if prompt_usuario.strip() == '' and sugestoes and 'Pergunta frequente' in sugestoes[0]:
-            prompt_usuario = sugestoes[0].replace('Pergunta frequente: ', '')
-            logger.info(f"Usuário aceitou sugestão frequente: {prompt_usuario}")
-            print(f"(Repetindo pergunta frequente: {prompt_usuario})")
+        prompt_usuario: str = ''
+        if not modo_limpo and primeira_interacao:
+            sugestoes: List[str] = sugerir_pergunta_contextual(session)
+            if sugestoes:
+                logger.debug(f"Sugestões apresentadas ao usuário: {sugestoes}")
+                print("[Sugestões Codex]")
+                for s in sugestoes:
+                    print(f"- {s}")
+            primeira_interacao = False
+        prompt_usuario = input("Você: ")
+        if prompt_usuario.strip().lower() in ['/sugestoes', '?']:
+            sugestoes: List[str] = sugerir_pergunta_contextual(session)
+            if sugestoes:
+                print("[Sugestões Codex]")
+                for s in sugestoes:
+                    print(f"- {s}")
+            continue
+        if prompt_usuario.strip().lower() in ['/historico', '!h']:
+            contexto_relevante: List[str] = buscar_contexto_relevante(session, '', n=5)
+            if contexto_relevante:
+                print("[Contexto relevante do histórico]")
+                for linha in contexto_relevante:
+                    print(linha)
+            continue
+        if prompt_usuario.strip().lower() in ['ajuda', '--help', '-h']:
+            print("Comandos disponíveis:\n  /sugestoes ou ?  - Ver sugestões\n  /historico ou !h - Ver contexto do histórico\n  sair            - Encerrar sessão\n  ajuda           - Mostrar esta ajuda\n  --clean         - Modo limpo (sem sugestões automáticas)\n  --verbose       - Mostrar logs detalhados\n  --quiet         - Ocultar todos os logs, exceto erros críticos")
+            continue
+        if prompt_usuario.strip() == '' and not modo_limpo:
+            continue
         if prompt_usuario.strip().lower() == 'sair':
             logger.info("Usuário encerrou a sessão.")
             print("Até logo!")
             break
-        contexto_relevante: List[str] = buscar_contexto_relevante(session, prompt_usuario, n=5)
-        if contexto_relevante:
-            logger.debug(f"Contexto relevante apresentado: {contexto_relevante}")
-            print("[Contexto relevante do histórico]")
-            for linha in contexto_relevante:
-                print(linha)
         prompt_para_decidir: str = PROMPT_MESTRA + "\n\nPedido do Usuário: " + prompt_usuario
         response_decisao = client.models.generate_content(model=modelo_ia, contents=prompt_para_decidir)
         resposta_ia: str = ""

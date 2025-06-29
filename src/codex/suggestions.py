@@ -1,8 +1,8 @@
 from typing import Any, List, Optional
 import datetime
 import logging
-from src import database
-from src.log_config import setup_logging
+from codex import database
+from codex.log_config import setup_logging
 
 # Configuração global de logging
 setup_logging()

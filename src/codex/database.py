@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text
 from sqlalchemy.orm import declarative_base, sessionmaker
 from typing import TYPE_CHECKING
 import logging
-from src.log_config import setup_logging
+from codex.log_config import setup_logging
 
 # Configuração global de logging
 setup_logging()

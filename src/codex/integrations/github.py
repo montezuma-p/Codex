@@ -2,7 +2,7 @@ from typing import Any, Dict, List, Optional
 import os
 import requests
 import logging
-from src.log_config import setup_logging
+from codex.log_config import setup_logging
 
 setup_logging()
 

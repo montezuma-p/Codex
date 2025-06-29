@@ -1,16 +1,16 @@
 """
 Módulo central do CLI Codex: constantes, registro de ferramentas e utilitários.
 """
-from src.integrations.wikipedia import consultar_wikipedia
-from src.integrations.stackoverflow import consultar_stackoverflow
-from src.integrations.google import consultar_google
-from src.integrations.github import consultar_github
-from src.integrations.wolframalpha import consultar_wolframalpha
+from codex.integrations.wikipedia import consultar_wikipedia
+from codex.integrations.stackoverflow import consultar_stackoverflow
+from codex.integrations.google import consultar_google
+from codex.integrations.github import consultar_github
+from codex.integrations.wolframalpha import consultar_wolframalpha
 from typing import Any, Optional, Union
 import pathlib
 import os
 import logging
-from src.log_config import setup_logging
+from codex.log_config import setup_logging
 
 # Configuração global de logging
 setup_logging()

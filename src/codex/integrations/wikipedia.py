@@ -1,7 +1,7 @@
 from typing import Any, Dict, Optional
 import requests
 import logging
-from src.log_config import setup_logging
+from codex.log_config import setup_logging
 
 setup_logging()
 

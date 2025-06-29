@@ -2,8 +2,7 @@ import sys
 import os
 import pytest
 from unittest.mock import patch, MagicMock
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + '/../'))
-import src.cli_agent as cli_agent
+import codex.cli_agent as cli_agent
 
 def test_main_doc_ferramentas(tmp_path, monkeypatch):
     # Testa o comando --doc-ferramentas
@@ -51,8 +50,8 @@ def test_main_json_decode_error(monkeypatch):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
-        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
         monkeypatch.setattr("builtins.input", lambda _: "sair")
         sys.argv = ["cli_agent.py"]
         cli_agent.main()
@@ -70,8 +69,8 @@ def test_main_ferramenta_inexistente(monkeypatch):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
-        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
         monkeypatch.setattr("builtins.input", lambda _: "sair")
         sys.argv = ["cli_agent.py"]
         cli_agent.main()
@@ -92,8 +91,8 @@ def test_ferramenta_erro(monkeypatch):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
-        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
         cli_agent.FERRAMENTAS["escrever_arquivo"] = ferramenta_erro
         monkeypatch.setattr("builtins.input", lambda _: "sair")
         sys.argv = ["cli_agent.py"]
@@ -104,7 +103,7 @@ def test_ferramenta_erro(monkeypatch):
 
 def test_buscar_contexto_relevante_vazio(monkeypatch):
     # Testa branch de contexto relevante vazio
-    from src.suggestions import buscar_contexto_relevante
+    from codex.suggestions import buscar_contexto_relevante
     monkeypatch.setattr(cli_agent.database, "carregar_historico", lambda session, n_mensagens=50: [])
     contexto = buscar_contexto_relevante(MagicMock(), "pergunta", n=5)
     assert contexto == []
@@ -136,8 +135,8 @@ def test_main_commit_erro(monkeypatch):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: FakeSession())
-        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
-        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
         monkeypatch.setattr("builtins.input", lambda _: "sair")
         sys.argv = ["cli_agent.py"]
         # Apenas roda o fluxo, não espera exceção
@@ -145,12 +144,12 @@ def test_main_commit_erro(monkeypatch):
 
 def test_sugerir_pergunta_contextual_erro(monkeypatch):
     # Simula erro ao sugerir pergunta contextual
-    from src.suggestions import sugerir_pergunta_contextual
-    monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: (_ for _ in ()).throw(Exception("Erro de sugestão")))
+    from codex.suggestions import sugerir_pergunta_contextual
+    monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: (_ for _ in ()).throw(Exception("Erro de sugestão")))
     monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
     monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
     monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-    monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+    monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
     monkeypatch.setattr("builtins.input", lambda _: "sair")
     sys.argv = ["cli_agent.py"]
     try:
@@ -160,7 +159,7 @@ def test_sugerir_pergunta_contextual_erro(monkeypatch):
 
 def test_buscar_contexto_relevante_erro(monkeypatch):
     # Simula erro ao buscar contexto relevante
-    from src.suggestions import buscar_contexto_relevante
+    from codex.suggestions import buscar_contexto_relevante
     monkeypatch.setattr(cli_agent.database, "carregar_historico", lambda session, n_mensagens=50: (_ for _ in ()).throw(Exception("Erro contexto")))
     with pytest.raises(Exception) as excinfo:
         buscar_contexto_relevante(MagicMock(), "pergunta", n=5)
@@ -180,8 +179,8 @@ def test_input_invalido(monkeypatch):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
-        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
         monkeypatch.setattr("builtins.input", lambda _: "sair")
         sys.argv = ["cli_agent.py"]
         cli_agent.main()

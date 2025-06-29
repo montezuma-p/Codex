@@ -1,18 +1,18 @@
 import os
 import tempfile
 import pytest
-from src import database
+from codex import database
 from sqlalchemy.orm import sessionmaker
 
 # Correção: garantir que todos os imports e patches nos testes estejam corretos após a modularização.
 # Exemplo de import correto para testes:
-# from src.cli_core import escrever_arquivo, listar_arquivos, ler_arquivo
-# from src.suggestions import sugerir_pergunta_frequente, sugerir_pergunta_contextual, buscar_contexto_relevante
-# from src.integrations.stackoverflow import consultar_stackoverflow
-# from src.integrations.google import consultar_google
-# from src.integrations.github import consultar_github
-# from src.integrations.wikipedia import consultar_wikipedia
-# from src.integrations.wolframalpha import consultar_wolframalpha
+# from codex.cli_core import escrever_arquivo, listar_arquivos, ler_arquivo
+# from codex.suggestions import sugerir_pergunta_frequente, sugerir_pergunta_contextual, buscar_contexto_relevante
+# from codex.integrations.stackoverflow import consultar_stackoverflow
+# from codex.integrations.google import consultar_google
+# from codex.integrations.github import consultar_github
+# from codex.integrations.wikipedia import consultar_wikipedia
+# from codex.integrations.wolframalpha import consultar_wolframalpha
 #
 # Exemplo de patch correto para IA:
 # from unittest.mock import patch
@@ -20,8 +20,8 @@ from sqlalchemy.orm import sessionmaker
 # def test_alguma_coisa(mock_genai_client, ...):
 #     ...
 # Exemplo de patch correto para sugestões/contexto:
-# monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: ...)
-# monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: ...)
+# monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: ...)
+# monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: ...)
 
 @pytest.fixture
 def temp_db():
@@ -60,18 +60,16 @@ def test_buscar_no_historico_sem_resultado(session):
 def test_database_main(monkeypatch):
     # Testa execução direta do database.py
     import importlib
-    from src import database
+    from codex import database
     importlib.reload(database)
 
-def test_buscar_no_historico_prints(session, capsys):
-    # Testa prints do banco
-    print("Inicializando a infraestrutura do banco de dados...")
-    print("Infraestrutura da memória pronta.")
+def test_buscar_no_historico_prints(session, caplog):
+    # Testa logs do banco
     session.add(database.Conversa(role='user', content='Teste Print'))
     session.commit()
-    resultados = database.buscar_no_historico(session, 'Print')
-    captured = capsys.readouterr()
-    assert "Buscando por 'Print'" in captured.out
-    assert "resultados encontrados" in captured.out
+    with caplog.at_level('INFO', logger="codex.database"):
+        resultados = database.buscar_no_historico(session, 'Print')
+    assert "Buscando no histórico por termo: 'Print'" in caplog.text
+    assert "resultados encontrados para 'Print'" in caplog.text
 
 # Removido test_database_main_exec pois runpy não captura prints de subprocessos de forma confiável
