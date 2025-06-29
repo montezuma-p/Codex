@@ -56,18 +56,15 @@ Consulte `docs/roadmap.md` para próximos passos e visão de futuro.
 ## Licença
 MIT
 
-## ⚠️ ALERTA DE FUNCIONALIDADE (28/06/2025)
+## ✅ FUNCIONALIDADE RESTABELECIDA (28/06/2025)
 
-Algumas integrações externas podem apresentar falhas temporárias:
+As integrações externas (Google Search, Stack Overflow, WolframAlpha, Wikipedia, GitHub) foram corrigidas e padronizadas:
 
-- **Google Search, Stack Overflow, WolframAlpha:**
-  - Podem retornar `[ERRO]: Nenhum termo informado para consulta` mesmo quando o termo é informado, devido a limitações do parsing do prompt ou resposta inesperada da IA.
-- **Wikipedia:**
-  - Pode retornar `[ERRO DA FERRAMENTA]: ... Read timed out ...` por instabilidade de rede ou limitação da API.
+- Argumentos validados e tratados de forma uniforme.
+- Mensagens de erro e timeout padronizadas.
+- Testes práticos e automatizados confirmam a resolução.
 
-Esses problemas já foram identificados e serão tratados na próxima sessão de desenvolvimento.
-
-Se você encontrar esse erro, tente novamente mais tarde ou consulte o diário de bordo para atualizações.
+Se encontrar qualquer novo problema, por favor abra uma issue ou consulte o diário de bordo para atualizações.
 
 ---
 

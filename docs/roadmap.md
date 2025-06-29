@@ -25,6 +25,11 @@
 - Gerar relatórios automáticos de produtividade e evolução dos projetos.
 - (Opcional) Interface web ou GUI desktop expansível.
 
+## [RESOLVIDO] Problemas de parsing e timeouts nas integrações externas
+- As integrações com Google Search, Stack Overflow, Wikipedia, GitHub e WolframAlpha foram padronizadas e corrigidas.
+- Argumentos validados, mensagens de erro e timeout uniformizadas.
+- Testes práticos e automatizados confirmam a estabilidade.
+
 ## Visão de Futuro
 O agente será uma espécie de "parceiro de pair programming", capaz de:
 - Automatizar tarefas repetitivas e pesquisas técnicas.

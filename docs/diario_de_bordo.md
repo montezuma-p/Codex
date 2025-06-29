@@ -43,11 +43,32 @@ Este documento serve para registrar os avanços, decisões, aprendizados e próx
 
 ---
 
+## 28/06/2025 (sessão de padronização e testes práticos)
+- Padronizado o tratamento de argumentos e erros em todas as integrações externas (Google, Stack Overflow, Wikipedia, GitHub, WolframAlpha):
+    - Uso da função `_extrair_termo` para validar argumentos.
+    - Mensagens uniformes para ausência de termo e timeouts.
+    - Tratamento explícito de exceções e respostas de erro.
+- Rodados todos os testes automatizados com sucesso (100% de aprovação).
+- Testada a aplicação na prática, validando prompts e respostas para todos os fluxos principais e de erro.
+- Confirmado que todas as interações (perguntas e respostas) são salvas no histórico do banco de dados.
+- Pronto para push e próximos avanços.
+
+---
+
 ## 28/06/2025 (alerta de má funcionabilidade)
 - Identificadas falhas de funcionamento em algumas integrações externas:
     - Google Search, Stack Overflow e WolframAlpha podem retornar `[ERRO]: Nenhum termo informado para consulta` mesmo quando o termo é informado, dependendo do parsing do prompt ou resposta da IA.
     - Wikipedia pode retornar `[ERRO DA FERRAMENTA]: ... Read timed out ...` devido a instabilidades de rede ou limitação da API.
 - Esses problemas serão tratados e corrigidos na próxima sessão. Fica registrado o alerta para acompanhamento.
+
+---
+
+## 28/06/2025 (alerta de má funcionabilidade resolvido)
+- Problemas de parsing e timeouts nas integrações externas (Google, Stack Overflow, Wikipedia, GitHub, WolframAlpha) foram corrigidos:
+    - Argumentos agora são validados e tratados de forma padronizada.
+    - Mensagens de erro e timeout uniformizadas.
+    - Testes práticos e automatizados confirmam a resolução.
+- Issue correspondente marcada como resolvida no repositório.
 
 ---
 

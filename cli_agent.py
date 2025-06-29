@@ -93,11 +93,21 @@ def ler_arquivo(**kwargs):
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
+def _extrair_termo(kwargs):
+    termo = kwargs.get("termo")
+    if termo is None:
+        return None
+    if isinstance(termo, str):
+        termo = termo.strip()
+        if not termo:
+            return None
+    return termo
+
 def consultar_wikipedia(**kwargs):
     """
     Consulta um termo na Wikipedia e retorna o resumo.
     """
-    termo = kwargs.get("termo")
+    termo = _extrair_termo(kwargs)
     if not termo:
         return "[ERRO]: Nenhum termo informado para consulta."
     url = f"https://pt.wikipedia.org/api/rest_v1/page/summary/{termo.replace(' ', '_')}"
@@ -113,6 +123,8 @@ def consultar_wikipedia(**kwargs):
         if len(resumo) > 1500:
             return f"[INFO]: Resumo muito grande, mostrando as primeiras 1500 letras:\n{resumo[:1500]}..."
         return f"Wikipedia – {termo}:\n{resumo}"
+    except requests.exceptions.Timeout:
+        return "[ERRO DA FERRAMENTA]: Timeout ao consultar a Wikipedia. Tente novamente mais tarde."
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
@@ -121,7 +133,7 @@ def consultar_stackoverflow(**kwargs):
     Consulta o Stack Overflow por perguntas e respostas relacionadas a um termo.
     Retorna o título, link e resposta mais votada (se houver).
     """
-    termo = kwargs.get("termo")
+    termo = _extrair_termo(kwargs)
     if not termo:
         return "[ERRO]: Nenhum termo informado para consulta."
     url = (
@@ -139,20 +151,25 @@ def consultar_stackoverflow(**kwargs):
         # Buscar resposta mais votada para a pergunta
         id_pergunta = pergunta.get("question_id")
         url_respostas = f"https://api.stackexchange.com/2.3/questions/{id_pergunta}/answers?order=desc&sort=votes&site=stackoverflow&filter=withbody"
-        resp2 = requests.get(url_respostas, timeout=7)
-        resp2.raise_for_status()
-        respostas = resp2.json().get("items", [])
-        if respostas:
-            # Pega a resposta mais votada
-            resposta = respostas[0].get("body", "[Sem resposta]")
-            # Remove tags HTML básicas para exibir texto limpo
-            import re
-            resposta_limpa = re.sub(r'<.*?>', '', resposta)
-            if len(resposta_limpa) > 1200:
-                resposta_limpa = resposta_limpa[:1200] + '...'
-        else:
-            resposta_limpa = "[Sem resposta disponível]"
+        try:
+            resp2 = requests.get(url_respostas, timeout=7)
+            resp2.raise_for_status()
+            respostas = resp2.json().get("items", [])
+            if respostas:
+                resposta = respostas[0].get("body", "[Sem resposta]")
+                import re
+                resposta_limpa = re.sub(r'<.*?>', '', resposta)
+                if len(resposta_limpa) > 1200:
+                    resposta_limpa = resposta_limpa[:1200] + '...'
+            else:
+                resposta_limpa = "[Sem resposta disponível]"
+        except requests.exceptions.Timeout:
+            resposta_limpa = "[ERRO DA FERRAMENTA]: Timeout ao buscar resposta no Stack Overflow."
+        except Exception as e:
+            resposta_limpa = f"[ERRO DA FERRAMENTA]: {e}"
         return f"Stack Overflow – {titulo}\n{link}\nResposta mais votada:\n{resposta_limpa}"
+    except requests.exceptions.Timeout:
+        return "[ERRO DA FERRAMENTA]: Timeout ao consultar o Stack Overflow. Tente novamente mais tarde."
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
@@ -161,7 +178,7 @@ def consultar_google(**kwargs):
     Consulta o Google Search e retorna os 3 primeiros resultados (título, link e snippet).
     Requer a variável de ambiente GOOGLE_SEARCH_API_KEY e GOOGLE_SEARCH_CX.
     """
-    termo = kwargs.get("termo")
+    termo = _extrair_termo(kwargs)
     api_key = os.getenv("GOOGLE_SEARCH_API_KEY")
     cx = os.getenv("GOOGLE_SEARCH_CX")
     if not termo:
@@ -187,6 +204,8 @@ def consultar_google(**kwargs):
                 snippet = snippet[:400] + '...'
             resultados.append(f"- {titulo}\n{link}\n{snippet}")
         return f"Google Search – Resultados para '{termo}':\n" + "\n\n".join(resultados)
+    except requests.exceptions.Timeout:
+        return "[ERRO DA FERRAMENTA]: Timeout ao consultar o Google Search. Tente novamente mais tarde."
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
@@ -195,7 +214,7 @@ def consultar_github(**kwargs):
     Busca repositórios ou issues no GitHub relacionados a um termo.
     Retorna os 3 primeiros resultados (nome, link, descrição).
     """
-    termo = kwargs.get("termo")
+    termo = _extrair_termo(kwargs)
     if not termo:
         return "[ERRO]: Nenhum termo informado para consulta."
     url = f"https://api.github.com/search/repositories?q={termo}&sort=stars&order=desc&per_page=3"
@@ -219,6 +238,8 @@ def consultar_github(**kwargs):
                 desc = desc[:300] + '...'
             resultados.append(f"- {nome}\n{link}\n{desc}")
         return f"GitHub – Repositórios para '{termo}':\n" + "\n\n".join(resultados)
+    except requests.exceptions.Timeout:
+        return "[ERRO DA FERRAMENTA]: Timeout ao consultar o GitHub. Tente novamente mais tarde."
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
@@ -227,7 +248,7 @@ def consultar_wolframalpha(**kwargs):
     Consulta o WolframAlpha para perguntas matemáticas, científicas ou gerais.
     Requer a variável de ambiente WOLFRAMALPHA_APPID.
     """
-    termo = kwargs.get("termo")
+    termo = _extrair_termo(kwargs)
     appid = os.getenv("WOLFRAMALPHA_APPID")
     if not termo:
         return "[ERRO]: Nenhum termo informado para consulta."
@@ -243,6 +264,8 @@ def consultar_wolframalpha(**kwargs):
         if len(resposta) > 1200:
             resposta = resposta[:1200] + '...'
         return f"WolframAlpha – Resposta para '{termo}':\n{resposta}"
+    except requests.exceptions.Timeout:
+        return "[ERRO DA FERRAMENTA]: Timeout ao consultar o WolframAlpha. Tente novamente mais tarde."
     except Exception as e:
         return f"[ERRO DA FERRAMENTA]: {e}"
 
