@@ -4,7 +4,9 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + '/../'))
 
 import pytest
 from unittest.mock import patch, MagicMock
-from cli_agent import main as cli_main, escrever_arquivo, checar_api_key
+from src.cli_agent import main as cli_main, checar_api_key
+from src.cli_core import escrever_arquivo, listar_arquivos, ler_arquivo
+from src.suggestions import sugerir_pergunta_frequente
 
 def test_cli_agent_runs(monkeypatch):
     # Simula uma sequência de entradas do usuário e captura as saídas
@@ -47,12 +49,13 @@ def test_escrever_arquivo_erro_json():
     resposta = escrever_arquivo(nome_do_arquivo=None, conteudo=None)
     assert "ERRO" in resposta
 
-@patch("cli_agent.client")
-def test_cli_agent_branch_buscar_no_historico(mock_client, monkeypatch):
+@patch("google.genai.Client")
+def test_cli_agent_branch_buscar_no_historico(mock_genai_client, monkeypatch):
     # Simula resposta da IA para buscar_no_historico
     mock_response = MagicMock()
     mock_response.text = '{"ferramenta": "buscar_no_historico", "argumentos": {"termo_chave": "Quantum"}}'
-    mock_client.models.generate_content.return_value = mock_response
+    instance = mock_genai_client.return_value
+    instance.models.generate_content.return_value = mock_response
     inputs = iter(["o que nós conversamos sobre o projeto Quantum?", "sair"])
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
     try:
@@ -60,12 +63,13 @@ def test_cli_agent_branch_buscar_no_historico(mock_client, monkeypatch):
     except SystemExit:
         pass
 
-@patch("cli_agent.client")
-def test_cli_agent_branch_escrever_arquivo(mock_client, monkeypatch):
+@patch("google.genai.Client")
+def test_cli_agent_branch_escrever_arquivo(mock_genai_client, monkeypatch):
     # Simula resposta da IA para escrever_arquivo
     mock_response = MagicMock()
     mock_response.text = '{"ferramenta": "escrever_arquivo", "argumentos": {"nome_do_arquivo": "mock.txt", "conteudo": "mock"}}'
-    mock_client.models.generate_content.return_value = mock_response
+    instance = mock_genai_client.return_value
+    instance.models.generate_content.return_value = mock_response
     inputs = iter(["crie um arquivo chamado 'mock.txt' com o conteúdo 'mock'", "sair"])
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
     try:
@@ -73,12 +77,13 @@ def test_cli_agent_branch_escrever_arquivo(mock_client, monkeypatch):
     except SystemExit:
         pass
 
-@patch("cli_agent.client")
-def test_cli_agent_branch_resposta_padrao(mock_client, monkeypatch):
+@patch("google.genai.Client")
+def test_cli_agent_branch_resposta_padrao(mock_genai_client, monkeypatch):
     # Simula resposta da IA para branch padrão
     mock_response = MagicMock()
     mock_response.text = 'Olá, esta é uma resposta padrão.'
-    mock_client.models.generate_content.return_value = mock_response
+    instance = mock_genai_client.return_value
+    instance.models.generate_content.return_value = mock_response
     inputs = iter(["me conte uma piada", "sair"])
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
     try:
@@ -88,10 +93,11 @@ def test_cli_agent_branch_resposta_padrao(mock_client, monkeypatch):
 
 def test_cli_agent_print_saida(monkeypatch, capsys):
     from unittest.mock import patch, MagicMock
-    with patch("cli_agent.client") as mock_client:
+    with patch("google.genai.Client") as mock_genai_client:
         mock_response = MagicMock()
         mock_response.text = 'Olá, esta é uma resposta padrão.'
-        mock_client.models.generate_content.return_value = mock_response
+        instance = mock_genai_client.return_value
+        instance.models.generate_content.return_value = mock_response
         inputs = iter(["me conte uma piada", "sair"])
         monkeypatch.setattr('builtins.input', lambda _: next(inputs))
         try:
@@ -103,22 +109,26 @@ def test_cli_agent_print_saida(monkeypatch, capsys):
 
 def test_cli_agent_print_saida(monkeypatch):
     # Simula resposta inválida para forçar JSONDecodeError
-    from cli_agent import client
-    mock_response = type('Mock', (), {'text': 'resposta inválida'})()
-    monkeypatch.setattr(client.models, 'generate_content', lambda *a, **kw: mock_response)
-    inputs = iter(["forçar erro json", "sair"])
-    monkeypatch.setattr('builtins.input', lambda _: next(inputs))
-    try:
-        cli_main()
-    except SystemExit:
-        pass
+    from unittest.mock import patch, MagicMock
+    with patch("google.genai.Client") as mock_genai_client:
+        mock_response = MagicMock()
+        mock_response.text = 'resposta inválida'
+        instance = mock_genai_client.return_value
+        instance.models.generate_content.return_value = mock_response
+        inputs = iter(["forçar erro json", "sair"])
+        monkeypatch.setattr('builtins.input', lambda _: next(inputs))
+        try:
+            cli_main()
+        except SystemExit:
+            pass
 
-@patch("cli_agent.client")
-def test_cli_agent_branch_else(mock_client, monkeypatch):
+@patch("google.genai.Client")
+def test_cli_agent_branch_else(mock_genai_client, monkeypatch):
     # Simula resposta da IA para branch else
     mock_response = MagicMock()
     mock_response.text = '{"ferramenta": "outra_ferramenta", "argumentos": {}}'
-    mock_client.models.generate_content.return_value = mock_response
+    instance = mock_genai_client.return_value
+    instance.models.generate_content.return_value = mock_response
     inputs = iter(["comando desconhecido", "sair"])
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
     try:
@@ -127,7 +137,7 @@ def test_cli_agent_branch_else(mock_client, monkeypatch):
         pass
 
 def test_sugerir_pergunta_frequente(monkeypatch):
-    from cli_agent import sugerir_pergunta_frequente
+    from src.suggestions import sugerir_pergunta_frequente
     class DummySession:
         def query(self, *a, **kw):
             class DummyQuery:
@@ -139,10 +149,11 @@ def test_sugerir_pergunta_frequente(monkeypatch):
             return DummyQuery()
     session = DummySession()
     # Deve sugerir a pergunta frequente
-    assert sugerir_pergunta_frequente(session) == "pergunta frequente"
+    sugestao = sugerir_pergunta_frequente(session)
+    assert sugestao == "pergunta frequente"
 
 def test_listar_arquivos(tmp_path):
-    from cli_agent import listar_arquivos
+    from src.cli_core import listar_arquivos
     # Cria estrutura de diretório temporária
     pasta = tmp_path / "docs"
     pasta.mkdir()
@@ -161,7 +172,7 @@ def test_listar_arquivos(tmp_path):
     assert "não encontrado" in resultado_erro
 
 def test_ler_arquivo(tmp_path):
-    from cli_agent import ler_arquivo
+    from src.cli_core import ler_arquivo
     # Cria arquivo de teste
     arquivo = tmp_path / "exemplo.txt"
     arquivo.write_text("conteudo de teste")
@@ -185,9 +196,9 @@ def test_ler_arquivo(tmp_path):
     resultado_grande = ler_arquivo(nome_do_arquivo="grande.txt", base_path=tmp_path)
     assert "primeiras 2000 letras" in resultado_grande
 
-@patch("cli_agent.requests.get")
+@patch("src.cli_agent.requests.get")
 def test_consultar_stackoverflow_sucesso(mock_get):
-    from cli_agent import consultar_stackoverflow
+    from src.integrations.stackoverflow import consultar_stackoverflow
     # Mock da busca de perguntas
     mock_resp_perg = MagicMock()
     mock_resp_perg.json.return_value = {
@@ -210,9 +221,9 @@ def test_consultar_stackoverflow_sucesso(mock_get):
     assert "https://stackoverflow.com/q/123" in resultado
     assert "pytest" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.stackoverflow.requests.get")
 def test_consultar_stackoverflow_sem_resultado(mock_get):
-    from cli_agent import consultar_stackoverflow
+    from src.integrations.stackoverflow import consultar_stackoverflow
     mock_resp = MagicMock()
     mock_resp.json.return_value = {"items": []}
     mock_resp.status_code = 200
@@ -220,24 +231,24 @@ def test_consultar_stackoverflow_sem_resultado(mock_get):
     resultado = consultar_stackoverflow(termo="termo_inexistente_abcxyz")
     assert "Nenhuma pergunta encontrada" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.stackoverflow.requests.get")
 def test_consultar_stackoverflow_sem_termo(mock_get):
-    from cli_agent import consultar_stackoverflow
+    from src.integrations.stackoverflow import consultar_stackoverflow
     resultado = consultar_stackoverflow()
     assert "Nenhum termo informado" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.stackoverflow.requests.get")
 def test_consultar_stackoverflow_erro_api(mock_get):
-    from cli_agent import consultar_stackoverflow
+    from src.integrations.stackoverflow import consultar_stackoverflow
     mock_get.side_effect = Exception("Erro de conexão")
     resultado = consultar_stackoverflow(termo="pytest")
     assert "ERRO DA FERRAMENTA" in resultado
 
 from unittest.mock import patch, MagicMock
 
-@patch("cli_agent.requests.get")
+@patch("src.cli_agent.requests.get")
 def test_consultar_google_sucesso(mock_get, monkeypatch):
-    from cli_agent import consultar_google
+    from src.integrations.google import consultar_google
     mock_resp = MagicMock()
     mock_resp.json.return_value = {
         "items": [
@@ -255,9 +266,9 @@ def test_consultar_google_sucesso(mock_get, monkeypatch):
     assert "PyPI" in resultado
     assert "Stack Overflow" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.google.requests.get")
 def test_consultar_google_sem_resultado(mock_get, monkeypatch):
-    from cli_agent import consultar_google
+    from src.integrations.google import consultar_google
     mock_resp = MagicMock()
     mock_resp.json.return_value = {"items": []}
     mock_resp.status_code = 200
@@ -267,34 +278,34 @@ def test_consultar_google_sem_resultado(mock_get, monkeypatch):
     resultado = consultar_google(termo="termo_inexistente_abcxyz")
     assert "Nenhum resultado encontrado" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.google.requests.get")
 def test_consultar_google_sem_termo(mock_get, monkeypatch):
-    from cli_agent import consultar_google
+    from src.integrations.google import consultar_google
     monkeypatch.setenv("GOOGLE_SEARCH_API_KEY", "fake-key")
     monkeypatch.setenv("GOOGLE_SEARCH_CX", "fake-cx")
     resultado = consultar_google()
     assert "Nenhum termo informado" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.google.requests.get")
 def test_consultar_google_sem_api_key_ou_cx(mock_get, monkeypatch):
-    from cli_agent import consultar_google
+    from src.integrations.google import consultar_google
     monkeypatch.delenv("GOOGLE_SEARCH_API_KEY", raising=False)
     monkeypatch.delenv("GOOGLE_SEARCH_CX", raising=False)
     resultado = consultar_google(termo="python")
     assert "GOOGLE_SEARCH_API_KEY ou GOOGLE_SEARCH_CX não configurados" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.google.requests.get")
 def test_consultar_google_erro_api(mock_get, monkeypatch):
-    from cli_agent import consultar_google
+    from src.integrations.google import consultar_google
     monkeypatch.setenv("GOOGLE_SEARCH_API_KEY", "fake-key")
     monkeypatch.setenv("GOOGLE_SEARCH_CX", "fake-cx")
     mock_get.side_effect = Exception("Erro de conexão")
     resultado = consultar_google(termo="python")
     assert "ERRO DA FERRAMENTA" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.github.requests.get")
 def test_consultar_github_sucesso(mock_get):
-    from cli_agent import consultar_github
+    from src.integrations.github import consultar_github
     mock_resp = MagicMock()
     mock_resp.json.return_value = {
         "items": [
@@ -310,9 +321,9 @@ def test_consultar_github_sucesso(mock_get):
     assert "pallets/flask" in resultado
     assert "pytest-dev/pytest" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.github.requests.get")
 def test_consultar_github_sem_resultado(mock_get):
-    from cli_agent import consultar_github
+    from src.integrations.github import consultar_github
     mock_resp = MagicMock()
     mock_resp.json.return_value = {"items": []}
     mock_resp.status_code = 200
@@ -320,22 +331,22 @@ def test_consultar_github_sem_resultado(mock_get):
     resultado = consultar_github(termo="termo_inexistente_abcxyz")
     assert "Nenhum repositório encontrado" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.github.requests.get")
 def test_consultar_github_sem_termo(mock_get):
-    from cli_agent import consultar_github
+    from src.integrations.github import consultar_github
     resultado = consultar_github()
     assert "Nenhum termo informado" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.github.requests.get")
 def test_consultar_github_erro_api(mock_get):
-    from cli_agent import consultar_github
+    from src.integrations.github import consultar_github
     mock_get.side_effect = Exception("Erro de conexão")
     resultado = consultar_github(termo="python")
     assert "ERRO DA FERRAMENTA" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.wolframalpha.requests.get")
 def test_consultar_wolframalpha_sucesso(mock_get, monkeypatch):
-    from cli_agent import consultar_wolframalpha
+    from src.integrations.wolframalpha import consultar_wolframalpha
     mock_resp = MagicMock()
     mock_resp.status_code = 200
     mock_resp.text = "42"
@@ -344,31 +355,31 @@ def test_consultar_wolframalpha_sucesso(mock_get, monkeypatch):
     resultado = consultar_wolframalpha(termo="meaning of life")
     assert "42" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.wolframalpha.requests.get")
 def test_consultar_wolframalpha_sem_termo(mock_get, monkeypatch):
-    from cli_agent import consultar_wolframalpha
+    from src.integrations.wolframalpha import consultar_wolframalpha
     monkeypatch.setenv("WOLFRAMALPHA_APPID", "fake-appid")
     resultado = consultar_wolframalpha()
     assert "Nenhum termo informado" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.wolframalpha.requests.get")
 def test_consultar_wolframalpha_sem_appid(mock_get, monkeypatch):
-    from cli_agent import consultar_wolframalpha
+    from src.integrations.wolframalpha import consultar_wolframalpha
     monkeypatch.delenv("WOLFRAMALPHA_APPID", raising=False)
     resultado = consultar_wolframalpha(termo="2+2")
     assert "WOLFRAMALPHA_APPID não configurado" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.wolframalpha.requests.get")
 def test_consultar_wolframalpha_erro_api(mock_get, monkeypatch):
-    from cli_agent import consultar_wolframalpha
+    from src.integrations.wolframalpha import consultar_wolframalpha
     monkeypatch.setenv("WOLFRAMALPHA_APPID", "fake-appid")
     mock_get.side_effect = Exception("Erro de conexão")
     resultado = consultar_wolframalpha(termo="2+2")
     assert "ERRO DA FERRAMENTA" in resultado
 
-@patch("cli_agent.requests.get")
+@patch("src.integrations.wolframalpha.requests.get")
 def test_consultar_wolframalpha_nao_sabe(mock_get, monkeypatch):
-    from cli_agent import consultar_wolframalpha
+    from src.integrations.wolframalpha import consultar_wolframalpha
     mock_resp = MagicMock()
     mock_resp.status_code = 501
     mock_resp.text = "WolframAlpha does not understand your input"
@@ -376,3 +387,22 @@ def test_consultar_wolframalpha_nao_sabe(mock_get, monkeypatch):
     monkeypatch.setenv("WOLFRAMALPHA_APPID", "fake-appid")
     resultado = consultar_wolframalpha(termo="pergunta impossível")
     assert "não sabe responder" in resultado
+
+# Correção: garantir que todos os imports e patches nos testes estejam corretos após a modularização.
+# Exemplo de import correto para testes:
+# from src.cli_core import escrever_arquivo, listar_arquivos, ler_arquivo
+# from src.suggestions import sugerir_pergunta_frequente, sugerir_pergunta_contextual, buscar_contexto_relevante
+# from src.integrations.stackoverflow import consultar_stackoverflow
+# from src.integrations.google import consultar_google
+# from src.integrations.github import consultar_github
+# from src.integrations.wikipedia import consultar_wikipedia
+# from src.integrations.wolframalpha import consultar_wolframalpha
+#
+# Exemplo de patch correto para IA:
+# from unittest.mock import patch
+# @patch("google.genai.Client")
+# def test_alguma_coisa(mock_genai_client, ...):
+#     ...
+# Exemplo de patch correto para sugestões/contexto:
+# monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: ...)
+# monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: ...)

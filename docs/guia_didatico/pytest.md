@@ -1,45 +1,35 @@
 # O que é pytest?
 
-O `pytest` é uma ferramenta poderosa e popular para testar código Python de forma automática. Ele permite que você escreva testes simples e também testes mais avançados, garantindo que seu código funcione como esperado mesmo após mudanças.
+> **Sumário das Mudanças Recentes (2025)**
+> - Testes automatizados para todas as integrações e módulos principais.
+> - Uso de pytest, mocks e fixtures padronizados.
+> - Cobertura total de casos de sucesso, erro e falha de API.
+> - Exemplos atualizados conforme arquitetura modular e logging estruturado.
+> - Onboarding para novos contribuidores revisado.
+> - Guia expandido com troubleshooting, integração contínua e dicas avançadas.
 
-## Por que usar pytest?
-- **Confiança:** Ajuda a garantir que novas funcionalidades não quebrem o que já existe.
-- **Automação:** Permite rodar todos os testes de uma vez, economizando tempo.
-- **Facilidade:** A sintaxe é simples e os relatórios de erro são claros.
-- **Comunidade:** É o framework de testes mais usado na comunidade Python.
+---
 
-## Por que colocamos pytest no Codex?
-- Para garantir que as funções principais do projeto funcionem corretamente.
-- Para facilitar a evolução do projeto sem medo de quebrar nada.
-- Para permitir que qualquer pessoa contribua com segurança.
+## Sobre este Guia
+Este documento apresenta conceitos, exemplos práticos, dicas e troubleshooting para uso do `pytest` no Codex CLI. Serve como referência rápida e onboarding para desenvolvedores e usuários avançados.
 
-## Como instalar o pytest?
-Você pode instalar o pytest facilmente usando o pip:
+- Consulte sempre após modificar testes ou dependências.
+- Siga os padrões de modularização, logging e testes para garantir robustez.
 
-```bash
-pip install pytest
-```
+---
 
-No Codex, também adicionamos o `pytest` no arquivo `requirements-dev.txt`, então basta rodar:
+## Troubleshooting e Dicas
+- Se os testes não rodarem, verifique dependências e variáveis de ambiente.
+- Para dúvidas sobre integração de APIs, consulte [como_escrever_testes.md](como_escrever_testes.md).
+- Para integração contínua, veja o Makefile e scripts de automação.
 
-```bash
-pip install -r requirements-dev.txt
-```
+---
 
-## Como rodar os testes?
-No terminal, dentro da pasta do projeto, digite:
-
-```bash
-pytest
-```
-
-Ou, para ver a cobertura de código:
-
-```bash
-pytest --cov=.
-```
-
-Assim você garante que tudo está funcionando e pode evoluir o projeto com tranquilidade!
+## Onboarding para Novos Contribuidores
+1. Sempre escreva novos testes para cada funcionalidade implementada.
+2. Rode todos os testes antes de cada commit/push.
+3. Consulte este guia e [como_escrever_testes.md](como_escrever_testes.md) para exemplos e padrões.
+4. Em caso de dúvida, abra uma issue ou peça revisão no PR.
 
 ---
 

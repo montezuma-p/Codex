@@ -1,6 +1,39 @@
 # Diário de Bordo do Projeto Codex
 
-Este documento serve para registrar os avanços, decisões, aprendizados e próximos passos do desenvolvimento do Codex.
+> **Sumário das Mudanças Recentes (2025)**
+> - Modularização total do código em `src/` (core, integrações, sugestões, banco, etc).
+> - Logging estruturado e centralizado em todos os módulos (`src/log_config.py`).
+> - Testes automatizados com pytest e mocks para integrações externas.
+> - Automação de build, testes e documentação via Makefile/scripts.
+> - Onboarding e documentação didática revisados para novos contribuidores.
+> - Sistema de plugins/extensões em desenvolvimento.
+> - Exemplos e instruções atualizados para CLI e novas ferramentas.
+> - Personalização dinâmica das respostas do agente.
+> - Guia expandido com troubleshooting, integração contínua e dicas avançadas.
+
+---
+
+## Sobre este Diário
+Este documento registra avanços, decisões, aprendizados, bugs, troubleshooting e próximos passos do desenvolvimento do Codex. Serve como referência histórica e onboarding para novos contribuidores.
+
+- Consulte sempre antes de propor mudanças estruturais.
+- Registre problemas, soluções e decisões de arquitetura.
+- Use datas e tópicos claros para facilitar buscas futuras.
+
+---
+
+## Troubleshooting e Dicas
+- Consulte o [roadmap](roadmap.md) para visão geral e próximos passos.
+- Veja exemplos de integração e testes em [guia_didatico/como_escrever_testes.md](guia_didatico/como_escrever_testes.md).
+- Para dúvidas sobre plugins/extensões, veja o README e a documentação de integrações.
+
+---
+
+## Onboarding para Novos Contribuidores
+1. Leia este diário para entender o histórico e decisões do projeto.
+2. Registre aqui qualquer bug, solução, aprendizado ou decisão relevante.
+3. Siga os padrões de modularização, logging e testes descritos nos guias.
+4. Em caso de dúvida, abra uma issue ou peça revisão no PR.
 
 ---
 

@@ -1,6 +1,35 @@
 # Como usar a ferramenta `ler_arquivo` no Codex
 
-A ferramenta `ler_arquivo` permite que o Codex leia e mostre o conteúdo de qualquer arquivo de texto do projeto diretamente pelo CLI.
+> **Sumário das Mudanças Recentes (2025)**
+> - Ferramenta `ler_arquivo` modularizada em `src/` com logging estruturado.
+> - Testes automatizados e exemplos revisados conforme nova CLI.
+> - Documentação e onboarding atualizados para novos contribuidores.
+> - Guia expandido com troubleshooting, integração contínua e dicas avançadas.
+
+---
+
+## Sobre este Guia
+Este documento apresenta exemplos práticos, dicas e troubleshooting para uso da ferramenta `ler_arquivo` do Codex CLI. Serve como referência rápida e onboarding para desenvolvedores e usuários avançados.
+
+- Consulte sempre após modificar a ferramenta ou exemplos de uso.
+- Siga os padrões de modularização, logging e testes para garantir robustez.
+
+---
+
+## Troubleshooting e Dicas
+- Se a leitura falhar, verifique permissões do arquivo e se está no diretório do projeto.
+- Para dúvidas sobre testes, consulte [como_escrever_testes.md](como_escrever_testes.md).
+- Para integração contínua, veja o Makefile e scripts de automação.
+
+---
+
+## Onboarding para Novos Contribuidores
+1. Sempre documente melhorias ou mudanças na ferramenta neste guia.
+2. Rode os testes automatizados para garantir cobertura e robustez.
+3. Consulte este guia para exemplos de argumentos e chamadas.
+4. Em caso de dúvida, abra uma issue ou peça revisão no PR.
+
+---
 
 ## O que faz?
 - Lê arquivos de texto (ex: `.txt`, `.md`, `.py`, etc) presentes na pasta do projeto.

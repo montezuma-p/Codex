@@ -3,7 +3,7 @@ import os
 import pytest
 from unittest.mock import patch, MagicMock
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + '/../'))
-import cli_agent
+import src.cli_agent as cli_agent
 
 def test_main_doc_ferramentas(tmp_path, monkeypatch):
     # Testa o comando --doc-ferramentas
@@ -47,15 +47,15 @@ def test_main_json_decode_error(monkeypatch):
                 class Resp:
                     text = "{invalid_json:"
                 return Resp()
-    monkeypatch.setattr(cli_agent, "client", FakeClient())
-    monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-    monkeypatch.setattr(cli_agent, "sugerir_pergunta_contextual", lambda session: [])
-    monkeypatch.setattr(cli_agent, "buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
-    monkeypatch.setattr("builtins.input", lambda _: "sair")
-    sys.argv = ["cli_agent.py"]
-    cli_agent.main()
+    with patch("google.genai.Client", return_value=FakeClient()):
+        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
+        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("builtins.input", lambda _: "sair")
+        sys.argv = ["cli_agent.py"]
+        cli_agent.main()
 
 def test_main_ferramenta_inexistente(monkeypatch):
     # Testa branch de ferramenta inexistente
@@ -66,18 +66,19 @@ def test_main_ferramenta_inexistente(monkeypatch):
                 class Resp:
                     text = '{"ferramenta": "inexistente", "argumentos": {}}'
                 return Resp()
-    monkeypatch.setattr(cli_agent, "client", FakeClient())
-    monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-    monkeypatch.setattr(cli_agent, "sugerir_pergunta_contextual", lambda session: [])
-    monkeypatch.setattr(cli_agent, "buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
-    monkeypatch.setattr("builtins.input", lambda _: "sair")
-    sys.argv = ["cli_agent.py"]
-    cli_agent.main()
+    with patch("google.genai.Client", return_value=FakeClient()):
+        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
+        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("builtins.input", lambda _: "sair")
+        sys.argv = ["cli_agent.py"]
+        cli_agent.main()
 
 def test_ferramenta_erro(monkeypatch):
     # Simula erro ao executar uma ferramenta
+    from unittest.mock import patch, MagicMock
     class FakeClient:
         class models:
             @staticmethod
@@ -87,33 +88,43 @@ def test_ferramenta_erro(monkeypatch):
                 return Resp()
     def ferramenta_erro(**kwargs):
         raise Exception("Erro simulado na ferramenta")
-    monkeypatch.setattr(cli_agent, "client", FakeClient())
-    monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-    monkeypatch.setattr(cli_agent, "sugerir_pergunta_contextual", lambda session: [])
-    monkeypatch.setattr(cli_agent, "buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
-    cli_agent.FERRAMENTAS["escrever_arquivo"] = ferramenta_erro
-    monkeypatch.setattr("builtins.input", lambda _: "sair")
-    sys.argv = ["cli_agent.py"]
-    try:
-        cli_agent.main()
-    except Exception as e:
-        assert "Erro simulado" in str(e)
+    with patch("google.genai.Client", return_value=FakeClient()):
+        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
+        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        cli_agent.FERRAMENTAS["escrever_arquivo"] = ferramenta_erro
+        monkeypatch.setattr("builtins.input", lambda _: "sair")
+        sys.argv = ["cli_agent.py"]
+        try:
+            cli_agent.main()
+        except Exception as e:
+            assert "Erro simulado" in str(e)
 
 def test_buscar_contexto_relevante_vazio(monkeypatch):
     # Testa branch de contexto relevante vazio
+    from src.suggestions import buscar_contexto_relevante
     monkeypatch.setattr(cli_agent.database, "carregar_historico", lambda session, n_mensagens=50: [])
-    contexto = cli_agent.buscar_contexto_relevante(MagicMock(), "pergunta", n=5)
+    contexto = buscar_contexto_relevante(MagicMock(), "pergunta", n=5)
     assert contexto == []
 
 def test_main_commit_erro(monkeypatch):
     # Simula erro ao salvar no banco de dados
+    from unittest.mock import patch, MagicMock
     class FakeSession:
         def add(self, obj):
             pass
         def commit(self):
             raise Exception("Erro de commit simulado")
+        def query(self, *a, **kw):
+            class DummyQuery:
+                def filter(self, *a, **kw): return self
+                def group_by(self, *a, **kw): return self
+                def order_by(self, *a, **kw): return self
+                def limit(self, n): return self
+                def all(self): return []
+            return DummyQuery()
     class FakeClient:
         class models:
             @staticmethod
@@ -121,24 +132,25 @@ def test_main_commit_erro(monkeypatch):
                 class Resp:
                     text = '{"ferramenta": "consultar_wikipedia", "argumentos": {"termo": "Python"}}'
                 return Resp()
-    monkeypatch.setattr(cli_agent, "client", FakeClient())
-    monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "Session", lambda: FakeSession())
-    monkeypatch.setattr(cli_agent, "sugerir_pergunta_contextual", lambda session: [])
-    monkeypatch.setattr(cli_agent, "buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
-    monkeypatch.setattr("builtins.input", lambda _: "sair")
-    sys.argv = ["cli_agent.py"]
-    # Apenas roda o fluxo, não espera exceção
-    cli_agent.main()
+    with patch("google.genai.Client", return_value=FakeClient()):
+        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "Session", lambda: FakeSession())
+        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("builtins.input", lambda _: "sair")
+        sys.argv = ["cli_agent.py"]
+        # Apenas roda o fluxo, não espera exceção
+        cli_agent.main()
 
 def test_sugerir_pergunta_contextual_erro(monkeypatch):
     # Simula erro ao sugerir pergunta contextual
-    monkeypatch.setattr(cli_agent, "sugerir_pergunta_contextual", lambda session: (_ for _ in ()).throw(Exception("Erro de sugestão")))
+    from src.suggestions import sugerir_pergunta_contextual
+    monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: (_ for _ in ()).throw(Exception("Erro de sugestão")))
     monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
     monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
     monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-    monkeypatch.setattr(cli_agent, "buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+    monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
     monkeypatch.setattr("builtins.input", lambda _: "sair")
     sys.argv = ["cli_agent.py"]
     try:
@@ -148,13 +160,15 @@ def test_sugerir_pergunta_contextual_erro(monkeypatch):
 
 def test_buscar_contexto_relevante_erro(monkeypatch):
     # Simula erro ao buscar contexto relevante
+    from src.suggestions import buscar_contexto_relevante
     monkeypatch.setattr(cli_agent.database, "carregar_historico", lambda session, n_mensagens=50: (_ for _ in ()).throw(Exception("Erro contexto")))
     with pytest.raises(Exception) as excinfo:
-        cli_agent.buscar_contexto_relevante(MagicMock(), "pergunta", n=5)
+        buscar_contexto_relevante(MagicMock(), "pergunta", n=5)
     assert "Erro contexto" in str(excinfo.value)
 
 def test_input_invalido(monkeypatch):
     # Simula input inválido do usuário
+    from unittest.mock import patch, MagicMock
     class FakeClient:
         class models:
             @staticmethod
@@ -162,12 +176,12 @@ def test_input_invalido(monkeypatch):
                 class Resp:
                     text = 'Texto qualquer'
                 return Resp()
-    monkeypatch.setattr(cli_agent, "client", FakeClient())
-    monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
-    monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
-    monkeypatch.setattr(cli_agent, "sugerir_pergunta_contextual", lambda session: [])
-    monkeypatch.setattr(cli_agent, "buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
-    monkeypatch.setattr("builtins.input", lambda _: "sair")
-    sys.argv = ["cli_agent.py"]
-    cli_agent.main()
+    with patch("google.genai.Client", return_value=FakeClient()):
+        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
+        monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
+        monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: [])
+        monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
+        monkeypatch.setattr("builtins.input", lambda _: "sair")
+        sys.argv = ["cli_agent.py"]
+        cli_agent.main()

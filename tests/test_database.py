@@ -1,8 +1,27 @@
 import os
 import tempfile
 import pytest
-import database
+from src import database
 from sqlalchemy.orm import sessionmaker
+
+# Correção: garantir que todos os imports e patches nos testes estejam corretos após a modularização.
+# Exemplo de import correto para testes:
+# from src.cli_core import escrever_arquivo, listar_arquivos, ler_arquivo
+# from src.suggestions import sugerir_pergunta_frequente, sugerir_pergunta_contextual, buscar_contexto_relevante
+# from src.integrations.stackoverflow import consultar_stackoverflow
+# from src.integrations.google import consultar_google
+# from src.integrations.github import consultar_github
+# from src.integrations.wikipedia import consultar_wikipedia
+# from src.integrations.wolframalpha import consultar_wolframalpha
+#
+# Exemplo de patch correto para IA:
+# from unittest.mock import patch
+# @patch("google.genai.Client")
+# def test_alguma_coisa(mock_genai_client, ...):
+#     ...
+# Exemplo de patch correto para sugestões/contexto:
+# monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: ...)
+# monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: ...)
 
 @pytest.fixture
 def temp_db():
@@ -41,7 +60,7 @@ def test_buscar_no_historico_sem_resultado(session):
 def test_database_main(monkeypatch):
     # Testa execução direta do database.py
     import importlib
-    import database
+    from src import database
     importlib.reload(database)
 
 def test_buscar_no_historico_prints(session, capsys):

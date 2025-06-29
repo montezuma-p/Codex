@@ -1,5 +1,26 @@
 # Roadmap e Visão do Projeto
 
+> **Sumário das Mudanças Recentes (2025)**
+> - Modularização total do código em `src/` (core, integrações, sugestões, banco, etc).
+> - Logging estruturado e centralizado em todos os módulos (`src/log_config.py`).
+> - Testes automatizados com pytest e mocks para integrações externas.
+> - Automação de build, testes e documentação via Makefile/scripts.
+> - Onboarding e documentação didática revisados para novos contribuidores.
+> - Sistema de plugins/extensões em desenvolvimento.
+> - Exemplos e instruções atualizados para CLI e novas ferramentas.
+> - Personalização dinâmica das respostas do agente.
+
+---
+
+## Visão Geral
+O roadmap do Codex orienta a evolução do projeto, priorizando qualidade, modularidade, automação e experiência do usuário/contribuidor.
+
+- **Foco em arquitetura limpa:** Separação clara de responsabilidades, modularização e extensibilidade.
+- **Automação e testes:** Build, testes e documentação automatizados garantem qualidade contínua.
+- **Onboarding e comunidade:** Documentação didática, exemplos e guias para facilitar contribuições.
+
+---
+
 ## O que já faz
 - Armazena conversas entre usuário e IA em um banco SQLite, com histórico consultável.
 - Permite busca por palavras-chave no histórico de interações.
@@ -16,7 +37,9 @@
 - Documentação didática e exemplos de uso para cada ferramenta.
 - Respostas do agente agora podem ser personalizadas dinamicamente conforme o perfil do usuário (tom, exemplos, dicas).
 
-## O que quero fazer (próximos passos)
+---
+
+## Próximos Passos
 - Permitir manipulação avançada de arquivos (deletar, mover, renomear).
 - Aprimorar CLI com autocomplete, histórico navegável e comandos inteligentes.
 - Estruturar o código para facilitar adição de novas integrações externas.
@@ -27,19 +50,20 @@
 - Implementar personalização dinâmica das respostas do agente com base no perfil do usuário (adaptação de tom, exemplos e dicas).
 - (Opcional) Interface web ou GUI desktop expansível.
 
-## [RESOLVIDO] Problemas de parsing e timeouts nas integrações externas
-- As integrações com Google Search, Stack Overflow, Wikipedia, GitHub e WolframAlpha foram padronizadas e corrigidas.
-- Argumentos validados, mensagens de erro e timeout uniformizadas.
-- Testes práticos e automatizados confirmam a estabilidade.
+---
 
-## Visão de Futuro
-O agente será uma espécie de "parceiro de pair programming", capaz de:
-- Automatizar tarefas repetitivas e pesquisas técnicas.
-- Gerenciar backlog e roadmap dos projetos.
-- Ajudar a pesquisar soluções, integrar bibliotecas e resolver bugs.
-- Gerar documentação técnica e exemplos de uso.
-- Adaptar-se ao estilo de trabalho do usuário, aprendendo com o uso.
-- Personalizar dinamicamente o tom, exemplos e dicas das respostas conforme o perfil e preferências do usuário, tornando a experiência mais relevante e eficiente.
+## Troubleshooting e Dicas
+- Consulte o [diário de bordo](diario_de_bordo.md) para histórico de decisões e problemas resolvidos.
+- Veja exemplos de uso e integração em [guia_didatico/auto_documentacao_ferramentas.md](guia_didatico/auto_documentacao_ferramentas.md).
+- Para dúvidas sobre testes, consulte [guia_didatico/como_escrever_testes.md](guia_didatico/como_escrever_testes.md).
+
+---
+
+## Onboarding para Novos Contribuidores
+1. Leia o README e este roadmap para entender a visão do projeto.
+2. Veja os exemplos e padrões em `src/` e `tests/`.
+3. Siga as boas práticas de modularização, logging e testes.
+4. Em caso de dúvida, registre no diário de bordo ou abra uma issue.
 
 ---
 

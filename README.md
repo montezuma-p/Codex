@@ -1,5 +1,20 @@
 # Codex CLI – Ferramentas de IA, APIs e Automação
 
+> **Índice Rápido da Documentação**
+> - [Índice Visual](docs/indice_visual.md): Navegação gráfica e rápida entre todos os guias.
+> - [Guia Global de Contribuição](docs/guia_contribuicao.md): Como contribuir, padrões, onboarding e integração com ferramentas externas de documentação.
+> - [Índice Geral](docs/indice_geral.md): Visão global, navegação e integração de todos os guias.
+> - [Checklist de PR](docs/checklist_pr.md): Itens obrigatórios para revisão e excelência em cada pull request.
+> - [Roadmap](docs/roadmap.md): Visão de futuro, próximos passos e integração entre módulos.
+> - [Diário de Bordo](docs/diario_de_bordo.md): Registro histórico de decisões, bugs, aprendizados e troubleshooting.
+> - [Próxima Missão](docs/proxima_missao.md): Missões prioritárias, metas e integração contínua.
+> - [Guia de Testes](docs/guia_didatico/como_escrever_testes.md): Cultura de qualidade, exemplos, troubleshooting e onboarding.
+> - [Ferramentas Externas](docs/guia_didatico/ferramentas_externas.md): Exemplos de uso das integrações externas.
+> - [Documentação Automática](docs/guia_didatico/auto_documentacao_ferramentas.md): Documentação gerada automaticamente das ferramentas.
+> - [Leitura de Arquivos](docs/guia_didatico/ler_arquivo.md): Guia de uso da ferramenta de leitura de arquivos.
+> - [Percepção de Arquivos](docs/guia_didatico/percepcao_arquivos.md): Guia de percepção e manipulação de arquivos e pastas.
+> - [pytest](docs/guia_didatico/pytest.md): Introdução ao pytest, exemplos, integração contínua e troubleshooting.
+
 Bem-vindo(a) ao Codex! Este projeto é um laboratório de integração de IA, automação e APIs para desenvolvedores.
 
 ## Funcionalidades Principais
@@ -70,19 +85,66 @@ python cli_agent.py --exportar-jsonl
 ## Roadmap
 Consulte `docs/roadmap.md` para próximos passos e visão de futuro.
 
-## Licença
-MIT
 
-## ✅ FUNCIONALIDADE RESTABELECIDA (28/06/2025)
 
-As integrações externas (Google Search, Stack Overflow, WolframAlpha, Wikipedia, GitHub) foram corrigidas e padronizadas:
+---
 
-- Argumentos validados e tratados de forma uniforme.
-- Mensagens de erro e timeout padronizadas.
-- Testes práticos e automatizados confirmam a resolução.
+## Logging Estruturado e Depuração
 
-Se encontrar qualquer novo problema, por favor abra uma issue ou consulte o diário de bordo para atualizações.
+O Codex CLI utiliza logging estruturado e configurável em todos os módulos, facilitando depuração, auditoria e integração com ferramentas externas.
+
+- O logging é centralizado em `src/log_config.py`.
+- Por padrão, logs são enviados para o console, mas você pode configurar para arquivo ou outros destinos.
+- Níveis suportados: DEBUG, INFO, WARNING, ERROR, CRITICAL.
+- Todos os módulos usam `logger = logging.getLogger("codex.nome_do_modulo")` para rastreabilidade.
+
+**Como customizar o logging:**
+
+```python
+from src.log_config import setup_logging
+setup_logging(level="DEBUG", log_file="codex.log")
+```
+
+Ou defina variáveis de ambiente para ajustar o nível globalmente.
+
+---
+
+## Arquitetura e Boas Práticas
+- Código modularizado em `src/` (core, integrações, sugestões, banco, etc).
+- Todas as funções principais usam type hints e docstrings.
+- Logging estruturado em todos os fluxos.
+- Testes automatizados com pytest e mocks para integrações externas.
+- Automação de build, testes e limpeza via Makefile e scripts.
+- Extensibilidade planejada via sistema de plugins (em desenvolvimento).
+
+---
+
+## Para Desenvolvedores
+- Siga o padrão de logging e type hints em todo novo código.
+- Consulte `src/log_config.py` para configurar logs.
+- Veja exemplos de testes e patches em `tests/` e `docs/guia_didatico/como_escrever_testes.md`.
+- Documentação de cada ferramenta é gerada automaticamente em `docs/guia_didatico/auto_documentacao_ferramentas.md`.
+- Para criar novas integrações, siga o padrão de `src/integrations/` e registre no dicionário `FERRAMENTAS`.
+
+---
+
+## Sumário das Mudanças Recentes (2025)
+
+- **Modularização total:** Código reorganizado em `src/` com separação clara de integrações, core, sugestões e banco.
+- **Type hints e docstrings:** Todo o código principal agora segue tipagem estática e documentação de funções.
+- **Logging estruturado:** Todos os módulos usam logging centralizado e configurável via `src/log_config.py`.
+- **Testes automatizados:** Cobertura total com pytest, incluindo mocks para integrações externas.
+- **Automação:** Makefile e scripts para build, testes, limpeza e geração de documentação.
+- **Extensibilidade:** Estrutura pronta para plugins e novas integrações.
+- **Documentação didática:** Todos os guias, exemplos e auto-documentação atualizados.
+- **Personalização dinâmica:** Respostas do agente adaptam tom, exemplos e dicas conforme perfil do usuário.
+- **CLI aprimorado:** Sugestões inteligentes, exportação de histórico, relatórios e perfil do usuário.
+
+Consulte o diário de bordo (`docs/diario_de_bordo.md`) para histórico detalhado e decisões de arquitetura.
 
 ---
 
 Projeto didático, aberto a sugestões e contribuições!
+
+## Licença
+MIT License. Consulte o arquivo `LICENSE` para mais detalhes.
