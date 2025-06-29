@@ -14,6 +14,7 @@
   - WolframAlpha (consultar_wolframalpha)
 - Testes automatizados com alta cobertura para todas as ferramentas e integrações.
 - Documentação didática e exemplos de uso para cada ferramenta.
+- Respostas do agente agora podem ser personalizadas dinamicamente conforme o perfil do usuário (tom, exemplos, dicas).
 
 ## O que quero fazer (próximos passos)
 - Permitir manipulação avançada de arquivos (deletar, mover, renomear).
@@ -23,6 +24,7 @@
 - Permitir integração com outros serviços (Docker, Trello, Notion, etc).
 - Implementar aprendizado contínuo e sugestões proativas baseadas no uso.
 - Gerar relatórios automáticos de produtividade e evolução dos projetos.
+- Implementar personalização dinâmica das respostas do agente com base no perfil do usuário (adaptação de tom, exemplos e dicas).
 - (Opcional) Interface web ou GUI desktop expansível.
 
 ## [RESOLVIDO] Problemas de parsing e timeouts nas integrações externas
@@ -37,6 +39,7 @@ O agente será uma espécie de "parceiro de pair programming", capaz de:
 - Ajudar a pesquisar soluções, integrar bibliotecas e resolver bugs.
 - Gerar documentação técnica e exemplos de uso.
 - Adaptar-se ao estilo de trabalho do usuário, aprendendo com o uso.
+- Personalizar dinamicamente o tom, exemplos e dicas das respostas conforme o perfil e preferências do usuário, tornando a experiência mais relevante e eficiente.
 
 ---
 

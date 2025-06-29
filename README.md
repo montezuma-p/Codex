@@ -15,6 +15,7 @@ Bem-vindo(a) ao Codex! Este projeto é um laboratório de integração de IA, au
   - **consultar_google**: retorna os 3 primeiros resultados do Google Search.
   - **consultar_github**: mostra repositórios populares sobre um termo.
   - **consultar_wolframalpha**: responde perguntas matemáticas/científicas.
+- **Personalização dinâmica das respostas**: o agente adapta o tom, exemplos e dicas conforme o perfil do usuário, tornando as respostas mais relevantes e alinhadas ao seu estilo e necessidades.
 
 ## Como Usar
 1. Instale as dependências:
@@ -47,8 +48,24 @@ Bem-vindo(a) ao Codex! Este projeto é um laboratório de integração de IA, au
 - "Qual a raiz quadrada de 144 no WolframAlpha?"
 - "O que significa API segundo a Wikipedia?"
 - "Como faço um request HTTP em Python? (Stack Overflow)"
+- "Codex, me dê dicas personalizadas para estudar Python à noite."
 
 Veja mais exemplos e dicas em `docs/guia_didatico/ferramentas_externas.md`.
+
+## Personalização Dinâmica
+O Codex analisa seu histórico de uso, temas frequentes, horários e preferências para adaptar:
+- O tom das respostas (mais formal, objetivo, motivacional, etc.)
+- Exemplos práticos alinhados ao seu perfil
+- Dicas e sugestões contextuais
+
+Você pode visualizar seu perfil com:
+```bash
+python cli_agent.py --perfil-usuario
+```
+E exportar o histórico para fine-tuning futuro:
+```bash
+python cli_agent.py --exportar-jsonl
+```
 
 ## Roadmap
 Consulte `docs/roadmap.md` para próximos passos e visão de futuro.

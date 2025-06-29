@@ -5,6 +5,7 @@ import json
 import requests
 from google import genai
 import database
+import datetime
 
 def checar_api_key():
     API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -279,6 +280,42 @@ def sugerir_pergunta_frequente(session):
         return sugestoes[0]
     return None
 
+def sugerir_pergunta_contextual(session):
+    """
+    Sugere ao usuário uma pergunta/comando frequente, levando em conta contexto recente e horário.
+    """
+    # Sugestão baseada em frequência
+    frequentes = database.perguntas_mais_frequentes(session, limite=3)
+    # Sugestão baseada no horário do dia
+    hora = datetime.datetime.now().hour
+    if hora < 12:
+        sugestao_horario = "Deseja revisar tarefas ou buscar inspiração para começar o dia?"
+    elif hora < 18:
+        sugestao_horario = "Precisa de ajuda para resolver um bug ou pesquisar uma solução?"
+    else:
+        sugestao_horario = "Que tal gerar um relatório de produtividade ou revisar o que foi feito hoje?"
+    # Sugestão baseada no contexto recente
+    historico = database.carregar_historico(session, n_mensagens=5)
+    temas_recentes = set()
+    for msg in historico:
+        if msg.role == 'user':
+            temas_recentes.update(msg.content.lower().split())
+    # Heurística simples: se 'bug' ou 'erro' aparecer, sugerir busca no Stack Overflow
+    if 'bug' in temas_recentes or 'erro' in temas_recentes:
+        sugestao_contexto = "Parece que você está enfrentando um problema. Deseja buscar no Stack Overflow?"
+    elif 'documentação' in temas_recentes:
+        sugestao_contexto = "Precisa gerar ou consultar documentação de alguma ferramenta?"
+    else:
+        sugestao_contexto = None
+    # Monta lista de sugestões
+    sugestoes = []
+    if frequentes:
+        sugestoes.append(f"Pergunta frequente: '{frequentes[0]}'")
+    sugestoes.append(sugestao_horario)
+    if sugestao_contexto:
+        sugestoes.append(sugestao_contexto)
+    return sugestoes
+
 FERRAMENTAS = {
     "escrever_arquivo": escrever_arquivo,
     "listar_arquivos": listar_arquivos,
@@ -304,6 +341,21 @@ def gerar_documentacao_ferramentas():
         doc.append(f"**Exemplo de chamada:**\n`{{\"ferramenta\": \"{nome}\", \"argumentos\": {{...}}}}`\n")
     return "\n".join(doc)
 
+def buscar_contexto_relevante(session, pergunta_usuario, n=5):
+    """
+    Busca no histórico as mensagens mais relevantes para a pergunta atual do usuário.
+    Critério simples: retorna as últimas n mensagens do usuário e da IA.
+    Futuramente pode ser expandido para busca semântica.
+    """
+    historico = database.carregar_historico(session, n_mensagens=50)
+    contexto = []
+    for msg in reversed(historico):
+        if len(contexto) >= n:
+            break
+        if msg.role in ("user", "model"):
+            contexto.append(f"- {msg.role}: {msg.content}")
+    return list(reversed(contexto))
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "--doc-ferramentas":
         doc = gerar_documentacao_ferramentas()
@@ -312,19 +364,44 @@ def main():
             f.write(doc)
         print(f"Documentação das ferramentas atualizada em {doc_path}")
         return
+    if len(sys.argv) > 1 and sys.argv[1] == "--relatorio-uso":
+        session = database.Session()
+        print(database.gerar_relatorio_uso(session, n_mensagens=200))
+        return
+    if len(sys.argv) > 1 and sys.argv[1] == "--exportar-jsonl":
+        session = database.Session()
+        print(database.exportar_historico_jsonl(session))
+        return
+    if len(sys.argv) > 1 and sys.argv[1] == "--perfil-usuario":
+        session = database.Session()
+        perfil = database.perfil_usuario(session)
+        print("Perfil resumido do usuário:")
+        for k, v in perfil.items():
+            print(f"- {k}: {v}")
+        return
     checar_api_key()
     database.criar_banco_e_tabelas()
     session = database.Session()
     print("Bem-vindo ao Codex CLI! Digite 'sair' para encerrar.")
     while True:
-        sugestao = sugerir_pergunta_frequente(session)
+        sugestoes = sugerir_pergunta_contextual(session)
+        if sugestoes:
+            print("[Sugestões Codex]")
+            for s in sugestoes:
+                print(f"- {s}")
         prompt_usuario = input("Você: ")
-        if prompt_usuario.strip() == '' and sugestao:
-            prompt_usuario = sugestao
+        if prompt_usuario.strip() == '' and sugestoes and 'Pergunta frequente' in sugestoes[0]:
+            prompt_usuario = sugestoes[0].replace('Pergunta frequente: ', '')
             print(f"(Repetindo pergunta frequente: {prompt_usuario})")
         if prompt_usuario.strip().lower() == 'sair':
             print("Até logo!")
             break
+        # Resgate de contexto relevante
+        contexto_relevante = buscar_contexto_relevante(session, prompt_usuario, n=5)
+        if contexto_relevante:
+            print("[Contexto relevante do histórico]")
+            for linha in contexto_relevante:
+                print(linha)
         prompt_para_decidir = PROMPT_MESTRA + "\n\nPedido do Usuário: " + prompt_usuario
         response_decisao = client.models.generate_content(model=MODELO_IA, contents=prompt_para_decidir)
         resposta_ia = ""

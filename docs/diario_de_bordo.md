@@ -72,6 +72,18 @@ Este documento serve para registrar os avanços, decisões, aprendizados e próx
 
 ---
 
+## 29/06/2025 (personalização dinâmica e aprendizado contínuo)
+- Implementada personalização dinâmica das respostas do agente: agora o Codex adapta o tom, exemplos e dicas conforme o perfil do usuário (temas, horários, volume de perguntas, preferências extraídas do histórico).
+- Adicionada geração automática de perfil resumido do usuário via comando `python cli_agent.py --perfil-usuario`.
+- Implementada exportação do histórico de interações em formato JSONL para fine-tuning futuro (`python cli_agent.py --exportar-jsonl`).
+- Adicionada geração de relatório automático de uso/aprendizado (`python cli_agent.py --relatorio-uso`), mostrando perguntas mais frequentes, palavras recorrentes, horários de maior uso e total de interações.
+- Aprimorada sugestão inteligente contextual: agora considera frequência, horário do dia e temas recentes do histórico, exibindo múltiplas sugestões ao usuário.
+- Implementado resgate automático de contexto relevante do histórico para enriquecer as respostas do agente.
+- Atualizados README, roadmap e documentação para refletir todas as novas funcionalidades de personalização e aprendizado contínuo.
+- Todas as funções novas testadas e validadas em uso prático.
+
+---
+
 ## Como usar este diário
 - Registre aqui cada avanço, decisão importante, bug resolvido ou ideia para o futuro.
 - Use datas para organizar as entradas.
