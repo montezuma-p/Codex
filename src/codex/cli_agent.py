@@ -3,7 +3,10 @@ import sys
 import pathlib
 import json
 import requests
-from google import genai
+try:
+    from google import genai
+except ImportError:
+    import google.generativeai as genai
 from codex import database
 from codex.integrations.wikipedia import consultar_wikipedia
 from codex.integrations.stackoverflow import consultar_stackoverflow
