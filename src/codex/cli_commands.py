@@ -103,7 +103,7 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
             print(_("See you soon!"))
             break
         prompt_para_decidir: str = PROMPT_MESTRA + "\n\nPedido do Usuário: " + prompt_usuario
-        response_decisao = client.models.generate_content(model=modelo_ia, contents=prompt_para_decidir)
+        response_decisao = client.generate_content(contents=prompt_para_decidir)
         resposta_ia: str = ""
         try:
             decodificado: Dict[str, Any] = json.loads(response_decisao.text)
@@ -117,7 +117,7 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
                     resultados = database.buscar_no_historico(session, termo_chave=termo)
                     contexto = "\n".join([f"- {res.role}: {res.content}" for res in resultados])
                     prompt_sintese = f"Contexto de conversas passadas:\n{contexto}\n\nBaseado nesse contexto, responda à pergunta original: '{prompt_usuario}'"
-                    nova_response = client.models.generate_content(model=modelo_ia, contents=prompt_sintese)
+                    nova_response = client.generate_content(contents=prompt_sintese)
                     resposta_ia = nova_response.text
             elif ferramenta in FERRAMENTAS:
                 logger.info(f"Tool '{ferramenta}' triggered with arguments: {decodificado.get('argumentos', {})}")
@@ -126,7 +126,7 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
                 historico = database.carregar_historico(session)
                 historico_formatado = "\n".join([f"- {msg.role}: {msg.content}" for msg in historico])
                 prompt_conversa = f"Você é Codex, um mentor de IA. Histórico da conversa:\n{historico_formatado}\n\nResponda ao usuário: {prompt_usuario}"
-                nova_response = client.models.generate_content(model=modelo_ia, contents=prompt_conversa)
+                nova_response = client.generate_content(contents=prompt_conversa)
                 resposta_ia = nova_response.text
         except (json.JSONDecodeError, TypeError):
             logger.warning("Failed to decode AI response as JSON. Returning raw text.")

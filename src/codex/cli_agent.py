@@ -26,9 +26,9 @@ def main():
     """Entry point for Codex global CLI."""
     checar_api_key()
     API_KEY = os.getenv("GOOGLE_API_KEY")
-    client = genai.Client(api_key=API_KEY)
-    MODELO_IA = "models/gemini-2.5-flash-preview-05-20"
-    executar_comando_cli(sys.argv, client, MODELO_IA)
+    MODELO_IA = "gemini-1.5-flash"  # ou o modelo correto para seu uso
+    model = genai.GenerativeModel(MODELO_IA)
+    executar_comando_cli(sys.argv, model, MODELO_IA)
 
 if __name__ == "__main__":
     main()
