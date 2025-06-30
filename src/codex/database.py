@@ -1,4 +1,4 @@
-# database.py - Módulo de gerenciamento da memória da IA
+# database.py - AI memory management module
 
 from typing import Any, List, Optional, Dict
 import datetime
@@ -7,11 +7,12 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from typing import TYPE_CHECKING
 import logging
 from codex.log_config import setup_logging
+from locales.i18n import _
 
-# Configuração global de logging
+# Global logging configuration
 setup_logging()
 
-# Adicionamos 'check_same_thread=False' para compatibilidade com o Flask
+# Added 'check_same_thread=False' for Flask compatibility
 DATABASE_URL = "sqlite:///memoria_codex.db?check_same_thread=False" 
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
@@ -36,25 +37,25 @@ class Conversa(Base):  # type: ignore[misc,valid-type]
     content = Column(Text)
 
 def criar_banco_e_tabelas() -> None:
-    logger.info("Criando banco e tabelas se necessário...")
+    logger.info(_("Creating database and tables if needed..."))
     Base.metadata.create_all(bind=engine)
-    logger.info("Banco e tabelas prontos.")
+    logger.info(_("Database and tables ready."))
 
 def carregar_historico(db_session: Any, n_mensagens: int = 50) -> List[Conversa]:
     historico = db_session.query(Conversa).order_by(Conversa.id.desc()).limit(n_mensagens).all()
-    logger.debug(f"Histórico carregado: {len(historico)} mensagens.")
+    logger.debug(_("History loaded: {n} messages.").format(n=len(historico)))
     return list(reversed(historico))
 
 def buscar_no_historico(db_session: Any, termo_chave: str) -> List[Conversa]:
-    logger.info(f"Buscando no histórico por termo: '{termo_chave}'...")
+    logger.info(_("Buscando no histórico por termo: '{term}'...").format(term=termo_chave))
     termo_para_busca = f"%{termo_chave}%"
     resultados = db_session.query(Conversa).filter(Conversa.content.like(termo_para_busca)).all()
-    logger.info(f"{len(resultados)} resultados encontrados para '{termo_chave}'.")
+    logger.info(_("{n} resultados encontrados para '{term}'.").format(n=len(resultados), term=termo_chave))
     return resultados
 
 def perguntas_mais_frequentes(db_session: Any, limite: int = 3) -> List[str]:
     """
-    Retorna as perguntas/comandos do usuário mais frequentes no histórico.
+    Retorna as perguntas/comandos mais frequentes do usuário no histórico.
     """
     from sqlalchemy import func
     resultados = (
@@ -88,15 +89,15 @@ def gerar_relatorio_uso(db_session: Any, n_mensagens: int = 100) -> str:
         f"Total de interações: {total}",
         f"Perguntas mais frequentes: {[p for p, _ in freq_perguntas]}",
         f"Palavras mais recorrentes: {[w for w, _ in freq_palavras]}",
-        f"Horários de maior uso: {[h for h, _ in freq_horarios]}",
+        f"Horários de pico de uso: {[h for h, _ in freq_horarios]}",
     ]
     logger.info(f"Relatório de uso gerado para {total} interações.")
     return "\n".join(relatorio)
 
 def exportar_historico_jsonl(db_session: Any, caminho_arquivo: str = "historico_codex.jsonl", n_mensagens: int = 1000) -> str:
     """
-    Exporta o histórico de interações (prompt/resposta) em formato JSONL para fine-tuning futuro.
-    Cada linha: {"prompt": ..., "completion": ...}
+    Exports the interaction history (prompt/response) in JSONL format for future fine-tuning.
+    Each line: {"prompt": ..., "completion": ...}
     """
     historico = db_session.query(Conversa).order_by(Conversa.id).limit(n_mensagens).all()
     pares = []
@@ -116,7 +117,7 @@ def exportar_historico_jsonl(db_session: Any, caminho_arquivo: str = "historico_
 
 def perfil_usuario(db_session: Any, n_mensagens: int = 200) -> Dict[str, Any]:
     """
-    Analisa o histórico e retorna um perfil resumido do usuário: temas, tom, horários, etc.
+    Analyzes the history and returns a summarized user profile: themes, tone, times, etc.
     """
     from collections import Counter
     historico = db_session.query(Conversa).order_by(Conversa.id).limit(n_mensagens).all()
@@ -132,10 +133,10 @@ def perfil_usuario(db_session: Any, n_mensagens: int = 200) -> Dict[str, Any]:
         "horarios_mais_ativos": [h for h, _ in freq_horarios],
         "total_perguntas": len(perguntas)
     }
-    logger.info(f"Perfil resumido do usuário gerado: {perfil}")
+    logger.info(f"Summarized user profile generated: {perfil}")
     return perfil
 
 if __name__ == "__main__":
-    print("Inicializando a infraestrutura do banco de dados...")
+    print(_("Initializing database infrastructure..."))
     criar_banco_e_tabelas()
-    print("Infraestrutura da memória pronta.")
+    print(_("Memory infrastructure ready."))

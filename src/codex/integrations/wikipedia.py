@@ -2,6 +2,7 @@ from typing import Any, Dict, Optional
 import requests
 import logging
 from codex.log_config import setup_logging
+from locales.i18n import _
 
 setup_logging()
 
@@ -9,32 +10,32 @@ logger = logging.getLogger("codex.wikipedia")
 
 def consultar_wikipedia(**kwargs: Any) -> str:
     """
-    Consulta um termo na Wikipedia e retorna o resumo.
+    Search a term on Wikipedia and return the summary.
     """
     termo: Optional[str] = kwargs.get("termo")
     if not termo or not isinstance(termo, str) or not termo.strip():
-        logger.warning("Nenhum termo informado para consulta.")
-        return "[ERRO]: Nenhum termo informado para consulta."
+        logger.warning(_("No term provided for search."))
+        return _("[ERROR]: No term provided for search.")
     url: str = f"https://pt.wikipedia.org/api/rest_v1/page/summary/{termo.replace(' ', '_')}"
     try:
         resp = requests.get(url, timeout=5)
         if resp.status_code == 404:
-            logger.info(f"Não encontrado na Wikipedia: '{termo}'")
-            return f"[INFO]: Não encontrado na Wikipedia: '{termo}'"
+            logger.info(_("Not found on Wikipedia: '{term}'").format(term=termo))
+            return _("[INFO]: Not found on Wikipedia: '{term}'").format(term=termo)
         resp.raise_for_status()
         data: Dict[str, Any] = resp.json()
         resumo: Optional[str] = data.get("extract")
         if not resumo:
-            logger.info(f"Nenhum resumo disponível para '{termo}'")
-            return f"[INFO]: Nenhum resumo disponível para '{termo}'"
+            logger.info(_("No summary available for '{term}'").format(term=termo))
+            return _("[INFO]: No summary available for '{term}'").format(term=termo)
         if len(resumo) > 1500:
-            logger.info(f"Resumo muito grande para '{termo}', truncando.")
-            return f"[INFO]: Resumo muito grande, mostrando as primeiras 1500 letras:\n{resumo[:1500]}..."
-        logger.debug(f"Resumo retornado para '{termo}': {resumo[:100]}...")
-        return f"Wikipedia – {termo}:\n{resumo}"
+            logger.info(_("Summary too long for '{term}', truncating.").format(term=termo))
+            return _("[INFO]: Summary too long, showing the first 1500 characters:\n{summary}...").format(summary=resumo[:1500])
+        logger.debug(_("Summary returned for '{term}': {snippet}...").format(term=termo, snippet=resumo[:100]))
+        return _("Wikipedia – {term}:\n{summary}").format(term=termo, summary=resumo)
     except requests.exceptions.Timeout:
-        logger.error("Timeout ao consultar a Wikipedia.")
-        return "[ERRO DA FERRAMENTA]: Timeout ao consultar a Wikipedia. Tente novamente mais tarde."
+        logger.error(_("Timeout while querying Wikipedia."))
+        return _("[TOOL ERROR]: Timeout while querying Wikipedia. Please try again later.")
     except Exception as e:
-        logger.error(f"Erro ao consultar Wikipedia: {e}")
-        return f"[ERRO DA FERRAMENTA]: {e}"
+        logger.error(_("Error querying Wikipedia: {err}").format(err=e))
+        return _("[TOOL ERROR]: {err}").format(err=e)

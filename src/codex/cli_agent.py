@@ -13,16 +13,17 @@ from codex.integrations.wolframalpha import consultar_wolframalpha
 from codex.cli_commands import executar_comando_cli
 from codex.suggestions import buscar_contexto_relevante
 from codex.cli_core import PROMPT_MESTRA, FERRAMENTAS, gerar_documentacao_ferramentas
+from locales.i18n import _
 
 def checar_api_key():
     API_KEY = os.getenv("GOOGLE_API_KEY")
     if not API_KEY:
-        print("ERRO CRÍTICO: Chave de API não encontrada.")
+        print(_("CRITICAL ERROR: API key not found."))
         sys.exit(1)
     return API_KEY
 
 def main():
-    """Ponto de entrada para o CLI global do Codex."""
+    """Entry point for Codex global CLI."""
     checar_api_key()
     API_KEY = os.getenv("GOOGLE_API_KEY")
     client = genai.Client(api_key=API_KEY)

@@ -1,5 +1,5 @@
 """
-Módulo central do CLI Codex: constantes, registro de ferramentas e utilitários.
+Core module for Codex CLI: constants, tool registry, and utilities.
 """
 from codex.integrations.wikipedia import consultar_wikipedia
 from codex.integrations.stackoverflow import consultar_stackoverflow
@@ -11,8 +11,9 @@ import pathlib
 import os
 import logging
 from codex.log_config import setup_logging
+from locales.i18n import _
 
-# Configuração global de logging
+# Global logging configuration
 setup_logging()
 
 logger = logging.getLogger("codex.cli_core")
@@ -22,79 +23,77 @@ def escrever_arquivo(**kwargs: Any) -> str:
     conteudo: Optional[str] = kwargs.get("conteudo")
     base_path: pathlib.Path = pathlib.Path(__file__).parent
     if not nome_do_arquivo or not conteudo:
-        logger.warning("Nome do arquivo ou conteúdo não informado.")
-        return "[ERRO]: Nome do arquivo ou conteúdo não informado."
+        logger.warning(_("File name or content not provided."))
+        return _("[ERROR]: File name or content not provided.")
     try:
         caminho_final: pathlib.Path = base_path / nome_do_arquivo
         with open(caminho_final, "w", encoding='utf-8') as f:
             f.write(conteudo)
-        logger.info(f"Arquivo '{nome_do_arquivo}' criado em {caminho_final}.")
-        return f"[AÇÃO: Arquivo '{nome_do_arquivo}' criado na pasta do projeto.]"
+        logger.info(_("Arquivo '{file}' criado em {path}." ).format(file=nome_do_arquivo, path=caminho_final))
+        return _("[AÇÃO]: Arquivo '{file}' criado na pasta do projeto.").format(file=nome_do_arquivo)
     except Exception as e:
-        logger.error(f"Erro ao criar arquivo '{nome_do_arquivo}': {e}")
-        return f"[ERRO DA FERRAMENTA]: {e}"
+        logger.error(_("Error creating file '{file}': {err}").format(file=nome_do_arquivo, err=e))
+        return _("[TOOL ERROR]: {err}").format(err=e)
 
 def listar_arquivos(**kwargs: Any) -> str:
     caminho: str = kwargs.get("caminho", ".")
     base_path: Union[str, pathlib.Path] = kwargs.get("base_path", pathlib.Path(__file__).parent)
     dir_path: pathlib.Path = (pathlib.Path(base_path) / caminho).resolve()
     if not dir_path.exists() or not dir_path.is_dir():
-        logger.warning(f"Diretório '{caminho}' não encontrado.")
-        return f"[ERRO]: Diretório '{caminho}' não encontrado."
+        logger.warning("Diretório '{dir}' não encontrado.".format(dir=caminho))
+        return "[ERRO]: Diretório '{dir}' não encontrado.".format(dir=caminho)
     itens = sorted(os.listdir(dir_path))
     if not itens:
-        logger.info(f"Diretório '{caminho}' está vazio.")
-        return f"[INFO]: Diretório '{caminho}' está vazio."
-    logger.debug(f"Conteúdo de '{caminho}': {itens}")
-    return f"Conteúdo de '{caminho}':\n" + "\n".join(itens)
+        logger.info("Diretório '{dir}' está vazio.".format(dir=caminho))
+        return "[INFO]: Diretório '{dir}' está vazio.".format(dir=caminho)
+    logger.debug(_("Contents of '{dir}': {items}").format(dir=caminho, items=itens))
+    return _("Contents of '{dir}':\n").format(dir=caminho) + "\n".join(itens)
 
 def ler_arquivo(**kwargs: Any) -> str:
     nome_do_arquivo: Optional[str] = kwargs.get("nome_do_arquivo")
     base_path: Union[str, pathlib.Path] = kwargs.get("base_path", pathlib.Path(__file__).parent)
     if not nome_do_arquivo:
-        logger.warning("Nome do arquivo não informado.")
-        return "[ERRO]: Nome do arquivo não informado."
+        logger.warning(_("[ERRO]: Nome do arquivo não informado."))
+        return _("[ERRO]: Nome do arquivo não informado.")
     caminho_final: pathlib.Path = (pathlib.Path(base_path) / nome_do_arquivo).resolve()
     try:
         if not caminho_final.exists() or not caminho_final.is_file():
-            logger.warning(f"Arquivo '{nome_do_arquivo}' não encontrado.")
-            return f"[ERRO]: Arquivo '{nome_do_arquivo}' não encontrado."
+            logger.warning("Arquivo '{file}' não encontrado.".format(file=nome_do_arquivo))
+            return "[ERRO]: Arquivo '{file}' não encontrado.".format(file=nome_do_arquivo)
         with open(caminho_final, "r", encoding='utf-8') as f:
             conteudo: str = f.read()
         if not conteudo.strip():
-            logger.info(f"Arquivo '{nome_do_arquivo}' está vazio.")
-            return f"[INFO]: Arquivo '{nome_do_arquivo}' está vazio."
+            logger.info("Arquivo '{file}' está vazio.".format(file=nome_do_arquivo))
+            return "[INFO]: Arquivo '{file}' está vazio.".format(file=nome_do_arquivo)
         if len(conteudo) > 2000:
-            logger.info(f"Arquivo '{nome_do_arquivo}' é grande, mostrando apenas parte do conteúdo.")
-            return f"[INFO]: Arquivo muito grande, mostrando as primeiras 2000 letras:\n{conteudo[:2000]}..."
-        logger.debug(f"Conteúdo lido de '{nome_do_arquivo}'.")
-        return f"Conteúdo de '{nome_do_arquivo}':\n{conteudo}"
+            logger.info(_("Arquivo '{file}' é grande, mostrando apenas parte do conteúdo.").format(file=nome_do_arquivo))
+            return _("[INFO]: Arquivo muito grande, mostrando as primeiras 2000 letras:\n{content}...").format(content=conteudo[:2000])
+        logger.debug(_("Content read from '{file}'.").format(file=nome_do_arquivo))
+        return _("Content of '{file}':\n{content}").format(file=nome_do_arquivo, content=conteudo)
     except Exception as e:
-        logger.error(f"Erro ao ler arquivo '{nome_do_arquivo}': {e}")
-        return f"[ERRO DA FERRAMENTA]: {e}"
+        logger.error(_("Error reading file '{file}': {err}").format(file=nome_do_arquivo, err=e))
+        return _("[TOOL ERROR]: {err}").format(err=e)
 
-PROMPT_MESTRA = """
-Você é Codex, um agente de IA parceiro de programação do Montezuma.
-Seu papel é ajudar de forma prática, objetiva e imersiva, sempre mantendo o contexto da conversa.
-
-Ferramentas disponíveis:
-- escrever_arquivo: cria ou sobrescreve arquivos de texto no projeto.
-- buscar_no_historico: busca informações em conversas anteriores.
-- listar_arquivos: mostra arquivos e pastas de um diretório do projeto.
-- ler_arquivo: lê e mostra o conteúdo de um arquivo de texto do projeto.
-- consultar_wikipedia: busca um resumo de um termo na Wikipedia em português.
-- consultar_stackoverflow: busca perguntas e respostas relacionadas no Stack Overflow.
-- consultar_google: busca resultados no Google Search (3 primeiros links e resumos).
-- consultar_github: busca repositórios no GitHub relacionados ao termo.
-- consultar_wolframalpha: faz perguntas matemáticas/científicas ao WolframAlpha.
-
-Quando identificar que o usuário quer usar uma dessas ferramentas, responda apenas com um JSON no formato:
-{"ferramenta": "nome_da_ferramenta", "argumentos": {"nome_do_argumento": "valor"}}
-
-Se não for caso de ferramenta, responda normalmente, sempre mantendo a naturalidade e o contexto.
-
-Imersão: nunca perca o contexto da conversa, mesmo após usar ferramentas.
+PROMPT_MESTRA = _(
+    """
+You are Codex, an AI programming partner agent for Montezuma (🇧🇷 Proudly made in Brazil).\n"
+"Your role is to help in a practical, objective, and immersive way, always keeping the conversation context.\n\n"
+"Available tools:\n"
+"- escrever_arquivo: creates or overwrites text files in the project.\n"
+"- buscar_no_historico: searches information in previous conversations.\n"
+"- listar_arquivos: shows files and folders from a project directory.\n"
+"- ler_arquivo: reads and shows the content of a project text file.\n"
+"- consultar_wikipedia: searches for a summary of a term on Wikipedia in Portuguese.\n"
+"- consultar_stackoverflow: searches for related questions and answers on Stack Overflow.\n"
+"- consultar_google: searches Google Search results (top 3 links and summaries).\n"
+"- consultar_github: searches for GitHub repositories related to the term.\n"
+"- consultar_wolframalpha: asks math/science questions to WolframAlpha.\n\n"
+"When you identify that the user wants to use one of these tools, respond only with a JSON in the format:\n"
+"{\"ferramenta\": \"tool_name\", \"argumentos\": {\"argument_name\": \"value\"}}\n\n"
+"If it's not a tool case, respond normally, always keeping naturalness and context.\n\n"
+"Immersion: never lose the conversation context, even after using tools.\n"
 """
+)
 
 FERRAMENTAS = {
     "escrever_arquivo": escrever_arquivo,
@@ -108,11 +107,16 @@ FERRAMENTAS = {
 }
 
 def gerar_documentacao_ferramentas() -> str:
-    logger.info("Gerando documentação automática das ferramentas do Codex CLI.")
-    doc = ["# Documentação automática das ferramentas do Codex CLI\n"]
+    logger.info(_("Generating automatic documentation for Codex CLI tools."))
+    doc = [
+        _('# Automatic documentation for Codex CLI tools\n') +
+        '\n' +
+        '# Documentação automática das ferramentas do Codex CLI\n'
+    ]
     for nome, func in FERRAMENTAS.items():
         doc.append(f"## {nome}\n")
-        docstring = func.__doc__ or "(Sem descrição)"
+        docstring = func.__doc__ or _("(No description)") + " / (Sem descrição)"
         doc.append(docstring.strip() + "\n")
+        doc.append(_("**Example call:**\n`{{\"ferramenta\": \"{name}\", \"argumentos\": {{...}}}}`\n").format(name=nome))
         doc.append(f"**Exemplo de chamada:**\n`{{\"ferramenta\": \"{nome}\", \"argumentos\": {{...}}}}`\n")
     return "\n".join(doc)

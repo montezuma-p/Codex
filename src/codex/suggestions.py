@@ -3,34 +3,35 @@ import datetime
 import logging
 from codex import database
 from codex.log_config import setup_logging
+from locales.i18n import _
 
-# Configuração global de logging
+# Global logging configuration
 setup_logging()
 
 logger = logging.getLogger("codex.suggestions")
 
 def sugerir_pergunta_frequente(session: Any) -> Optional[str]:
     """
-    Sugere ao usuário uma das perguntas/comandos mais frequentes do histórico.
+    Suggests to the user one of the most frequent questions/commands from history.
     """
     sugestoes: List[str] = database.perguntas_mais_frequentes(session, limite=1)
-    logger.debug(f"Perguntas mais frequentes sugeridas: {sugestoes}")
+    logger.debug(_("Most frequent questions suggested: {sug}." ).format(sug=sugestoes))
     if sugestoes:
         return sugestoes[0]
     return None
 
 def sugerir_pergunta_contextual(session: Any) -> List[str]:
     """
-    Sugere ao usuário uma pergunta/comando frequente, levando em conta contexto recente e horário.
+    Suggests a frequent question/command to the user, considering recent context and time of day.
     """
     frequentes: List[str] = database.perguntas_mais_frequentes(session, limite=3)
     hora: int = datetime.datetime.now().hour
     if hora < 12:
-        sugestao_horario: str = "Deseja revisar tarefas ou buscar inspiração para começar o dia?"
+        sugestao_horario: str = _("Would you like to review tasks or seek inspiration to start your day?")
     elif hora < 18:
-        sugestao_horario = "Precisa de ajuda para resolver um bug ou pesquisar uma solução?"
+        sugestao_horario = _("Need help solving a bug or searching for a solution?")
     else:
-        sugestao_horario = "Que tal gerar um relatório de produtividade ou revisar o que foi feito hoje?"
+        sugestao_horario = _("How about generating a productivity report or reviewing what was done today?")
     historico: List[Any] = database.carregar_historico(session, n_mensagens=5)
     temas_recentes: set = set()
     for msg in historico:
@@ -38,13 +39,13 @@ def sugerir_pergunta_contextual(session: Any) -> List[str]:
             temas_recentes.update(str(msg.content).lower().split())
     sugestao_contexto: Optional[str] = None
     if 'bug' in temas_recentes or 'erro' in temas_recentes:
-        sugestao_contexto = "Parece que você está enfrentando um problema. Deseja buscar no Stack Overflow?"
-    elif 'documentação' in temas_recentes:
-        sugestao_contexto = "Precisa gerar ou consultar documentação de alguma ferramenta?"
-    logger.debug(f"Frequentes: {frequentes}, Horário: {hora}, Temas recentes: {temas_recentes}, Sugestão contexto: {sugestao_contexto}")
+        sugestao_contexto = _("It seems you are facing a problem. Would you like to search Stack Overflow?")
+    elif 'documentação' in temas_recentes or 'documentacao' in temas_recentes:
+        sugestao_contexto = _("Need to generate or consult documentation for a tool?")
+    logger.debug(_("Frequent: {freq}, Hour: {hour}, Recent topics: {topics}, Context suggestion: {ctx}").format(freq=frequentes, hour=hora, topics=temas_recentes, ctx=sugestao_contexto))
     sugestoes: List[str] = []
     if frequentes:
-        sugestoes.append(f"Pergunta frequente: '{frequentes[0]}'")
+        sugestoes.append(_("Frequent question: '{q}'").format(q=frequentes[0]))
     sugestoes.append(sugestao_horario)
     if sugestao_contexto:
         sugestoes.append(sugestao_contexto)

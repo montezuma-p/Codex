@@ -2,7 +2,18 @@
 
 [![PyPI](https://img.shields.io/pypi/v/codex-cli-montezuma)](https://pypi.org/project/codex-cli-montezuma/)
 
-> **Índice Rápido da Documentação**
+---
+
+## 🌐 Documentação Multilíngue | Multilingual Documentation
+
+> **Selecione o idioma / Select your language:**
+>
+> - 🇧🇷 [Documentação em Português (docs/pt/README.md)](docs/pt/README.md)
+> - 🇺🇸 [Documentation in English (docs/en/README.md)](docs/en/README.md)
+
+---
+
+> **Índice Rápido da Documentação (PT)**
 > - [Índice Visual](docs/indice_visual.md)
 > - [Guia Global de Contribuição](docs/guia_contribuicao.md)
 > - [Índice Geral](docs/indice_geral.md)
@@ -16,6 +27,23 @@
 > - [Leitura de Arquivos](docs/guia_didatico/ler_arquivo.md)
 > - [Percepção de Arquivos](docs/guia_didatico/percepcao_arquivos.md)
 > - [pytest](docs/guia_didatico/pytest.md)
+
+> **Quick Documentation Index (EN)**
+> - [Visual Index](docs/en/indice_visual.md)
+> - [Global Contribution Guide](docs/en/guia_contribuicao.md)
+> - [General Index](docs/en/indice_geral.md)
+> - [PR Checklist](docs/en/checklist_pr.md)
+> - [Roadmap](docs/en/roadmap.md)
+> - [Logbook](docs/en/diario_de_bordo.md)
+> - [Next Mission](docs/en/proxima_missao.md)
+> - [Testing Guide](docs/en/guia_didatico/como_escrever_testes.md)
+> - [External Tools](docs/en/guia_didatico/ferramentas_externas.md)
+> - [Automatic Documentation](docs/en/guia_didatico/auto_documentacao_ferramentas.md)
+> - [File Reading](docs/en/guia_didatico/ler_arquivo.md)
+> - [File Perception](docs/en/guia_didatico/percepcao_arquivos.md)
+> - [pytest](docs/en/guia_didatico/pytest.md)
+
+---
 
 ## Instalação Rápida
 
