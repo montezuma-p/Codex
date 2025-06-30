@@ -46,6 +46,7 @@ dist/
 # Cobertura de testes
 .coverage
 htmlcov/
+coverage.xml
 
 # Cache do pytest
 .pytest_cache/
@@ -59,3 +60,12 @@ site/
 
 # Proteção extra para arquivos sensíveis
 # (já cobre .env, memoria_codex.db, etc)
+
+# Arquivos e pastas privadas
+memoria_codex.db
+venv/
+dist/
+site/
+.pytest_cache/
+.coverage
+coverage.xml

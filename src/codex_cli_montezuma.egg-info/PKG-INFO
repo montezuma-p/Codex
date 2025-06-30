@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: codex-cli-montezuma
-Version: 0.1.0
+Version: 0.1.1
 Summary: Codex CLI – Ferramentas de IA, APIs e automação para desenvolvedores. Modular, extensível, com logging, testes e documentação de referência.
 Author-email: montezuma <pedromontezuma@gmail.com>
 Keywords: cli,ia,automacao,desenvolvedores,aplicativo,codex
@@ -20,22 +20,64 @@ Dynamic: license-file
 
 # Codex CLI – Ferramentas de IA, APIs e Automação
 
-> **Índice Rápido da Documentação**
-> - [Índice Visual](docs/indice_visual.md): Navegação gráfica e rápida entre todos os guias.
-> - [Guia Global de Contribuição](docs/guia_contribuicao.md): Como contribuir, padrões, onboarding e integração com ferramentas externas de documentação.
-> - [Índice Geral](docs/indice_geral.md): Visão global, navegação e integração de todos os guias.
-> - [Checklist de PR](docs/checklist_pr.md): Itens obrigatórios para revisão e excelência em cada pull request.
-> - [Roadmap](docs/roadmap.md): Visão de futuro, próximos passos e integração entre módulos.
-> - [Diário de Bordo](docs/diario_de_bordo.md): Registro histórico de decisões, bugs, aprendizados e troubleshooting.
-> - [Próxima Missão](docs/proxima_missao.md): Missões prioritárias, metas e integração contínua.
-> - [Guia de Testes](docs/guia_didatico/como_escrever_testes.md): Cultura de qualidade, exemplos, troubleshooting e onboarding.
-> - [Ferramentas Externas](docs/guia_didatico/ferramentas_externas.md): Exemplos de uso das integrações externas.
-> - [Documentação Automática](docs/guia_didatico/auto_documentacao_ferramentas.md): Documentação gerada automaticamente das ferramentas.
-> - [Leitura de Arquivos](docs/guia_didatico/ler_arquivo.md): Guia de uso da ferramenta de leitura de arquivos.
-> - [Percepção de Arquivos](docs/guia_didatico/percepcao_arquivos.md): Guia de percepção e manipulação de arquivos e pastas.
-> - [pytest](docs/guia_didatico/pytest.md): Introdução ao pytest, exemplos, integração contínua e troubleshooting.
+[![PyPI](https://img.shields.io/pypi/v/codex-cli-montezuma)](https://pypi.org/project/codex-cli-montezuma/)
 
-Bem-vindo(a) ao Codex! Este projeto é um laboratório de integração de IA, automação e APIs para desenvolvedores.
+---
+
+## 🌐 Documentação Multilíngue | Multilingual Documentation
+
+> **Selecione o idioma / Select your language:**
+>
+> - 🇧🇷 [Documentação em Português (docs/pt/README.md)](docs/pt/README.md)
+> - 🇺🇸 [Documentation in English (docs/en/README.md)](docs/en/README.md)
+
+---
+
+> **Índice Rápido da Documentação (PT)**
+> - [Índice Visual](docs/indice_visual.md)
+> - [Guia Global de Contribuição](docs/guia_contribuicao.md)
+> - [Índice Geral](docs/indice_geral.md)
+> - [Checklist de PR](docs/checklist_pr.md)
+> - [Roadmap](docs/roadmap.md)
+> - [Diário de Bordo](docs/diario_de_bordo.md)
+> - [Próxima Missão](docs/proxima_missao.md)
+> - [Guia de Testes](docs/guia_didatico/como_escrever_testes.md)
+> - [Ferramentas Externas](docs/guia_didatico/ferramentas_externas.md)
+> - [Documentação Automática](docs/guia_didatico/auto_documentacao_ferramentas.md)
+> - [Leitura de Arquivos](docs/guia_didatico/ler_arquivo.md)
+> - [Percepção de Arquivos](docs/guia_didatico/percepcao_arquivos.md)
+> - [pytest](docs/guia_didatico/pytest.md)
+
+> **Quick Documentation Index (EN)**
+> - [Visual Index](docs/en/indice_visual.md)
+> - [Global Contribution Guide](docs/en/guia_contribuicao.md)
+> - [General Index](docs/en/indice_geral.md)
+> - [PR Checklist](docs/en/checklist_pr.md)
+> - [Roadmap](docs/en/roadmap.md)
+> - [Logbook](docs/en/diario_de_bordo.md)
+> - [Next Mission](docs/en/proxima_missao.md)
+> - [Testing Guide](docs/en/guia_didatico/como_escrever_testes.md)
+> - [External Tools](docs/en/guia_didatico/ferramentas_externas.md)
+> - [Automatic Documentation](docs/en/guia_didatico/auto_documentacao_ferramentas.md)
+> - [File Reading](docs/en/guia_didatico/ler_arquivo.md)
+> - [File Perception](docs/en/guia_didatico/percepcao_arquivos.md)
+> - [pytest](docs/en/guia_didatico/pytest.md)
+
+---
+
+## Instalação Rápida
+
+```bash
+pip install codex-cli-montezuma
+```
+
+Acesse o pacote no PyPI: https://pypi.org/project/codex-cli-montezuma/
+
+> **Nota:** Para uma instalação completa com todas as dependências de desenvolvimento, use:
+> 
+> ```bash
+> pip install -r requirements-dev.txt
+> ```
 
 ## Funcionalidades Principais
 - Armazena conversas e histórico em SQLite.
@@ -103,7 +145,7 @@ python cli_agent.py --exportar-jsonl
 ```
 
 ## Roadmap
-Consulte `docs/roadmap.md` para próximos passos e visão de futuro.
+Consulte o [roadmap completo](docs/roadmap.md) para próximos passos, visão de futuro e evolução do projeto.
 
 
 
