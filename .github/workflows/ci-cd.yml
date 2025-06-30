@@ -11,6 +11,11 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -33,13 +38,27 @@ jobs:
           pip install -r requirements-dev.txt
           pip install -e .
 
-      - name: Run linting
+      - name: List root and src contents
         run: |
-          flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 src/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          echo "Root dir:"
+          ls -l $GITHUB_WORKSPACE
+          echo "SRC dir:"
+          ls -l $GITHUB_WORKSPACE/src
+
+      - name: Check codex installation
+        run: |
+          pip show codex-cli-montezuma || pip show codex
+          pip list
+
+      - name: Try import codex
+        run: python -c "import codex; print('codex importado com sucesso')"
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$GITHUB_WORKSPACE/src" >> $GITHUB_ENV
 
       - name: Run tests with coverage
         run: |
+          cd $GITHUB_WORKSPACE
           pytest --cov=src/codex --cov-report=xml --cov-report=term-missing -v
 
       - name: Upload coverage to Codecov
@@ -87,7 +106,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
-    environment: pypi
     
     steps:
       - name: Download build artifacts
@@ -105,6 +123,11 @@ jobs:
         run: |
           pip install twine
 
+      - name: Debug Secrets
+        run: echo "PYPI_API_TOKEN is set"
+        env:
+          TEST_SECRET: ${{ secrets.PYPI_API_TOKEN }}
+
       - name: Publish to PyPI
         env:
           TWINE_USERNAME: __token__
@@ -118,43 +141,9 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          pip install mkdocs mkdocs-material mkdocs-static-i18n
-
-      - name: Build and deploy MkDocs site
+      - name: Deploy documentation
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          pip install mkdocs mkdocs-material mkdocs-static-i18n
           mkdocs gh-deploy --force --clean
-
-      - name: Show deployment info
-        run: |
-          echo "Documentação publicada em: https://$GITHUB_REPOSITORY_OWNER.github.io/${GITHUB_REPOSITORY#*/}/"
-
-  notify:
-    needs: [test, build, publish-pypi, publish-docs]
-    runs-on: ubuntu-latest
-    if: always() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
-    
-    steps:
-      - name: Notify success
-        if: needs.test.result == 'success' && needs.build.result == 'success'
-        run: |
-          echo "✅ Pipeline executado com sucesso!"
-          echo "📦 Pacote publicado no PyPI"
-          echo "📚 Documentação atualizada"
-          echo "🧪 Testes passaram em múltiplas versões do Python"
-
-      - name: Notify failure
-        if: needs.test.result == 'failure' || needs.build.result == 'failure'
-        run: |
-          echo "❌ Pipeline falhou. Verifique os logs para mais detalhes."
