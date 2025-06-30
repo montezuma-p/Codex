@@ -50,6 +50,9 @@ htmlcov/
 # Cache do pytest
 .pytest_cache/
 
+# MkDocs build
+site/
+
 # Arquivos temporários de editor
 *.swp
 *.swo
