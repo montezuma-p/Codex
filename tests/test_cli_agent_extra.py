@@ -46,7 +46,7 @@ def test_main_json_decode_error(monkeypatch):
                 class Resp:
                     text = "{invalid_json:"
                 return Resp()
-    with patch("google.genai.Client", return_value=FakeClient()):
+    with patch("google.generativeai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
@@ -65,7 +65,7 @@ def test_main_ferramenta_inexistente(monkeypatch):
                 class Resp:
                     text = '{"ferramenta": "inexistente", "argumentos": {}}'
                 return Resp()
-    with patch("google.genai.Client", return_value=FakeClient()):
+    with patch("google.generativeai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
@@ -87,7 +87,7 @@ def test_ferramenta_erro(monkeypatch):
                 return Resp()
     def ferramenta_erro(**kwargs):
         raise Exception("Erro simulado na ferramenta")
-    with patch("google.genai.Client", return_value=FakeClient()):
+    with patch("google.generativeai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
@@ -131,7 +131,7 @@ def test_main_commit_erro(monkeypatch):
                 class Resp:
                     text = '{"ferramenta": "consultar_wikipedia", "argumentos": {"termo": "Python"}}'
                 return Resp()
-    with patch("google.genai.Client", return_value=FakeClient()):
+    with patch("google.generativeai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: FakeSession())
@@ -175,7 +175,7 @@ def test_input_invalido(monkeypatch):
                 class Resp:
                     text = 'Texto qualquer'
                 return Resp()
-    with patch("google.genai.Client", return_value=FakeClient()):
+    with patch("google.generativeai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())

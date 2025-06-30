@@ -47,7 +47,7 @@ def test_escrever_arquivo_erro_json():
     resposta = escrever_arquivo(nome_do_arquivo=None, conteudo=None)
     assert "ERRO" in resposta
 
-@patch("google.genai.Client")
+@patch("google.generativeai.Client")
 def test_cli_agent_branch_buscar_no_historico(mock_genai_client, monkeypatch):
     # Simula resposta da IA para buscar_no_historico
     mock_response = MagicMock()
@@ -61,7 +61,7 @@ def test_cli_agent_branch_buscar_no_historico(mock_genai_client, monkeypatch):
     except SystemExit:
         pass
 
-@patch("google.genai.Client")
+@patch("google.generativeai.Client")
 def test_cli_agent_branch_escrever_arquivo(mock_genai_client, monkeypatch):
     # Simula resposta da IA para escrever_arquivo
     mock_response = MagicMock()
@@ -75,7 +75,7 @@ def test_cli_agent_branch_escrever_arquivo(mock_genai_client, monkeypatch):
     except SystemExit:
         pass
 
-@patch("google.genai.Client")
+@patch("google.generativeai.Client")
 def test_cli_agent_branch_resposta_padrao(mock_genai_client, monkeypatch):
     # Simula resposta da IA para branch padrão
     mock_response = MagicMock()
@@ -91,7 +91,7 @@ def test_cli_agent_branch_resposta_padrao(mock_genai_client, monkeypatch):
 
 def test_cli_agent_print_saida(monkeypatch, capsys):
     from unittest.mock import patch, MagicMock
-    with patch("google.genai.Client") as mock_genai_client:
+    with patch("google.generativeai.Client") as mock_genai_client:
         mock_response = MagicMock()
         mock_response.text = 'Olá, esta é uma resposta padrão.'
         instance = mock_genai_client.return_value
@@ -108,7 +108,7 @@ def test_cli_agent_print_saida(monkeypatch, capsys):
 def test_cli_agent_print_saida(monkeypatch):
     # Simula resposta inválida para forçar JSONDecodeError
     from unittest.mock import patch, MagicMock
-    with patch("google.genai.Client") as mock_genai_client:
+    with patch("google.generativeai.Client") as mock_genai_client:
         mock_response = MagicMock()
         mock_response.text = 'resposta inválida'
         instance = mock_genai_client.return_value
@@ -120,7 +120,7 @@ def test_cli_agent_print_saida(monkeypatch):
         except SystemExit:
             pass
 
-@patch("google.genai.Client")
+@patch("google.generativeai.Client")
 def test_cli_agent_branch_else(mock_genai_client, monkeypatch):
     # Simula resposta da IA para branch else
     mock_response = MagicMock()
