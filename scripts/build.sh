@@ -13,3 +13,6 @@ set -e
 
 # Build placeholder (ajuste conforme necessário para build real)
 echo "[BUILD] Nenhuma etapa de build específica definida. Adicione comandos conforme necessário."
+
+# Build script para empacotar o projeto
+python -m build
