@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Guia Global de Contribuição – Codex CLI - Codex CLI</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Codex CLI</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../docs/guia_contribuicao.md" class="nav-link">Guia de Contribuição</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../docs/indice_geral.md" class="nav-link">General Index</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#guia-global-de-contribuicao-codex-cli" class="nav-link">Guia Global de Contribuição – Codex CLI</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#1-como-comecar" class="nav-link">1. Como começar</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2-padroes-de-codigo" class="nav-link">2. Padrões de Código</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#3-testes-e-automacao" class="nav-link">3. Testes e Automação</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#4-documentacao" class="nav-link">4. Documentação</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#5-onboarding-e-revisao" class="nav-link">5. Onboarding e Revisão</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#6-integracao-com-ferramentas-externas-de-documentacao" class="nav-link">6. Integração com Ferramentas Externas de Documentação</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#7-dicas-finais" class="nav-link">7. Dicas Finais</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="guia-global-de-contribuicao-codex-cli">Guia Global de Contribuição – Codex CLI</h1>
+<p>Bem-vindo(a)! Este guia reúne as melhores práticas, padrões e dicas para contribuir com excelência no Codex CLI.</p>
+<hr />
+<h2 id="1-como-comecar">1. Como começar</h2>
+<ul>
+<li>Leia o <a href="../README.md">README.md</a> e o <a href="../indice_geral/">Índice Geral</a> para entender a arquitetura e cultura do projeto.</li>
+<li>Instale as dependências:
+  <code>bash
+  pip install -r requirements-dev.txt</code></li>
+<li>Rode os testes:
+  <code>bash
+  pytest</code></li>
+</ul>
+<h2 id="2-padroes-de-codigo">2. Padrões de Código</h2>
+<ul>
+<li>Use type hints e docstrings em todas as funções/métodos.</li>
+<li>Implemente logging estruturado conforme <code>src/log_config.py</code>.</li>
+<li>Separe código em módulos claros: core, integrações, banco, sugestões, etc.</li>
+<li>Siga o padrão de modularização e extensibilidade.</li>
+</ul>
+<h2 id="3-testes-e-automacao">3. Testes e Automação</h2>
+<ul>
+<li>Crie/atualize testes automatizados para toda nova feature ou correção.</li>
+<li>Use mocks para integrações externas.</li>
+<li>Rode <code>make test</code> e confira a cobertura.</li>
+<li>Consulte o <a href="../guia_didatico/como_escrever_testes/">Guia de Testes</a>.</li>
+</ul>
+<h2 id="4-documentacao">4. Documentação</h2>
+<ul>
+<li>Atualize o sumário de mudanças em cada documento afetado.</li>
+<li>Adicione exemplos e instruções nos guias relevantes.</li>
+<li>Atualize o <a href="../indice_geral/">Índice Geral</a> e o <a href="../indice_visual/">Índice Visual</a> se necessário.</li>
+<li>Consulte o <a href="../checklist_pr/">Checklist de PR</a> antes de submeter.</li>
+</ul>
+<h2 id="5-onboarding-e-revisao">5. Onboarding e Revisão</h2>
+<ul>
+<li>Siga o onboarding de cada guia.</li>
+<li>Peça revisão cruzada e use o checklist de PR.</li>
+<li>Registre decisões e aprendizados no <a href="../diario_de_bordo/">Diário de Bordo</a>.</li>
+</ul>
+<h2 id="6-integracao-com-ferramentas-externas-de-documentacao">6. Integração com Ferramentas Externas de Documentação</h2>
+<ul>
+<li>Use <a href="https://www.mkdocs.org/">MkDocs</a> ou <a href="https://www.sphinx-doc.org/">Sphinx</a> para gerar documentação navegável a partir dos arquivos markdown.</li>
+<li>Gere documentação automática das ferramentas com:
+  <code>bash
+  python cli_agent.py --doc-ferramentas</code></li>
+<li>Considere publicar a documentação em <a href="https://readthedocs.org/">Read the Docs</a> ou <a href="https://pages.github.com/">GitHub Pages</a>.</li>
+</ul>
+<h2 id="7-dicas-finais">7. Dicas Finais</h2>
+<ul>
+<li>Consulte sempre o índice visual e o checklist de PR.</li>
+<li>Mantenha exemplos e instruções alinhados à CLI e arquitetura vigente.</li>
+<li>Em caso de dúvida, abra uma issue ou peça revisão.</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Contribua, aprenda e ajude a manter o Codex CLI como referência em excelência, integração e didática!</strong></p>
+</blockquote></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

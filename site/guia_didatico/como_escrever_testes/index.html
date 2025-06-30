@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Como Escrever Testes Automatizados no Codex - Codex CLI</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Codex CLI</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../docs/guia_contribuicao.md" class="nav-link">Guia de Contribuição</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../docs/indice_geral.md" class="nav-link">General Index</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#como-escrever-testes-automatizados-no-codex" class="nav-link">Como Escrever Testes Automatizados no Codex</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#por-que-testar-cultura-de-qualidade" class="nav-link">Por que Testar? (Cultura de Qualidade)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#estrutura-dos-testes-no-projeto" class="nav-link">Estrutura dos Testes no Projeto</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#exemplo-basico" class="nav-link">Exemplo Básico</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#testando-funcoes-do-projeto" class="nav-link">Testando Funções do Projeto</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#testando-ferramentas-externas-com-mocks" class="nav-link">Testando Ferramentas Externas (com Mocks)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#parametrizacao-e-fixtures-avancadas" class="nav-link">Parametrização e Fixtures Avançadas</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#logica-dos-testes" class="nav-link">Lógica dos Testes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#boas-praticas-e-dicas" class="nav-link">Boas Práticas e Dicas</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#integracao-continua-e-automacao" class="nav-link">Integração Contínua e Automação</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#troubleshooting-erros-comuns" class="nav-link">Troubleshooting (Erros Comuns)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#onboarding-para-novos-contribuidores" class="nav-link">Onboarding para Novos Contribuidores</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#recursos-e-referencias" class="nav-link">Recursos e Referências</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="como-escrever-testes-automatizados-no-codex">Como Escrever Testes Automatizados no Codex</h1>
+<blockquote>
+<p><strong>Sumário das Mudanças Recentes (2025)</strong>
+- Testes automatizados para todas as integrações e módulos principais.
+- Uso de pytest, mocks e fixtures padronizados.
+- Cobertura total de casos de sucesso, erro e falha de API.
+- Exemplos atualizados conforme arquitetura modular e logging estruturado.
+- Onboarding para novos contribuidores revisado.
+- Guia expandido com troubleshooting, integração contínua e dicas avançadas.</p>
+</blockquote>
+<hr />
+<h2 id="por-que-testar-cultura-de-qualidade">Por que Testar? (Cultura de Qualidade)</h2>
+<p>Testes automatizados garantem que o Codex evolua com segurança, facilitando refatorações, novas features e contribuições externas. Eles:
+- Evitam regressões e bugs silenciosos.
+- Permitem evoluir o projeto sem medo.
+- Facilitam onboarding de novos desenvolvedores.
+- Servem como documentação viva do comportamento esperado.</p>
+<hr />
+<h2 id="estrutura-dos-testes-no-projeto">Estrutura dos Testes no Projeto</h2>
+<ul>
+<li>Todos os testes ficam na pasta <code>tests/</code>.</li>
+<li>Cada arquivo de teste começa com <code>test_</code> (ex: <code>test_database.py</code>).</li>
+<li>Cada função de teste também começa com <code>test_</code>.</li>
+<li>Use type hints e docstrings em funções de teste para clareza.</li>
+<li>Logging pode ser usado em testes para depuração avançada.</li>
+<li>Separe os testes por domínio: banco, integrações, CLI, sugestões, etc.</li>
+</ul>
+<hr />
+<h2 id="exemplo-basico">Exemplo Básico</h2>
+<pre><code class="language-python">def test_soma() -&gt; None:
+    &quot;&quot;&quot;Testa se a soma básica funciona.&quot;&quot;&quot;
+    assert 1 + 1 == 2
+</code></pre>
+<p>Esse teste verifica se a soma está correta. Se não estiver, o pytest mostra um erro.</p>
+<hr />
+<h2 id="testando-funcoes-do-projeto">Testando Funções do Projeto</h2>
+<p>Veja um exemplo real do Codex:</p>
+<pre><code class="language-python">def test_criar_e_buscar_conversa(session):
+    &quot;&quot;&quot;Testa criação e busca de mensagem no banco.&quot;&quot;&quot;
+    nova_msg = database.Conversa(role='user', content='Teste Pytest')
+    session.add(nova_msg)
+    session.commit()
+    resultados = database.buscar_no_historico(session, 'Teste')
+    assert any('Teste Pytest' in msg.content for msg in resultados)
+</code></pre>
+<ul>
+<li><strong>O que faz?</strong> Cria uma mensagem no banco e testa se ela pode ser encontrada.</li>
+<li><strong>Por que é útil?</strong> Garante que salvar e buscar no banco funcionam.</li>
+</ul>
+<hr />
+<h2 id="testando-ferramentas-externas-com-mocks">Testando Ferramentas Externas (com Mocks)</h2>
+<p>O Codex CLI possui testes automatizados para todas as integrações com APIs externas:
+- Google Search
+- Stack Overflow
+- GitHub
+- WolframAlpha</p>
+<h3 id="exemplo-de-teste-para-api-externa">Exemplo de teste para API externa</h3>
+<pre><code class="language-python">from unittest.mock import patch, MagicMock
+
+@patch(&quot;cli_agent.requests.get&quot;)
+def test_consultar_google_sucesso(mock_get, monkeypatch):
+    &quot;&quot;&quot;Testa integração com Google Search usando mock.&quot;&quot;&quot;
+    from cli_agent import consultar_google
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {&quot;items&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;link&quot;: &quot;https://python.org&quot;, &quot;snippet&quot;: &quot;...&quot;}]}
+    mock_resp.status_code = 200
+    mock_get.return_value = mock_resp
+    monkeypatch.setenv(&quot;GOOGLE_SEARCH_API_KEY&quot;, &quot;fake-key&quot;)
+    monkeypatch.setenv(&quot;GOOGLE_SEARCH_CX&quot;, &quot;fake-cx&quot;)
+    resultado = consultar_google(termo=&quot;python&quot;)
+    assert &quot;Python&quot; in resultado
+</code></pre>
+<ul>
+<li>Use mocks para simular respostas das APIs e garantir testes rápidos e confiáveis.</li>
+</ul>
+<hr />
+<h2 id="parametrizacao-e-fixtures-avancadas">Parametrização e Fixtures Avançadas</h2>
+<p>Use <code>@pytest.mark.parametrize</code> para testar múltiplos casos:</p>
+<pre><code class="language-python">import pytest
+@pytest.mark.parametrize(&quot;entrada,esperado&quot;, [(1,2), (2,3), (3,4)])
+def test_incrementa(entrada, esperado):
+    assert entrada + 1 == esperado
+</code></pre>
+<p>Crie fixtures customizadas para preparar ambientes temporários:</p>
+<pre><code class="language-python">import pytest
+@pytest.fixture
+def arquivo_temp(tmp_path):
+    arquivo = tmp_path / &quot;exemplo.txt&quot;
+    arquivo.write_text(&quot;conteúdo de teste&quot;)
+    return arquivo
+</code></pre>
+<hr />
+<h2 id="logica-dos-testes">Lógica dos Testes</h2>
+<ol>
+<li><strong>Preparação:</strong> Crie o que precisa (ex: uma mensagem, um arquivo, etc).</li>
+<li><strong>Ação:</strong> Execute a função que quer testar.</li>
+<li><strong>Verificação:</strong> Use <code>assert</code> para checar se o resultado está certo.</li>
+<li><strong>Limpeza:</strong> (Opcional) Remova arquivos ou dados temporários.</li>
+</ol>
+<hr />
+<h2 id="boas-praticas-e-dicas">Boas Práticas e Dicas</h2>
+<ul>
+<li>Sempre cubra casos de sucesso, erro, falta de parâmetro e falha de API.</li>
+<li>Use nomes claros e docstrings nas funções de teste.</li>
+<li>Separe os testes por arquivo conforme o módulo (ex: banco, ferramentas, CLI).</li>
+<li>Use fixtures do pytest para preparar ambientes temporários (ex: banco de dados em memória).</li>
+<li>Use logging para depuração em testes complexos.</li>
+<li>Veja exemplos completos em <code>tests/test_cli_agent.py</code>.</li>
+</ul>
+<hr />
+<h2 id="integracao-continua-e-automacao">Integração Contínua e Automação</h2>
+<ul>
+<li>Rode todos os testes antes de cada commit/push.</li>
+<li>Use o Makefile: <code>make test</code> para rodar todos os testes.</li>
+<li>Gere relatórios de cobertura: <code>pytest --cov=.</code></li>
+<li>Integre com CI/CD (ex: GitHub Actions) para garantir qualidade contínua.</li>
+</ul>
+<hr />
+<h2 id="troubleshooting-erros-comuns">Troubleshooting (Erros Comuns)</h2>
+<ul>
+<li><strong>ImportError:</strong> Verifique se o PYTHONPATH inclui a raiz do projeto.</li>
+<li><strong>Falha em mocks:</strong> Confirme o nome do patch e o caminho do import.</li>
+<li><strong>Banco de dados não limpo:</strong> Use fixtures para isolar testes.</li>
+<li><strong>Timeouts em APIs:</strong> Sempre use mocks para integrações externas.</li>
+</ul>
+<hr />
+<h2 id="onboarding-para-novos-contribuidores">Onboarding para Novos Contribuidores</h2>
+<ol>
+<li>Instale as dependências de desenvolvimento:
+   <code>bash
+   pip install -r requirements-dev.txt</code></li>
+<li>Rode todos os testes:
+   <code>bash
+   pytest</code></li>
+<li>Crie novos testes seguindo os exemplos deste guia.</li>
+<li>Use type hints, docstrings e logging em testes complexos.</li>
+<li>Consulte os arquivos <code>tests/</code> e este guia para referência.</li>
+<li>Em caso de dúvida, abra uma issue ou peça revisão no PR.</li>
+</ol>
+<hr />
+<h2 id="recursos-e-referencias">Recursos e Referências</h2>
+<ul>
+<li><a href="https://docs.pytest.org/">Documentação oficial do pytest</a></li>
+<li><a href="https://docs.python.org/3/library/unittest.mock.html">Guia de mocks do unittest</a></li>
+<li><a href="https://pytest-cov.readthedocs.io/">Cobertura de código com pytest-cov</a></li>
+<li>Veja também: <a href="../pytest/">guia_didatico/pytest.md</a>, <a href="../auto_documentacao_ferramentas/">guia_didatico/auto_documentacao_ferramentas.md</a></li>
+</ul>
+<p>Assim você garante que tudo está funcionando e pode evoluir o projeto com segurança!</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

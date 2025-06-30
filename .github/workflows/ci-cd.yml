@@ -1,0 +1,160 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install -e .
+
+      - name: Run linting
+        run: |
+          flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 src/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=src/codex --cov-report=xml --cov-report=term-missing -v
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build package
+        run: |
+          python -m build
+
+      - name: Check package
+        run: |
+          twine check dist/*
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish-pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    environment: pypi
+    
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install twine
+        run: |
+          pip install twine
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          twine upload dist/* --skip-existing
+
+  publish-docs:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install mkdocs mkdocs-material mkdocs-static-i18n
+
+      - name: Build and deploy MkDocs site
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdocs gh-deploy --force --clean
+
+      - name: Show deployment info
+        run: |
+          echo "Documentação publicada em: https://$GITHUB_REPOSITORY_OWNER.github.io/${GITHUB_REPOSITORY#*/}/"
+
+  notify:
+    needs: [test, build, publish-pypi, publish-docs]
+    runs-on: ubuntu-latest
+    if: always() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    
+    steps:
+      - name: Notify success
+        if: needs.test.result == 'success' && needs.build.result == 'success'
+        run: |
+          echo "✅ Pipeline executado com sucesso!"
+          echo "📦 Pacote publicado no PyPI"
+          echo "📚 Documentação atualizada"
+          echo "🧪 Testes passaram em múltiplas versões do Python"
+
+      - name: Notify failure
+        if: needs.test.result == 'failure' || needs.build.result == 'failure'
+        run: |
+          echo "❌ Pipeline falhou. Verifique os logs para mais detalhes."
