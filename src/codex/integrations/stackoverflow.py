@@ -9,12 +9,15 @@ setup_logging()
 
 logger = logging.getLogger("codex.stackoverflow")
 
-def consultar_stackoverflow(**kwargs: Any) -> str:
+def consultar_stackoverflow(termo: str, **kwargs: Any) -> str:
+    """Search Stack Overflow for questions and answers related to a term.
+    
+    Args:
+        termo: The term to search for on Stack Overflow
+        
+    Returns:
+        Stack Overflow results with titles, links, and answers
     """
-    Search Stack Overflow for questions and answers related to a term.
-    Returns the title, link, and top-voted answer (if any).
-    """
-    termo: Optional[str] = kwargs.get("termo")
     if not termo or not isinstance(termo, str) or not termo.strip():
         logger.warning("Nenhum termo informado para busca.")
         return "[ERRO]: Nenhum termo informado para busca."

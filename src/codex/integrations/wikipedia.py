@@ -8,11 +8,15 @@ setup_logging()
 
 logger = logging.getLogger("codex.wikipedia")
 
-def consultar_wikipedia(**kwargs: Any) -> str:
+def consultar_wikipedia(termo: str, **kwargs: Any) -> str:
+    """Search a term on Wikipedia and return the summary.
+    
+    Args:
+        termo: The term to search for on Wikipedia
+        
+    Returns:
+        Wikipedia summary or error message
     """
-    Search a term on Wikipedia and return the summary.
-    """
-    termo: Optional[str] = kwargs.get("termo")
     if not termo or not isinstance(termo, str) or not termo.strip():
         logger.warning(_("No term provided for search."))
         return _("[ERROR]: No term provided for search.")

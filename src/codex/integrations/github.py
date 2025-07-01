@@ -8,12 +8,15 @@ setup_logging()
 
 logger = logging.getLogger("codex.github")
 
-def consultar_github(**kwargs: Any) -> str:
+def consultar_github(termo: str, **kwargs: Any) -> str:
+    """Search GitHub repositories related to a term.
+    
+    Args:
+        termo: The term to search for on GitHub
+        
+    Returns:
+        GitHub repository results with names, links and descriptions
     """
-    Busca repositórios ou issues no GitHub relacionados a um termo.
-    Retorna os 3 primeiros resultados (nome, link, descrição).
-    """
-    termo: Optional[str] = kwargs.get("termo")
     if not termo or not isinstance(termo, str) or not termo.strip():
         logger.warning("Nenhum termo informado para consulta.")
         return "[ERRO]: Nenhum termo informado para consulta."
@@ -22,6 +25,8 @@ def consultar_github(**kwargs: Any) -> str:
     token: Optional[str] = os.getenv("GITHUB_TOKEN")
     if token:
         headers["Authorization"] = f"Bearer {token}"
+    else:
+        logger.info("GITHUB_TOKEN não configurado - usando limite público da API.")
     try:
         resp = requests.get(url, headers=headers, timeout=7)
         resp.raise_for_status()

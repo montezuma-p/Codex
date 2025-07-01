@@ -6,6 +6,7 @@ from codex.integrations.stackoverflow import consultar_stackoverflow
 from codex.integrations.google import consultar_google
 from codex.integrations.github import consultar_github
 from codex.integrations.wolframalpha import consultar_wolframalpha
+from codex.database import buscar_no_historico
 from typing import Any, Optional, Union
 import pathlib
 import os
@@ -18,9 +19,16 @@ setup_logging()
 
 logger = logging.getLogger("codex.cli_core")
 
-def escrever_arquivo(**kwargs: Any) -> str:
-    nome_do_arquivo: Optional[str] = kwargs.get("nome_do_arquivo")
-    conteudo: Optional[str] = kwargs.get("conteudo")
+def escrever_arquivo(nome_do_arquivo: str, conteudo: str) -> str:
+    """Create or overwrite a text file in the project.
+    
+    Args:
+        nome_do_arquivo: Name of the file to create/write
+        conteudo: Content to write to the file
+        
+    Returns:
+        A status message indicating success or error
+    """
     base_path: pathlib.Path = pathlib.Path(__file__).parent
     if not nome_do_arquivo or not conteudo:
         logger.warning(_("File name or content not provided."))
@@ -35,8 +43,15 @@ def escrever_arquivo(**kwargs: Any) -> str:
         logger.error(_("Error creating file '{file}': {err}").format(file=nome_do_arquivo, err=e))
         return _("[TOOL ERROR]: {err}").format(err=e)
 
-def listar_arquivos(**kwargs: Any) -> str:
-    caminho: str = kwargs.get("caminho", ".")
+def listar_arquivos(caminho: str = ".", **kwargs: Any) -> str:
+    """List files and folders in a project directory.
+    
+    Args:
+        caminho: Path to the directory to list (default: current directory)
+        
+    Returns:
+        A string with the list of files and folders, or error message
+    """
     base_path: Union[str, pathlib.Path] = kwargs.get("base_path", pathlib.Path(__file__).parent)
     dir_path: pathlib.Path = (pathlib.Path(base_path) / caminho).resolve()
     if not dir_path.exists() or not dir_path.is_dir():
@@ -49,8 +64,15 @@ def listar_arquivos(**kwargs: Any) -> str:
     logger.debug(_("Contents of '{dir}': {items}").format(dir=caminho, items=itens))
     return _("Contents of '{dir}':\n").format(dir=caminho) + "\n".join(itens)
 
-def ler_arquivo(**kwargs: Any) -> str:
-    nome_do_arquivo: Optional[str] = kwargs.get("nome_do_arquivo")
+def ler_arquivo(nome_do_arquivo: str, **kwargs: Any) -> str:
+    """Read and display the content of a text file from the project.
+    
+    Args:
+        nome_do_arquivo: Name of the file to read
+        
+    Returns:
+        The file content or error message
+    """
     base_path: Union[str, pathlib.Path] = kwargs.get("base_path", pathlib.Path(__file__).parent)
     if not nome_do_arquivo:
         logger.warning(_("[ERRO]: Nome do arquivo não informado."))
@@ -76,22 +98,24 @@ def ler_arquivo(**kwargs: Any) -> str:
 
 PROMPT_MESTRA = _(
     """
-You are Codex, an AI programming partner agent for Montezuma (🇧🇷 Proudly made in Brazil).\n"
-"Your role is to help in a practical, objective, and immersive way, always keeping the conversation context.\n\n"
-"Available tools:\n"
-"- escrever_arquivo: creates or overwrites text files in the project.\n"
-"- buscar_no_historico: searches information in previous conversations.\n"
-"- listar_arquivos: shows files and folders from a project directory.\n"
-"- ler_arquivo: reads and shows the content of a project text file.\n"
-"- consultar_wikipedia: searches for a summary of a term on Wikipedia in Portuguese.\n"
-"- consultar_stackoverflow: searches for related questions and answers on Stack Overflow.\n"
-"- consultar_google: searches Google Search results (top 3 links and summaries).\n"
-"- consultar_github: searches for GitHub repositories related to the term.\n"
-"- consultar_wolframalpha: asks math/science questions to WolframAlpha.\n\n"
-"When you identify that the user wants to use one of these tools, respond only with a JSON in the format:\n"
-"{\"ferramenta\": \"tool_name\", \"argumentos\": {\"argument_name\": \"value\"}}\n\n"
-"If it's not a tool case, respond normally, always keeping naturalness and context.\n\n"
-"Immersion: never lose the conversation context, even after using tools.\n"
+You are Codex, an AI programming partner agent for Montezuma (🇧🇷 Proudly made in Brazil).
+Your role is to help in a practical, objective, and immersive way, always keeping the conversation context.
+
+You have access to several tools through the official Gemini Function Calling system:
+- escrever_arquivo: creates or overwrites text files in the project
+- buscar_no_historico: searches information in previous conversations  
+- listar_arquivos: shows files and folders from a project directory
+- ler_arquivo: reads and shows the content of a project text file
+- consultar_wikipedia: searches for a summary of a term on Wikipedia in Portuguese
+- consultar_stackoverflow: searches for related questions and answers on Stack Overflow
+- consultar_google: searches Google Search results (top 3 links and summaries)
+- consultar_github: searches for GitHub repositories related to the term
+- consultar_wolframalpha: asks math/science questions to WolframAlpha
+
+When the user requests something that requires using one of these tools, call the appropriate function.
+For general conversation, respond naturally without using tools.
+
+Always maintain context and provide helpful, natural responses in Portuguese.
 """
 )
 
@@ -99,10 +123,12 @@ FERRAMENTAS = {
     "escrever_arquivo": escrever_arquivo,
     "listar_arquivos": listar_arquivos,
     "ler_arquivo": ler_arquivo,
+    "buscar_no_historico": buscar_no_historico,
     "consultar_stackoverflow": consultar_stackoverflow,
     "consultar_google": consultar_google,
     "consultar_github": consultar_github,
     "consultar_wolframalpha": consultar_wolframalpha,
+    "consultar_wikipedia": consultar_wikipedia,  # Adicionado para garantir execução
     # Adicione novas ferramentas aqui
 }
 

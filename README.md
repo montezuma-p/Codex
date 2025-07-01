@@ -4,6 +4,23 @@
 
 ---
 
+## 🔑 Configuração Rápida de API Keys
+
+Para usar todas as funcionalidades do Codex CLI, configure suas chaves de API:
+
+```bash
+# Configuração automática (recomendado)
+./scripts/setup-api-keys.sh
+
+# Ou configure manualmente:
+export GOOGLE_API_KEY="sua_chave_aqui"
+export GOOGLE_SEARCH_CX="seu_search_engine_id_aqui"
+```
+
+📚 **Guia completo**: [docs/pt/configuracao-api-keys.md](docs/pt/configuracao-api-keys.md)
+
+---
+
 ## 🌐 Documentação Multilíngue | Multilingual Documentation
 
 > **Selecione o idioma / Select your language:**
@@ -16,6 +33,7 @@
 > **Índice Rápido da Documentação (PT)**
 > - [Índice Visual](docs/indice_visual.md)
 > - [Guia Global de Contribuição](docs/guia_contribuicao.md)
+> - [Configuração de API Keys](docs/pt/configuracao-api-keys.md) ⭐ **NOVO**
 > - [Índice Geral](docs/indice_geral.md)
 > - [Checklist de PR](docs/checklist_pr.md)
 > - [Roadmap](docs/roadmap.md)

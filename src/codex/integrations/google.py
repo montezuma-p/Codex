@@ -8,12 +8,15 @@ setup_logging()
 
 logger = logging.getLogger("codex.google")
 
-def consultar_google(**kwargs: Any) -> str:
+def consultar_google(termo: str, **kwargs: Any) -> str:
+    """Search Google and return the top 3 results with titles, links and snippets.
+    
+    Args:
+        termo: The term to search for on Google
+        
+    Returns:
+        Google search results or error message
     """
-    Consulta o Google Search e retorna os 3 primeiros resultados (título, link e snippet).
-    Requer a variável de ambiente GOOGLE_SEARCH_API_KEY e GOOGLE_SEARCH_CX.
-    """
-    termo: Optional[str] = kwargs.get("termo")
     api_key: Optional[str] = os.getenv("GOOGLE_SEARCH_API_KEY")
     cx: Optional[str] = os.getenv("GOOGLE_SEARCH_CX")
     if not termo or not isinstance(termo, str) or not termo.strip():
@@ -21,7 +24,7 @@ def consultar_google(**kwargs: Any) -> str:
         return "[ERRO]: Nenhum termo informado para consulta."
     if not api_key or not cx:
         logger.error("GOOGLE_SEARCH_API_KEY ou GOOGLE_SEARCH_CX não configurados.")
-        return "[ERRO]: GOOGLE_SEARCH_API_KEY ou GOOGLE_SEARCH_CX não configurados."
+        return "[ERRO]: Para usar a busca no Google, configure as variáveis GOOGLE_SEARCH_API_KEY e GOOGLE_SEARCH_CX. Obtenha em: https://developers.google.com/custom-search"
     url: str = (
         f"https://www.googleapis.com/customsearch/v1?q={termo}&key={api_key}&cx={cx}&num=3&hl=pt"
     )

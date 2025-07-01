@@ -17,6 +17,7 @@ nav:
   - Checklist de PR: checklist_pr.md
   - Diário de Bordo: diario_de_bordo.md
   - Guia de Contribuição: guia_contribuicao.md
+  - Configuração de API Keys: configuracao-api-keys.md
   - Guia Didático:
       - Auto Documentação de Ferramentas: guia_didatico/auto_documentacao_ferramentas.md
       - Como Escrever Testes: guia_didatico/como_escrever_testes.md

@@ -4,16 +4,17 @@ Responsible for:
 - Interpreting command-line arguments
 - Executing special commands (doc, report, export, profile)
 - Managing the main CLI interaction loop
-- Deciding and executing tools
+- Using official Gemini Function Calling
 """
 from typing import Any, Dict, List, Optional, Callable
 import sys
 import pathlib
 import json
 import logging
+from google.genai import types
 from codex import database
 from codex.suggestions import sugerir_pergunta_contextual, buscar_contexto_relevante
-from codex.cli_core import PROMPT_MESTRA, FERRAMENTAS, gerar_documentacao_ferramentas
+from codex.cli_core import FERRAMENTAS, gerar_documentacao_ferramentas
 from codex.log_config import setup_logging
 from locales.i18n import _
 
@@ -102,35 +103,48 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
             logger.info("User ended the session.")
             print(_("See you soon!"))
             break
-        prompt_para_decidir: str = PROMPT_MESTRA + "\n\nPedido do Usuário: " + prompt_usuario
-        response_decisao = client.generate_content(contents=prompt_para_decidir)
-        resposta_ia: str = ""
+        # Simplified approach: use direct Python functions as tools
+        # This uses automatic function calling which is more reliable
+        from codex.cli_core import escrever_arquivo, listar_arquivos, ler_arquivo
+        from codex.integrations.wikipedia import consultar_wikipedia
+        from codex.integrations.stackoverflow import consultar_stackoverflow  
+        from codex.integrations.google import consultar_google
+        from codex.integrations.github import consultar_github
+        from codex.integrations.wolframalpha import consultar_wolframalpha
+        
+        # Use Python functions directly - SDK will handle schema generation
+        tools = [
+            escrever_arquivo,
+            listar_arquivos, 
+            ler_arquivo,
+            consultar_wikipedia,
+            consultar_stackoverflow,
+            consultar_google,
+            consultar_github,
+            consultar_wolframalpha
+        ]
+        
+        config = types.GenerateContentConfig(
+            tools=tools,
+            # Enable automatic function calling
+            automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=False)
+        )
+        
+        # Simple user prompt
+        contents = [types.Content(role="user", parts=[types.Part(text=prompt_usuario)])]
+        
         try:
-            decodificado: Dict[str, Any] = json.loads(response_decisao.text)
-            ferramenta: Optional[str] = decodificado.get("ferramenta")
-            if ferramenta == "buscar_no_historico":
-                termo: Optional[str] = decodificado.get('argumentos', {}).get('termo_chave')
-                if termo is None:
-                    resposta_ia = "[ERRO]: termo_chave não informado para busca no histórico."
-                else:
-                    logger.info(f"Tool 'buscar_no_historico' triggered for term: {termo}")
-                    resultados = database.buscar_no_historico(session, termo_chave=termo)
-                    contexto = "\n".join([f"- {res.role}: {res.content}" for res in resultados])
-                    prompt_sintese = f"Contexto de conversas passadas:\n{contexto}\n\nBaseado nesse contexto, responda à pergunta original: '{prompt_usuario}'"
-                    nova_response = client.generate_content(contents=prompt_sintese)
-                    resposta_ia = nova_response.text
-            elif ferramenta in FERRAMENTAS:
-                logger.info(f"Tool '{ferramenta}' triggered with arguments: {decodificado.get('argumentos', {})}")
-                resposta_ia = FERRAMENTAS[ferramenta](**decodificado.get('argumentos', {}))
-            else:
-                historico = database.carregar_historico(session)
-                historico_formatado = "\n".join([f"- {msg.role}: {msg.content}" for msg in historico])
-                prompt_conversa = f"Você é Codex, um mentor de IA. Histórico da conversa:\n{historico_formatado}\n\nResponda ao usuário: {prompt_usuario}"
-                nova_response = client.generate_content(contents=prompt_conversa)
-                resposta_ia = nova_response.text
-        except (json.JSONDecodeError, TypeError):
-            logger.warning("Failed to decode AI response as JSON. Returning raw text.")
-            resposta_ia = response_decisao.text
+            response = client.models.generate_content(
+                model=modelo_ia,
+                contents=contents,
+                config=config
+            )
+            
+            resposta_ia = getattr(response, 'text', str(response))
+                
+        except Exception as e:
+            logger.error(f"Error during model generation: {e}")
+            resposta_ia = f"[ERRO]: Erro ao processar solicitação: {e}"
         logger.info(f"AI response: {resposta_ia}")
         print(f"Codex: {resposta_ia}")
         session.add(database.Conversa(role="user", content=prompt_usuario))

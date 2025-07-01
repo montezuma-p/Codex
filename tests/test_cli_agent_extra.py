@@ -44,11 +44,16 @@ def test_main_perfil_usuario(monkeypatch):
 def test_main_json_decode_error(monkeypatch):
     # Testa branch de erro de JSON na resposta da IA
     class FakeModel:
+        def __init__(self):
+            self.models = self
+
         def generate_content(self, *args, **kwargs):
             class Resp:
-                text = "{invalid_json:"
+                text = "Texto de resposta simulado."
             return Resp()
-    with patch("google.generativeai.GenerativeModel", return_value=FakeModel()):
+    inputs = iter(["olá Codex!", "sair", "sair", "sair", "sair", "sair"])
+    monkeypatch.setattr('builtins.input', lambda _: next(inputs))
+    with patch("google.genai.Client", return_value=FakeModel()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())

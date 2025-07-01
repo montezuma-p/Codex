@@ -46,12 +46,47 @@ def carregar_historico(db_session: Any, n_mensagens: int = 50) -> List[Conversa]
     logger.debug(_("History loaded: {n} messages.").format(n=len(historico)))
     return list(reversed(historico))
 
-def buscar_no_historico(db_session: Any, termo_chave: str) -> List[Conversa]:
-    logger.info(_("Buscando no histórico por termo: '{term}'...").format(term=termo_chave))
-    termo_para_busca = f"%{termo_chave}%"
-    resultados = db_session.query(Conversa).filter(Conversa.content.like(termo_para_busca)).all()
-    logger.info(_("{n} resultados encontrados para '{term}'.").format(n=len(resultados), term=termo_chave))
-    return resultados
+def buscar_no_historico(termo: str, **kwargs: Any) -> str:
+    """Search for information in previous conversations.
+    
+    Args:
+        termo: The term to search for in conversation history
+        
+    Returns:
+        Search results from conversation history
+    """
+    logger.info(_("Buscando no histórico por termo: '{term}'...").format(term=termo))
+    db_session = kwargs.get('db_session')
+    if not db_session:
+        # Try to create a session if not provided
+        try:
+            db_session = Session()
+            should_close = True
+        except Exception as e:
+            logger.error(f"Could not create database session: {e}")
+            return _("[ERROR]: Database session not available.")
+    else:
+        should_close = False
+    
+    try:
+        termo_para_busca = f"%{termo}%"
+        resultados = db_session.query(Conversa).filter(Conversa.content.like(termo_para_busca)).all()
+        logger.info(_("{n} resultados encontrados para '{term}'.").format(n=len(resultados), term=termo))
+        
+        if not resultados:
+            return _("[INFO]: No results found for '{term}' in conversation history.").format(term=termo)
+        
+        output = [_("Search results for '{term}':").format(term=termo)]
+        for resultado in resultados[:5]:  # Limite a 5 resultados
+            output.append(f"- {resultado.content[:100]}...")
+        
+        return "\n".join(output)
+    except Exception as e:
+        logger.error(f"Error searching history: {e}")
+        return _("[ERROR]: Error searching conversation history.")
+    finally:
+        if should_close and db_session:
+            db_session.close()
 
 def perguntas_mais_frequentes(db_session: Any, limite: int = 3) -> List[str]:
     """

@@ -9,19 +9,22 @@ setup_logging()
 
 logger = logging.getLogger("codex.wolframalpha")
 
-def consultar_wolframalpha(**kwargs: Any) -> str:
+def consultar_wolframalpha(termo: str, **kwargs: Any) -> str:
+    """Query WolframAlpha for mathematical, scientific or general questions.
+    
+    Args:
+        termo: The question or term to query WolframAlpha
+        
+    Returns:
+        WolframAlpha answer or error message
     """
-    Consulta o WolframAlpha para perguntas matemáticas, científicas ou gerais.
-    Requer a variável de ambiente WOLFRAMALPHA_APPID.
-    """
-    termo: Optional[str] = kwargs.get("termo")
     appid: Optional[str] = os.getenv("WOLFRAMALPHA_APPID")
     if not termo or not isinstance(termo, str) or not termo.strip():
         logger.warning("Nenhum termo informado para consulta.")
         return "[ERRO]: Nenhum termo informado para consulta."
     if not appid:
         logger.error("WOLFRAMALPHA_APPID não configurado.")
-        return "[ERRO]: WOLFRAMALPHA_APPID não configurado."
+        return "[ERRO]: Para usar WolframAlpha, configure a variável WOLFRAMALPHA_APPID. Obtenha em: https://products.wolframalpha.com/api/"
     url: str = f"https://api.wolframalpha.com/v1/result?i={quote(termo)}&appid={appid}"
     try:
         resp = requests.get(url, timeout=7)

@@ -69,3 +69,8 @@ site/
 .pytest_cache/
 .coverage
 coverage.xml
+
+# Arquivos de teste temporários (gerados pelos testes ou CLI)
+test.txt
+aleatorio_*.txt
+exemplo*.txt

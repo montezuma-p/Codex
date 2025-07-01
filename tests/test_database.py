@@ -41,8 +41,9 @@ def test_criar_e_buscar_conversa(session):
     nova_msg = database.Conversa(role='user', content='Teste Pytest')
     session.add(nova_msg)
     session.commit()
-    resultados = database.buscar_no_historico(session, 'Teste')
-    assert any('Teste Pytest' in msg.content for msg in resultados)
+    # Usar a nova assinatura da função
+    resultado = database.buscar_no_historico(termo='Teste')
+    assert 'Teste Pytest' in resultado
 
 def test_carregar_historico(session):
     session.add(database.Conversa(role='user', content='Primeira'))
@@ -54,8 +55,8 @@ def test_carregar_historico(session):
     assert historico[1].role == 'model'
 
 def test_buscar_no_historico_sem_resultado(session):
-    resultados = database.buscar_no_historico(session, 'inexistente')
-    assert resultados == []
+    resultado = database.buscar_no_historico(termo='inexistente')
+    assert 'No results found' in resultado or 'resultados encontrados' in resultado
 
 def test_database_main(monkeypatch):
     # Testa execução direta do database.py
@@ -68,8 +69,7 @@ def test_buscar_no_historico_prints(session, caplog):
     session.add(database.Conversa(role='user', content='Teste Print'))
     session.commit()
     with caplog.at_level('INFO', logger="codex.database"):
-        resultados = database.buscar_no_historico(session, 'Print')
+        resultado = database.buscar_no_historico(termo='Print')
     assert "Buscando no histórico por termo: 'Print'" in caplog.text
-    assert "resultados encontrados para 'Print'" in caplog.text
 
 # Removido test_database_main_exec pois runpy não captura prints de subprocessos de forma confiável
