@@ -3,6 +3,17 @@
 [![PyPI](https://img.shields.io/pypi/v/codex-cli-montezuma)](https://pypi.org/project/codex-cli-montezuma/)
 
 ---
+## 🚨 ATENÇÃO! / ATTENTION! 🚨
+
+**[PT-BR]**  
+A aplicação está atualmente **100% fora do ar** devido a um problema no último commit. Já estamos cientes e trabalhando para corrigir o mais rápido possível.  
+Pedimos desculpas pelo transtorno. Para dúvidas urgentes, entre em contato pelos Issues do repositório.
+
+**[EN]**  
+The application is currently **100% offline** due to an issue in the latest commit. We are aware of the problem and working to fix it as soon as possible.  
+We apologize for the inconvenience. For urgent matters, please open an Issue in this repository.
+
+---
 
 ## 🔑 Configuração Rápida de API Keys
 
