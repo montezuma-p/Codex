@@ -22,20 +22,17 @@ from codex.cli_core import escrever_arquivo
 # monkeypatch.setattr("src.suggestions.sugerir_pergunta_contextual", lambda session: ...)
 # monkeypatch.setattr("src.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: ...)
 
-def test_escrever_arquivo_projeto(tmp_path):
+def test_escrever_arquivo_projeto(tmp_path, monkeypatch):
+    from codex.cli_core import escrever_arquivo
+    # Muda o diretório de trabalho para o diretório temporário
+    monkeypatch.chdir(tmp_path)
     nome = "teste_pytest.txt"
     conteudo = "Arquivo de teste para pytest."
-    # Redireciona o path para tmp_path
-    original_parent = pathlib.Path.parent
-    try:
-        pathlib.Path.parent = property(lambda self: tmp_path)
-        resposta = escrever_arquivo(nome_do_arquivo=nome, conteudo=conteudo)
-        arquivo = tmp_path / nome
-        assert arquivo.exists()
-        assert arquivo.read_text(encoding='utf-8') == conteudo
-        assert "criado" in resposta
-    finally:
-        pathlib.Path.parent = original_parent
+    resposta = escrever_arquivo(nome_do_arquivo=nome, conteudo=conteudo)
+    arquivo = tmp_path / nome
+    assert arquivo.exists()
+    assert arquivo.read_text(encoding='utf-8') == conteudo
+    assert "criado" in resposta
 
 def test_escrever_arquivo_erro(tmp_path):
     # Tenta salvar em um diretório inexistente (simula erro)

@@ -170,50 +170,51 @@ def test_sugerir_pergunta_frequente(monkeypatch):
         except SystemExit:
             pass
 
-@patch("codex.cli_core.listar_arquivos")
-def test_listar_arquivos(mock_listar_arquivos, tmp_path):
+def test_listar_arquivos(tmp_path, monkeypatch):
+    from codex.cli_core import listar_arquivos
+    # Muda o diretório de trabalho para o diretório temporário
+    monkeypatch.chdir(tmp_path)
     # Cria estrutura de diretório temporária
     pasta = tmp_path / "docs"
     pasta.mkdir()
     (pasta / "arquivo1.txt").write_text("abc")
     (pasta / "arquivo2.txt").write_text("def")
-    mock_listar_arquivos.side_effect = lambda caminho, base_path: [f"{caminho}/arquivo1.txt", f"{caminho}/arquivo2.txt"]
-    resultado = listar_arquivos(caminho="docs", base_path=tmp_path)
+    resultado = listar_arquivos(caminho="docs")
     assert "arquivo1.txt" in resultado and "arquivo2.txt" in resultado
     # Testa diretório vazio
     pasta_vazia = tmp_path / "vazio"
     pasta_vazia.mkdir()
-    mock_listar_arquivos.side_effect = lambda caminho, base_path: []
-    resultado_vazio = listar_arquivos(caminho="vazio", base_path=tmp_path)
+    resultado_vazio = listar_arquivos(caminho="vazio")
     assert "está vazio" in resultado_vazio
     # Testa diretório inexistente
-    mock_listar_arquivos.side_effect = FileNotFoundError
-    resultado_erro = listar_arquivos(caminho="nao_existe", base_path=tmp_path)
+    resultado_erro = listar_arquivos(caminho="nao_existe")
     assert "não encontrado" in resultado_erro
 
-def test_ler_arquivo(tmp_path):
+def test_ler_arquivo(tmp_path, monkeypatch):
     from codex.cli_core import ler_arquivo
+    # Muda o diretório de trabalho para o diretório temporário
+    monkeypatch.chdir(tmp_path)
     # Cria arquivo de teste
     arquivo = tmp_path / "exemplo.txt"
     arquivo.write_text("conteudo de teste")
     # Testa leitura normal
-    resultado = ler_arquivo(nome_do_arquivo="exemplo.txt", base_path=tmp_path)
+    resultado = ler_arquivo(nome_do_arquivo="exemplo.txt")
     assert "conteudo de teste" in resultado
     # Testa arquivo vazio
     arquivo_vazio = tmp_path / "vazio.txt"
     arquivo_vazio.write_text("")
-    resultado_vazio = ler_arquivo(nome_do_arquivo="vazio.txt", base_path=tmp_path)
+    resultado_vazio = ler_arquivo(nome_do_arquivo="vazio.txt")
     assert "está vazio" in resultado_vazio
     # Testa arquivo inexistente
-    resultado_erro = ler_arquivo(nome_do_arquivo="nao_existe.txt", base_path=tmp_path)
+    resultado_erro = ler_arquivo(nome_do_arquivo="nao_existe.txt")
     assert "não encontrado" in resultado_erro
     # Testa sem nome
-    resultado_sem_nome = ler_arquivo(nome_do_arquivo="", base_path=tmp_path)
+    resultado_sem_nome = ler_arquivo(nome_do_arquivo="")
     assert "não informado" in resultado_sem_nome
     # Testa arquivo grande
     arquivo_grande = tmp_path / "grande.txt"
     arquivo_grande.write_text("a" * 3000)
-    resultado_grande = ler_arquivo(nome_do_arquivo="grande.txt", base_path=tmp_path)
+    resultado_grande = ler_arquivo(nome_do_arquivo="grande.txt")
     assert "primeiras 2000 letras" in resultado_grande
 
 @patch("codex.cli_agent.requests.get")
