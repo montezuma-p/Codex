@@ -35,8 +35,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
-          pip install -e .
+          pip install -e .[dev]
 
       - name: List root and src contents
         run: |
@@ -51,10 +50,8 @@ jobs:
           pip list
 
       - name: Try import codex
-        run: python -c "import codex; print('codex importado com sucesso')"
-
-      - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$GITHUB_WORKSPACE/src" >> $GITHUB_ENV
+        run: |
+          python -c "import src.codex.cli_agent; print('codex importado com sucesso')"
 
       - name: Run tests with coverage
         run: |
@@ -141,6 +138,14 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
     
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       - name: Deploy documentation
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

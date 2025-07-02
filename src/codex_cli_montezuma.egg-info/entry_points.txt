@@ -1,2 +1,2 @@
 [console_scripts]
-codex = codex.cli_agent:main
+codex = src.codex.cli_agent:main

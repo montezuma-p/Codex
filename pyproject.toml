@@ -13,9 +13,12 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
   "requests",
-  "pytest",
   "sqlalchemy",
-  # Adicione outras dependências principais aqui
+  "google-generativeai",
+  "google-api-python-client",
+  "google-auth",
+  "google-auth-oauthlib",
+  "google-auth-httplib2",
 ]
 keywords = ["cli", "ia", "automacao", "desenvolvedores", "aplicativo", "codex"]
 classifiers = [
@@ -27,8 +30,20 @@ classifiers = [
   "Topic :: Utilities"
 ]
 
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "build",
+  "twine",
+  "flake8",
+  "mkdocs",
+  "mkdocs-material",
+  "mkdocs-static-i18n",
+]
+
 [project.scripts]
-codex = "codex.cli_agent:main"
+codex = "src.codex.cli_agent:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

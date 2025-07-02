@@ -14,13 +14,37 @@ Requires-Python: >=3.9
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: requests
-Requires-Dist: pytest
 Requires-Dist: sqlalchemy
+Requires-Dist: google-generativeai
+Requires-Dist: google-api-python-client
+Requires-Dist: google-auth
+Requires-Dist: google-auth-oauthlib
+Requires-Dist: google-auth-httplib2
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: mkdocs; extra == "dev"
+Requires-Dist: mkdocs-material; extra == "dev"
+Requires-Dist: mkdocs-static-i18n; extra == "dev"
 Dynamic: license-file
 
 # Codex CLI – Ferramentas de IA, APIs e Automação
 
 [![PyPI](https://img.shields.io/pypi/v/codex-cli-montezuma)](https://pypi.org/project/codex-cli-montezuma/)
+
+---
+## 🚨 ATENÇÃO! / ATTENTION! 🚨
+
+**[PT-BR]**  
+A aplicação está atualmente **100% fora do ar** devido a um problema no último commit. Já estamos cientes e trabalhando para corrigir o mais rápido possível.  
+Pedimos desculpas pelo transtorno. Para dúvidas urgentes, entre em contato pelos Issues do repositório.
+
+**[EN]**  
+The application is currently **100% offline** due to an issue in the latest commit. We are aware of the problem and working to fix it as soon as possible.  
+We apologize for the inconvenience. For urgent matters, please open an Issue in this repository.
 
 ---
 

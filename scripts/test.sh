@@ -3,4 +3,4 @@
 #!/bin/bash
 set -e
 
-pytest --cov=. --cov-report=term-missing
+pytest --cov=src/codex --cov-report=term-missing
