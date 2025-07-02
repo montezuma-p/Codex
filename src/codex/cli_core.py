@@ -29,7 +29,7 @@ def escrever_arquivo(nome_do_arquivo: str, conteudo: str) -> str:
     Returns:
         A status message indicating success or error
     """
-    base_path: pathlib.Path = pathlib.Path(__file__).parent
+    base_path = pathlib.Path.cwd()
     if not nome_do_arquivo or not conteudo:
         logger.warning(_("File name or content not provided."))
         return _("[ERROR]: File name or content not provided.")
@@ -52,8 +52,8 @@ def listar_arquivos(caminho: str = ".", **kwargs: Any) -> str:
     Returns:
         A string with the list of files and folders, or error message
     """
-    base_path: Union[str, pathlib.Path] = kwargs.get("base_path", pathlib.Path(__file__).parent)
-    dir_path: pathlib.Path = (pathlib.Path(base_path) / caminho).resolve()
+    base_path = pathlib.Path.cwd()
+    dir_path: pathlib.Path = (base_path / caminho).resolve()
     if not dir_path.exists() or not dir_path.is_dir():
         logger.warning("Diretório '{dir}' não encontrado.".format(dir=caminho))
         return "[ERRO]: Diretório '{dir}' não encontrado.".format(dir=caminho)
@@ -73,11 +73,11 @@ def ler_arquivo(nome_do_arquivo: str, **kwargs: Any) -> str:
     Returns:
         The file content or error message
     """
-    base_path: Union[str, pathlib.Path] = kwargs.get("base_path", pathlib.Path(__file__).parent)
+    base_path = pathlib.Path.cwd()
     if not nome_do_arquivo:
         logger.warning(_("[ERRO]: Nome do arquivo não informado."))
         return _("[ERRO]: Nome do arquivo não informado.")
-    caminho_final: pathlib.Path = (pathlib.Path(base_path) / nome_do_arquivo).resolve()
+    caminho_final: pathlib.Path = (base_path / nome_do_arquivo).resolve()
     try:
         if not caminho_final.exists() or not caminho_final.is_file():
             logger.warning("Arquivo '{file}' não encontrado.".format(file=nome_do_arquivo))
