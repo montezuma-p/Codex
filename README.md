@@ -23,23 +23,84 @@ Para uma experiência completa, incluindo guias de instalação, configuração 
 pip install codex-cli-montezuma
 ```
 
-## Configuração Rápida de API Keys
+## Como Usar o Codex CLI (Passo a Passo)
 
-Para usar todas as funcionalidades do Codex CLI, configure suas chaves de API:
+### 1. Configuração das Chaves de API
 
+Para que o Codex possa usar a IA do Google Gemini e outras ferramentas de busca, você precisa fornecer suas chaves de API.
+
+**Por que isso é necessário?**
+*   **`GOOGLE_API_KEY`**: Autentica suas requisições à API do Gemini, permitindo que o Codex envie suas perguntas e receba respostas da IA.
+*   **`GOOGLE_SEARCH_CX`**: É o ID do seu Mecanismo de Busca Personalizada do Google, necessário para a ferramenta `consultar_google`.
+
+**Como configurar:**
+
+Você tem duas opções:
+
+*   **(Recomendado) Script de Configuração:** Se você clonou o repositório, pode usar nosso script interativo:
+    ```bash
+    ./scripts/setup-api-keys.sh
+    ```
+    Ele irá guiá-lo e criar um arquivo `.env` automaticamente.
+
+*   **Manualmente (Arquivo `.env`):** Crie um arquivo chamado `.env` na pasta onde você executará o comando `codex` e adicione as seguintes linhas, substituindo pelos seus valores:
+    ```
+    GOOGLE_API_KEY="SUA_CHAVE_DE_API_DO_GEMINI"
+    GOOGLE_SEARCH_CX="SEU_ID_DE_MECANISMO_DE_BUSCA_PERSONALIZADA"
+    ```
+
+> Para um guia detalhado sobre **como obter** essas chaves, consulte nosso [guia de configuração de API Keys](configuracao-api-keys.md).
+
+### 2. Executando o Codex CLI
+
+Com tudo instalado e configurado, você pode interagir com o Codex de várias maneiras:
+
+**a) Modo Interativo (Chat)**
+
+Este é o modo principal, onde você conversa com a IA. Para iniciar, simplesmente execute:
 ```bash
-# Configuração automática (recomendado)
-./scripts/setup-api-keys.sh
+codex
+```
+A partir daí, você pode fazer perguntas, pedir para executar tarefas ou usar as ferramentas disponíveis. Para sair, digite `sair` ou `exit`.
 
-# Ou configure manualmente:
-export GOOGLE_API_KEY="sua_chave_aqui"
-export GOOGLE_SEARCH_CX="seu_search_engine_id_aqui"
+**Exemplo de Interação:**
+```
+Você: Crie um arquivo chamado 'app.py' com um "Hello, World" em Python.
+
+Codex: Claro, usando a ferramenta 'escrever_arquivo'.
+
+(O arquivo app.py é criado no seu diretório)
 ```
 
-> 📚 **Guia completo**: [docs/pt/configuracao-api-keys.md](docs/pt/configuracao-api-keys.md)
+**b) Comandos Diretos (Argumentos)**
 
+Você pode executar comandos específicos diretamente da linha de comando, sem entrar no modo de chat.
+
+*   **Buscar no Histórico:**
+    ```bash
+    codex --buscar "termo de busca"
+    ```
+
+*   **Gerar Relatório de Uso:**
+    ```bash
+    codex --relatorio-uso
+    ```
+
+*   **Exportar Histórico para JSONL:**
+    ```bash
+    codex --exportar-jsonl
+    ```
+
+*   **Gerar Documentação das Ferramentas:**
+    ```bash
+    codex --doc-ferramentas
+    ```
+
+*   **Ver Perfil de Uso:**
+    ```bash
+    codex --perfil
+    ```
 ---
-
 ## Funcionalidades Principais
 
 - **Inteligência Artificial Integrada:** Converse com o modelo de linguagem **Google Gemini** para gerar código, obter explicações, traduzir textos e muito mais.
@@ -66,15 +127,6 @@ O Codex CLI utiliza logging estruturado e configurável em todos os módulos, fa
 - Níveis suportados: DEBUG, INFO, WARNING, ERROR, CRITICAL.
 - Todos os módulos usam `logger = logging.getLogger("codex.nome_do_modulo")` para rastreabilidade.
 
-**Como customizar o logging:**
-
-```python
-from src.log_config import setup_logging
-setup_logging(level="DEBUG", log_file="codex.log")
-```
-
-Ou defina variáveis de ambiente para ajustar o nível globalmente.
-
 ---
 
 ## Arquitetura e Boas Práticas
@@ -96,39 +148,6 @@ Ou defina variáveis de ambiente para ajustar o nível globalmente.
 
 ---
 
-## Publicação no PyPI e Uso como API
-
-Veja o guia completo em [`docs/publicacao_pypi_api.md`](docs/publicacao_pypi_api.md).
-
-### Resumo rápido:
-
-**Publicar no PyPI:**
-```bash
-pip install build twine
-python -m build
-# Para o PyPI oficial:
-twine upload dist/*
-# Para o TestPyPI:
-twine upload --repository testpypi dist/*
-```
-
-**Expor como API (FastAPI):**
-```python
-from fastapi import FastAPI, Request
-from codex.cli_agent import main as codex_main
-
-app = FastAPI()
-
-@app.post("/codex/")
-async def codex_endpoint(request: Request):
-    data = await request.json()
-    resposta = codex_main(**data)
-    return {"resposta": resposta}
-```
-
-Veja detalhes, exemplos e links oficiais no guia acima.
-
----
 
 ## Sumário das Mudanças Recentes (2025)
 

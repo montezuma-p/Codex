@@ -12,6 +12,3 @@ pytest-cov
 build
 twine
 flake8
-mkdocs
-mkdocs-material
-mkdocs-static-i18n

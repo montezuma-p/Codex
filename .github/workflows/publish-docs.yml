@@ -1,4 +1,4 @@
-name: Publish MkDocs Multilingual Docs
+name: Publish Docs
 
 on:
   push:
@@ -14,21 +14,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          pip install mkdocs mkdocs-material mkdocs-static-i18n
-
-      - name: Build and deploy MkDocs site
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          mkdocs gh-deploy --force --clean
-
-      - name: Show deployment info
-        run: |
-          echo "Documentação publicada em: https://$GITHUB_REPOSITORY_OWNER.github.io/${GITHUB_REPOSITORY#*/}/"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

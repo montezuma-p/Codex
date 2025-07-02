@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: codex-cli-montezuma
-Version: 0.1.1
+Version: 0.1.4
 Summary: Codex CLI – Ferramentas de IA, APIs e automação para desenvolvedores. Modular, extensível, com logging, testes e documentação de referência.
 Author-email: montezuma <pedromontezuma@gmail.com>
 Keywords: cli,ia,automacao,desenvolvedores,aplicativo,codex
@@ -26,84 +26,24 @@ Requires-Dist: pytest-cov; extra == "dev"
 Requires-Dist: build; extra == "dev"
 Requires-Dist: twine; extra == "dev"
 Requires-Dist: flake8; extra == "dev"
-Requires-Dist: mkdocs; extra == "dev"
-Requires-Dist: mkdocs-material; extra == "dev"
-Requires-Dist: mkdocs-static-i18n; extra == "dev"
 Dynamic: license-file
 
-# Codex CLI – Ferramentas de IA, APIs e Automação
+# Codex CLI: Seu Assistente de IA e Automação no Terminal
 
 [![PyPI](https://img.shields.io/pypi/v/codex-cli-montezuma)](https://pypi.org/project/codex-cli-montezuma/)
 
----
-## 🚨 ATENÇÃO! / ATTENTION! 🚨
+**Codex CLI** é uma poderosa ferramenta de linha de comando projetada para desenvolvedores, engenheiros de dados e entusiastas de automação. Integre a inteligência artificial do Google Gemini diretamente no seu fluxo de trabalho, automatize tarefas repetitivas e consulte uma variedade de fontes de informação sem sair do terminal.
 
-**[PT-BR]**  
-A aplicação está atualmente **100% fora do ar** devido a um problema no último commit. Já estamos cientes e trabalhando para corrigir o mais rápido possível.  
-Pedimos desculpas pelo transtorno. Para dúvidas urgentes, entre em contato pelos Issues do repositório.
-
-**[EN]**  
-The application is currently **100% offline** due to an issue in the latest commit. We are aware of the problem and working to fix it as soon as possible.  
-We apologize for the inconvenience. For urgent matters, please open an Issue in this repository.
+Com uma arquitetura extensível e foco na produtividade, o Codex CLI armazena seu histórico de interações, permite a busca por conversas passadas e oferece um conjunto de ferramentas integradas para interagir com seu sistema de arquivos e APIs externas.
 
 ---
 
-## 🔑 Configuração Rápida de API Keys
+## 🌐 Documentação Completa (Multilíngue)
 
-Para usar todas as funcionalidades do Codex CLI, configure suas chaves de API:
+Para uma experiência completa, incluindo guias de instalação, configuração de API e tutoriais detalhados, por favor, selecione seu idioma:
 
-```bash
-# Configuração automática (recomendado)
-./scripts/setup-api-keys.sh
-
-# Ou configure manualmente:
-export GOOGLE_API_KEY="sua_chave_aqui"
-export GOOGLE_SEARCH_CX="seu_search_engine_id_aqui"
-```
-
-📚 **Guia completo**: [docs/pt/configuracao-api-keys.md](docs/pt/configuracao-api-keys.md)
-
----
-
-## 🌐 Documentação Multilíngue | Multilingual Documentation
-
-> **Selecione o idioma / Select your language:**
->
-> - 🇧🇷 [Documentação em Português (docs/pt/README.md)](docs/pt/README.md)
-> - 🇺🇸 [Documentation in English (docs/en/README.md)](docs/en/README.md)
-
----
-
-> **Índice Rápido da Documentação (PT)**
-> - [Índice Visual](docs/indice_visual.md)
-> - [Guia Global de Contribuição](docs/guia_contribuicao.md)
-> - [Configuração de API Keys](docs/pt/configuracao-api-keys.md) ⭐ **NOVO**
-> - [Índice Geral](docs/indice_geral.md)
-> - [Checklist de PR](docs/checklist_pr.md)
-> - [Roadmap](docs/roadmap.md)
-> - [Diário de Bordo](docs/diario_de_bordo.md)
-> - [Próxima Missão](docs/proxima_missao.md)
-> - [Guia de Testes](docs/guia_didatico/como_escrever_testes.md)
-> - [Ferramentas Externas](docs/guia_didatico/ferramentas_externas.md)
-> - [Documentação Automática](docs/guia_didatico/auto_documentacao_ferramentas.md)
-> - [Leitura de Arquivos](docs/guia_didatico/ler_arquivo.md)
-> - [Percepção de Arquivos](docs/guia_didatico/percepcao_arquivos.md)
-> - [pytest](docs/guia_didatico/pytest.md)
-
-> **Quick Documentation Index (EN)**
-> - [Visual Index](docs/en/indice_visual.md)
-> - [Global Contribution Guide](docs/en/guia_contribuicao.md)
-> - [General Index](docs/en/indice_geral.md)
-> - [PR Checklist](docs/en/checklist_pr.md)
-> - [Roadmap](docs/en/roadmap.md)
-> - [Logbook](docs/en/diario_de_bordo.md)
-> - [Next Mission](docs/en/proxima_missao.md)
-> - [Testing Guide](docs/en/guia_didatico/como_escrever_testes.md)
-> - [External Tools](docs/en/guia_didatico/ferramentas_externas.md)
-> - [Automatic Documentation](docs/en/guia_didatico/auto_documentacao_ferramentas.md)
-> - [File Reading](docs/en/guia_didatico/ler_arquivo.md)
-> - [File Perception](docs/en/guia_didatico/percepcao_arquivos.md)
-> - [pytest](docs/en/guia_didatico/pytest.md)
+- 🇧🇷 [**Documentação em Português**](docs/pt/README.md)
+- 🇺🇸 [**Documentation in English**](docs/en/README.md)
 
 ---
 
@@ -113,83 +53,98 @@ export GOOGLE_SEARCH_CX="seu_search_engine_id_aqui"
 pip install codex-cli-montezuma
 ```
 
-Acesse o pacote no PyPI: https://pypi.org/project/codex-cli-montezuma/
+## Como Usar o Codex CLI (Passo a Passo)
 
-> **Nota:** Para uma instalação completa com todas as dependências de desenvolvimento, use:
-> 
-> ```bash
-> pip install -r requirements-dev.txt
-> ```
+### 1. Configuração das Chaves de API
 
+Para que o Codex possa usar a IA do Google Gemini e outras ferramentas de busca, você precisa fornecer suas chaves de API.
+
+**Por que isso é necessário?**
+*   **`GOOGLE_API_KEY`**: Autentica suas requisições à API do Gemini, permitindo que o Codex envie suas perguntas e receba respostas da IA.
+*   **`GOOGLE_SEARCH_CX`**: É o ID do seu Mecanismo de Busca Personalizada do Google, necessário para a ferramenta `consultar_google`.
+
+**Como configurar:**
+
+Você tem duas opções:
+
+*   **(Recomendado) Script de Configuração:** Se você clonou o repositório, pode usar nosso script interativo:
+    ```bash
+    ./scripts/setup-api-keys.sh
+    ```
+    Ele irá guiá-lo e criar um arquivo `.env` automaticamente.
+
+*   **Manualmente (Arquivo `.env`):** Crie um arquivo chamado `.env` na pasta onde você executará o comando `codex` e adicione as seguintes linhas, substituindo pelos seus valores:
+    ```
+    GOOGLE_API_KEY="SUA_CHAVE_DE_API_DO_GEMINI"
+    GOOGLE_SEARCH_CX="SEU_ID_DE_MECANISMO_DE_BUSCA_PERSONALIZADA"
+    ```
+
+> Para um guia detalhado sobre **como obter** essas chaves, consulte nosso [guia de configuração de API Keys](configuracao-api-keys.md).
+
+### 2. Executando o Codex CLI
+
+Com tudo instalado e configurado, você pode interagir com o Codex de várias maneiras:
+
+**a) Modo Interativo (Chat)**
+
+Este é o modo principal, onde você conversa com a IA. Para iniciar, simplesmente execute:
+```bash
+codex
+```
+A partir daí, você pode fazer perguntas, pedir para executar tarefas ou usar as ferramentas disponíveis. Para sair, digite `sair` ou `exit`.
+
+**Exemplo de Interação:**
+```
+Você: Crie um arquivo chamado 'app.py' com um "Hello, World" em Python.
+
+Codex: Claro, usando a ferramenta 'escrever_arquivo'.
+
+(O arquivo app.py é criado no seu diretório)
+```
+
+**b) Comandos Diretos (Argumentos)**
+
+Você pode executar comandos específicos diretamente da linha de comando, sem entrar no modo de chat.
+
+*   **Buscar no Histórico:**
+    ```bash
+    codex --buscar "termo de busca"
+    ```
+
+*   **Gerar Relatório de Uso:**
+    ```bash
+    codex --relatorio-uso
+    ```
+
+*   **Exportar Histórico para JSONL:**
+    ```bash
+    codex --exportar-jsonl
+    ```
+
+*   **Gerar Documentação das Ferramentas:**
+    ```bash
+    codex --doc-ferramentas
+    ```
+
+*   **Ver Perfil de Uso:**
+    ```bash
+    codex --perfil
+    ```
+---
 ## Funcionalidades Principais
-- Armazena conversas e histórico em SQLite.
-- Busca por palavras-chave no histórico.
-- Interação com IA Gemini (Google) via CLI.
-- Ferramentas integradas:
-  - **escrever_arquivo**: cria/sobrescreve arquivos de texto.
-  - **listar_arquivos**: lista arquivos e pastas do projeto.
-  - **ler_arquivo**: lê arquivos de texto do projeto.
-  - **consultar_wikipedia**: busca resumos na Wikipedia.
-  - **consultar_stackoverflow**: busca perguntas e respostas técnicas.
-  - **consultar_google**: retorna os 3 primeiros resultados do Google Search.
-  - **consultar_github**: mostra repositórios populares sobre um termo.
-  - **consultar_wolframalpha**: responde perguntas matemáticas/científicas.
-- **Personalização dinâmica das respostas**: o agente adapta o tom, exemplos e dicas conforme o perfil do usuário, tornando as respostas mais relevantes e alinhadas ao seu estilo e necessidades.
 
-## Como Usar
-1. Instale as dependências:
-   ```bash
-   pip install -r requirements-dev.txt
-   ```
-2. Configure as variáveis de ambiente necessárias:
-   ```bash
-   export GOOGLE_API_KEY='sua-api-key-gemini'
-   export GOOGLE_SEARCH_API_KEY='sua-api-key-google-search'
-   export GOOGLE_SEARCH_CX='seu-cx-google-search'
-   export GITHUB_TOKEN='seu-token-github'  # (opcional, para mais requisições)
-   export WOLFRAMALPHA_APPID='seu-appid-wolframalpha'
-   ```
-3. Inicialize o banco de dados:
-   ```bash
-   python database.py
-   ```
-4. Rode o CLI:
-   ```bash
-   python cli_agent.py
-   ```
-
-## Exemplos de Uso
-- "Codex, crie um arquivo chamado 'exemplo.txt' com o conteúdo 'olá mundo'"
-- "Liste os arquivos da pasta docs"
-- "Leia o arquivo README.md"
-- "Pesquise no Google por 'Python asyncio'"
-- "Busque repositórios sobre 'machine learning' no GitHub"
-- "Qual a raiz quadrada de 144 no WolframAlpha?"
-- "O que significa API segundo a Wikipedia?"
-- "Como faço um request HTTP em Python? (Stack Overflow)"
-- "Codex, me dê dicas personalizadas para estudar Python à noite."
-
-Veja mais exemplos e dicas em `docs/guia_didatico/ferramentas_externas.md`.
-
-## Personalização Dinâmica
-O Codex analisa seu histórico de uso, temas frequentes, horários e preferências para adaptar:
-- O tom das respostas (mais formal, objetivo, motivacional, etc.)
-- Exemplos práticos alinhados ao seu perfil
-- Dicas e sugestões contextuais
-
-Você pode visualizar seu perfil com:
-```bash
-python cli_agent.py --perfil-usuario
-```
-E exportar o histórico para fine-tuning futuro:
-```bash
-python cli_agent.py --exportar-jsonl
-```
-
-## Roadmap
-Consulte o [roadmap completo](docs/roadmap.md) para próximos passos, visão de futuro e evolução do projeto.
-
-
+- **Inteligência Artificial Integrada:** Converse com o modelo de linguagem **Google Gemini** para gerar código, obter explicações, traduzir textos e muito mais.
+- **Histórico de Conversas:** Todas as suas interações são salvas localmente em um banco de dados SQLite, permitindo que você revise e busque por informações importantes a qualquer momento.
+- **Sistema de Ferramentas Extensível:**
+  - `escrever_arquivo`: Crie ou modifique arquivos no seu projeto.
+  - `listar_arquivos`: Navegue pela estrutura de diretórios.
+  - `ler_arquivo`: Leia o conteúdo de arquivos de texto.
+  - `consultar_wikipedia`: Obtenha resumos rápidos da Wikipedia.
+  - `consultar_stackoverflow`: Encontre soluções para problemas de programação.
+  - `consultar_google`: Realize buscas na web.
+  - E muito mais!
+- **Suporte Multilíngue:** A interface e a documentação estão disponíveis em Português e Inglês.
+- **Automação de Tarefas:** Use o Codex para automatizar scripts, gerar relatórios e interagir com seu ambiente de desenvolvimento.
 
 ---
 
@@ -201,15 +156,6 @@ O Codex CLI utiliza logging estruturado e configurável em todos os módulos, fa
 - Por padrão, logs são enviados para o console, mas você pode configurar para arquivo ou outros destinos.
 - Níveis suportados: DEBUG, INFO, WARNING, ERROR, CRITICAL.
 - Todos os módulos usam `logger = logging.getLogger("codex.nome_do_modulo")` para rastreabilidade.
-
-**Como customizar o logging:**
-
-```python
-from src.log_config import setup_logging
-setup_logging(level="DEBUG", log_file="codex.log")
-```
-
-Ou defina variáveis de ambiente para ajustar o nível globalmente.
 
 ---
 
@@ -232,39 +178,6 @@ Ou defina variáveis de ambiente para ajustar o nível globalmente.
 
 ---
 
-## Publicação no PyPI e Uso como API
-
-Veja o guia completo em [`docs/publicacao_pypi_api.md`](docs/publicacao_pypi_api.md).
-
-### Resumo rápido:
-
-**Publicar no PyPI:**
-```bash
-pip install build twine
-python -m build
-# Para o PyPI oficial:
-twine upload dist/*
-# Para o TestPyPI:
-twine upload --repository testpypi dist/*
-```
-
-**Expor como API (FastAPI):**
-```python
-from fastapi import FastAPI, Request
-from codex.cli_agent import main as codex_main
-
-app = FastAPI()
-
-@app.post("/codex/")
-async def codex_endpoint(request: Request):
-    data = await request.json()
-    resposta = codex_main(**data)
-    return {"resposta": resposta}
-```
-
-Veja detalhes, exemplos e links oficiais no guia acima.
-
----
 
 ## Sumário das Mudanças Recentes (2025)
 
