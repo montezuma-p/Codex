@@ -1,100 +1,110 @@
-# Codex CLI – AI Tools, APIs and Automation
+# Codex CLI: Your AI and Automation Assistant in the Terminal
 
-[![PyPI](https://img.shields.io/pypi/v/codex-cli-montezuma)](https://pypi.org/project/codex-cli-montezuma/)
+**Codex CLI** is a powerful command-line tool designed for developers, data engineers, and automation enthusiasts. Integrate Google Gemini's artificial intelligence directly into your workflow, automate repetitive tasks, and query a variety of information sources without leaving the terminal.
 
-> **Quick Documentation Index**
-> - [Visual Index](indice_visual.md)
-> - [Global Contribution Guide](guia_contribuicao.md)
-> - [General Index](indice_geral.md)
-> - [PR Checklist](checklist_pr.md)
-> - [Roadmap](roadmap.md)
-> - [Logbook](diario_de_bordo.md)
-> - [Next Mission](proxima_missao.md)
-> - [Testing Guide](guia_didatico/como_escrever_testes.md)
-> - [External Tools](guia_didatico/ferramentas_externas.md)
-> - [Automatic Documentation](guia_didatico/auto_documentacao_ferramentas.md)
-> - [File Reading](guia_didatico/ler_arquivo.md)
-> - [File Perception](guia_didatico/percepcao_arquivos.md)
-> - [pytest](guia_didatico/pytest.md)
+With an extensible architecture and a focus on productivity, Codex CLI stores your interaction history, allows you to search past conversations, and provides a suite of built-in tools to interact with your file system and external APIs.
 
-## Quick Installation
+## Key Features
+
+*   **Integrated Artificial Intelligence:** Chat with the **Google Gemini** language model to generate code, get explanations, translate text, and much more.
+*   **Conversation History:** All your interactions are saved locally in an SQLite database, allowing you to review and search for important information at any time.
+*   **Extensible Tool System:**
+    *   `escrever_arquivo` (write_file): Create or modify files in your project.
+    *   `listar_arquivos` (list_files): Navigate the directory structure.
+    *   `ler_arquivo` (read_file): Read the content of text files.
+    *   `consultar_wikipedia` (query_wikipedia): Get quick summaries from Wikipedia.
+    *   `consultar_stackoverflow` (query_stackoverflow): Find solutions to programming problems.
+    *   `consultar_google` (query_google): Perform web searches.
+    *   And much more!
+*   **Multilingual Support:** The interface and documentation are available in Portuguese and English.
+*   **Task Automation:** Use Codex to automate scripts, generate reports, and interact with your development environment.
+
+## Installation
+
+To install Codex CLI, simply use `pip`:
 
 ```bash
 pip install codex-cli-montezuma
 ```
 
-Access the package on PyPI: https://pypi.org/project/codex-cli-montezuma/
+## How to Use Codex CLI (Step-by-Step)
 
-> **Note:** For a full installation with all development dependencies, use:
-> 
-> ```bash
-> pip install -r requirements-dev.txt
-> ```
+### 1. API Key Configuration
 
-## Main Features
-- Stores conversations and history in SQLite.
-- Keyword search in history.
-- Interact with Gemini AI (Google) via CLI.
-- Integrated tools:
-  - **escrever_arquivo**: creates/overwrites text files.
-  - **listar_arquivos**: lists project files and folders.
-  - **ler_arquivo**: reads project text files.
-  - **consultar_wikipedia**: fetches summaries from Wikipedia.
-  - **consultar_stackoverflow**: fetches technical Q&A.
-  - **consultar_google**: returns the top 3 Google Search results.
-  - **consultar_github**: shows popular repositories for a term.
-  - **consultar_wolframalpha**: answers math/science questions.
-- **Dynamic response customization**: the agent adapts tone, examples, and tips according to the user's profile, making answers more relevant and aligned to their style and needs.
+To allow Codex to use Google Gemini AI and other search tools, you need to provide your API keys.
 
-## How to Use
-1. Install dependencies:
-   ```bash
-   pip install -r requirements-dev.txt
-   ```
-2. Set the required environment variables:
-   ```bash
-   export GOOGLE_API_KEY='your-gemini-api-key'
-   export GOOGLE_SEARCH_API_KEY='your-google-search-api-key'
-   export GOOGLE_SEARCH_CX='your-google-search-cx'
-   export GITHUB_TOKEN='your-github-token'  # (optional, for more requests)
-   export WOLFRAMALPHA_APPID='your-wolframalpha-appid'
-   ```
-3. Initialize the database:
-   ```bash
-   python database.py
-   ```
-4. Run the CLI:
-   ```bash
-   python cli_agent.py
-   ```
+**Why is this necessary?**
+*   **`GOOGLE_API_KEY`**: Authenticates your requests to the Gemini API, enabling Codex to send your questions and receive AI responses.
+*   **`GOOGLE_SEARCH_CX`**: This is your Google Custom Search Engine ID, required for the `consultar_google` (google_search) tool.
 
-## Usage Examples
-- "Codex, create a file called 'example.txt' with the content 'hello world'"
-- "List the files in the docs folder"
-- "Read the README.md file"
-- "Search Google for 'Python asyncio'"
-- "Find repositories about 'machine learning' on GitHub"
-- "What is the square root of 144 on WolframAlpha?"
-- "What does API mean according to Wikipedia?"
-- "How do I make an HTTP request in Python? (Stack Overflow)"
-- "Codex, give me personalized tips to study Python at night."
+**How to configure:**
 
-See more examples and tips in `guia_didatico/ferramentas_externas.md`.
+You have two options:
 
-## Dynamic Customization
-Codex analyzes your usage history, frequent topics, times, and preferences to adapt:
-- The tone of responses (more formal, objective, motivational, etc.)
-- Practical examples aligned to your profile
-- Contextual tips and suggestions
+*   **(Recommended) Setup Script:** If you cloned the repository, you can use our interactive script:
+    ```bash
+    ./scripts/setup-api-keys.sh
+    ```
+    It will guide you and create a `.env` file automatically.
 
-You can view your profile with:
+*   **Manually (`.env` file):** Create a file named `.env` in the directory where you will run the `codex` command and add the following lines, replacing with your values:
+    ```
+    GOOGLE_API_KEY="YOUR_GEMINI_API_KEY"
+    GOOGLE_SEARCH_CX="YOUR_CUSTOM_SEARCH_ENGINE_ID"
+    ```
+
+> For a detailed guide on **how to obtain** these keys, please refer to our [API key setup guide](secrets-configuration.md).
+
+### 2. Running Codex CLI
+
+With everything installed and configured, you can interact with Codex in several ways:
+
+**a) Interactive Mode (Chat)**
+
+This is the main mode, where you chat with the AI. To start, simply run:
 ```bash
-python cli_agent.py --perfil-usuario
+codex
 ```
-And export the history for future fine-tuning:
-```bash
-python cli_agent.py --exportar-jsonl
+From there, you can ask questions, request tasks, or use the available tools. To exit, type `sair` or `exit`.
+
+**Example Interaction:**
+```
+You: Create a file named 'app.py' with a "Hello, World" in Python.
+
+Codex: Sure, using the 'write_file' tool.
+
+(The app.py file is created in your directory)
 ```
 
-## Roadmap
-See the [full roadmap](roadmap.md) for next steps, future vision, and project evolution.
+**b) Direct Commands (Arguments)**
+
+You can execute specific commands directly from the command line without entering chat mode.
+
+*   **Search History:**
+    ```bash
+    codex --buscar "your search term"
+    ```
+
+*   **Generate Usage Report:**
+    ```bash
+    codex --relatorio-uso
+    ```
+
+*   **Export History to JSONL:**
+    ```bash
+    codex --exportar-jsonl
+    ```
+
+*   **Generate Tool Documentation:**
+    ```bash
+    codex --doc-ferramentas
+    ```
+
+*   **View Usage Profile:**
+    ```bash
+    codex --perfil
+    ```
+
+## Full Documentation
+
+To explore all features, contribution guides, and tutorials, browse the links in the side menu or visit the [General Index](indice_geral.md).

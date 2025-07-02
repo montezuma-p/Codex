@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "codex-cli-montezuma"
-version = "0.1.2"
+version = "0.1.3"
 description = "Codex CLI – Ferramentas de IA, APIs e automação para desenvolvedores. Modular, extensível, com logging, testes e documentação de referência."
 authors = [
   { name = "montezuma", email = "pedromontezuma@gmail.com" }

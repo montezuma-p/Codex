@@ -1,21 +1,29 @@
-# Codex CLI – Ferramentas de IA, APIs e Automação
+# Codex CLI: Seu Assistente de IA e Automação no Terminal
 
 [![PyPI](https://img.shields.io/pypi/v/codex-cli-montezuma)](https://pypi.org/project/codex-cli-montezuma/)
 
----
-## 🚨 ATENÇÃO! / ATTENTION! 🚨
+**Codex CLI** é uma poderosa ferramenta de linha de comando projetada para desenvolvedores, engenheiros de dados e entusiastas de automação. Integre a inteligência artificial do Google Gemini diretamente no seu fluxo de trabalho, automatize tarefas repetitivas e consulte uma variedade de fontes de informação sem sair do terminal.
 
-**[PT-BR]**  
-A aplicação está atualmente **100% fora do ar** devido a um problema no último commit. Já estamos cientes e trabalhando para corrigir o mais rápido possível.  
-Pedimos desculpas pelo transtorno. Para dúvidas urgentes, entre em contato pelos Issues do repositório.
-
-**[EN]**  
-The application is currently **100% offline** due to an issue in the latest commit. We are aware of the problem and working to fix it as soon as possible.  
-We apologize for the inconvenience. For urgent matters, please open an Issue in this repository.
+Com uma arquitetura extensível e foco na produtividade, o Codex CLI armazena seu histórico de interações, permite a busca por conversas passadas e oferece um conjunto de ferramentas integradas para interagir com seu sistema de arquivos e APIs externas.
 
 ---
 
-## 🔑 Configuração Rápida de API Keys
+## 🌐 Documentação Completa (Multilíngue)
+
+Para uma experiência completa, incluindo guias de instalação, configuração de API e tutoriais detalhados, por favor, selecione seu idioma:
+
+- 🇧🇷 [**Documentação em Português**](docs/pt/README.md)
+- 🇺🇸 [**Documentation in English**](docs/en/README.md)
+
+---
+
+## Instalação Rápida
+
+```bash
+pip install codex-cli-montezuma
+```
+
+## Configuração Rápida de API Keys
 
 Para usar todas as funcionalidades do Codex CLI, configure suas chaves de API:
 
@@ -28,135 +36,24 @@ export GOOGLE_API_KEY="sua_chave_aqui"
 export GOOGLE_SEARCH_CX="seu_search_engine_id_aqui"
 ```
 
-📚 **Guia completo**: [docs/pt/configuracao-api-keys.md](docs/pt/configuracao-api-keys.md)
+> 📚 **Guia completo**: [docs/pt/configuracao-api-keys.md](docs/pt/configuracao-api-keys.md)
 
 ---
-
-## 🌐 Documentação Multilíngue | Multilingual Documentation
-
-> **Selecione o idioma / Select your language:**
->
-> - 🇧🇷 [Documentação em Português (docs/pt/README.md)](docs/pt/README.md)
-> - 🇺🇸 [Documentation in English (docs/en/README.md)](docs/en/README.md)
-
----
-
-> **Índice Rápido da Documentação (PT)**
-> - [Índice Visual](docs/indice_visual.md)
-> - [Guia Global de Contribuição](docs/guia_contribuicao.md)
-> - [Configuração de API Keys](docs/pt/configuracao-api-keys.md) ⭐ **NOVO**
-> - [Índice Geral](docs/indice_geral.md)
-> - [Checklist de PR](docs/checklist_pr.md)
-> - [Roadmap](docs/roadmap.md)
-> - [Diário de Bordo](docs/diario_de_bordo.md)
-> - [Próxima Missão](docs/proxima_missao.md)
-> - [Guia de Testes](docs/guia_didatico/como_escrever_testes.md)
-> - [Ferramentas Externas](docs/guia_didatico/ferramentas_externas.md)
-> - [Documentação Automática](docs/guia_didatico/auto_documentacao_ferramentas.md)
-> - [Leitura de Arquivos](docs/guia_didatico/ler_arquivo.md)
-> - [Percepção de Arquivos](docs/guia_didatico/percepcao_arquivos.md)
-> - [pytest](docs/guia_didatico/pytest.md)
-
-> **Quick Documentation Index (EN)**
-> - [Visual Index](docs/en/indice_visual.md)
-> - [Global Contribution Guide](docs/en/guia_contribuicao.md)
-> - [General Index](docs/en/indice_geral.md)
-> - [PR Checklist](docs/en/checklist_pr.md)
-> - [Roadmap](docs/en/roadmap.md)
-> - [Logbook](docs/en/diario_de_bordo.md)
-> - [Next Mission](docs/en/proxima_missao.md)
-> - [Testing Guide](docs/en/guia_didatico/como_escrever_testes.md)
-> - [External Tools](docs/en/guia_didatico/ferramentas_externas.md)
-> - [Automatic Documentation](docs/en/guia_didatico/auto_documentacao_ferramentas.md)
-> - [File Reading](docs/en/guia_didatico/ler_arquivo.md)
-> - [File Perception](docs/en/guia_didatico/percepcao_arquivos.md)
-> - [pytest](docs/en/guia_didatico/pytest.md)
-
----
-
-## Instalação Rápida
-
-```bash
-pip install codex-cli-montezuma
-```
-
-Acesse o pacote no PyPI: https://pypi.org/project/codex-cli-montezuma/
-
-> **Nota:** Para uma instalação completa com todas as dependências de desenvolvimento, use:
-> 
-> ```bash
-> pip install -r requirements-dev.txt
-> ```
 
 ## Funcionalidades Principais
-- Armazena conversas e histórico em SQLite.
-- Busca por palavras-chave no histórico.
-- Interação com IA Gemini (Google) via CLI.
-- Ferramentas integradas:
-  - **escrever_arquivo**: cria/sobrescreve arquivos de texto.
-  - **listar_arquivos**: lista arquivos e pastas do projeto.
-  - **ler_arquivo**: lê arquivos de texto do projeto.
-  - **consultar_wikipedia**: busca resumos na Wikipedia.
-  - **consultar_stackoverflow**: busca perguntas e respostas técnicas.
-  - **consultar_google**: retorna os 3 primeiros resultados do Google Search.
-  - **consultar_github**: mostra repositórios populares sobre um termo.
-  - **consultar_wolframalpha**: responde perguntas matemáticas/científicas.
-- **Personalização dinâmica das respostas**: o agente adapta o tom, exemplos e dicas conforme o perfil do usuário, tornando as respostas mais relevantes e alinhadas ao seu estilo e necessidades.
 
-## Como Usar
-1. Instale as dependências:
-   ```bash
-   pip install -r requirements-dev.txt
-   ```
-2. Configure as variáveis de ambiente necessárias:
-   ```bash
-   export GOOGLE_API_KEY='sua-api-key-gemini'
-   export GOOGLE_SEARCH_API_KEY='sua-api-key-google-search'
-   export GOOGLE_SEARCH_CX='seu-cx-google-search'
-   export GITHUB_TOKEN='seu-token-github'  # (opcional, para mais requisições)
-   export WOLFRAMALPHA_APPID='seu-appid-wolframalpha'
-   ```
-3. Inicialize o banco de dados:
-   ```bash
-   python database.py
-   ```
-4. Rode o CLI:
-   ```bash
-   python cli_agent.py
-   ```
-
-## Exemplos de Uso
-- "Codex, crie um arquivo chamado 'exemplo.txt' com o conteúdo 'olá mundo'"
-- "Liste os arquivos da pasta docs"
-- "Leia o arquivo README.md"
-- "Pesquise no Google por 'Python asyncio'"
-- "Busque repositórios sobre 'machine learning' no GitHub"
-- "Qual a raiz quadrada de 144 no WolframAlpha?"
-- "O que significa API segundo a Wikipedia?"
-- "Como faço um request HTTP em Python? (Stack Overflow)"
-- "Codex, me dê dicas personalizadas para estudar Python à noite."
-
-Veja mais exemplos e dicas em `docs/guia_didatico/ferramentas_externas.md`.
-
-## Personalização Dinâmica
-O Codex analisa seu histórico de uso, temas frequentes, horários e preferências para adaptar:
-- O tom das respostas (mais formal, objetivo, motivacional, etc.)
-- Exemplos práticos alinhados ao seu perfil
-- Dicas e sugestões contextuais
-
-Você pode visualizar seu perfil com:
-```bash
-python cli_agent.py --perfil-usuario
-```
-E exportar o histórico para fine-tuning futuro:
-```bash
-python cli_agent.py --exportar-jsonl
-```
-
-## Roadmap
-Consulte o [roadmap completo](docs/roadmap.md) para próximos passos, visão de futuro e evolução do projeto.
-
-
+- **Inteligência Artificial Integrada:** Converse com o modelo de linguagem **Google Gemini** para gerar código, obter explicações, traduzir textos e muito mais.
+- **Histórico de Conversas:** Todas as suas interações são salvas localmente em um banco de dados SQLite, permitindo que você revise e busque por informações importantes a qualquer momento.
+- **Sistema de Ferramentas Extensível:**
+  - `escrever_arquivo`: Crie ou modifique arquivos no seu projeto.
+  - `listar_arquivos`: Navegue pela estrutura de diretórios.
+  - `ler_arquivo`: Leia o conteúdo de arquivos de texto.
+  - `consultar_wikipedia`: Obtenha resumos rápidos da Wikipedia.
+  - `consultar_stackoverflow`: Encontre soluções para problemas de programação.
+  - `consultar_google`: Realize buscas na web.
+  - E muito mais!
+- **Suporte Multilíngue:** A interface e a documentação estão disponíveis em Português e Inglês.
+- **Automação de Tarefas:** Use o Codex para automatizar scripts, gerar relatórios e interagir com seu ambiente de desenvolvimento.
 
 ---
 
