@@ -54,7 +54,7 @@ def test_main_json_decode_error(monkeypatch):
     inputs = iter(["olá Codex!", "sair", "sair", "sair", "sair", "sair"])
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
     with patch("google.genai.Client", return_value=FakeModel()):
-        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr("codex.cli_commands.checar_api_key", lambda: "fake_api_key")
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
         monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
@@ -74,7 +74,7 @@ def test_main_ferramenta_inexistente(monkeypatch):
                 text = '{"ferramenta": "inexistente", "argumentos": {}}'
             return Resp()
     with patch("google.genai.Client", return_value=FakeClient()):
-        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr("codex.cli_commands.checar_api_key", lambda: "fake_api_key")
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
         monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
@@ -97,7 +97,7 @@ def test_ferramenta_erro(monkeypatch):
     def ferramenta_erro(**kwargs):
         raise Exception("Erro simulado na ferramenta")
     with patch("google.genai.Client", return_value=FakeClient()):
-        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr("codex.cli_commands.checar_api_key", lambda: "fake_api_key")
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
         monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
@@ -135,7 +135,7 @@ def test_main_commit_erro(monkeypatch):
                 text = '{"ferramenta": "consultar_wikipedia", "argumentos": {"termo": "Python"}}'
             return Resp()
     with patch("google.genai.Client", return_value=FakeClient()):
-        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr("codex.cli_commands.checar_api_key", lambda: "fake_api_key")
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: FakeSession())
         monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
@@ -150,7 +150,7 @@ def test_sugerir_pergunta_contextual_erro(monkeypatch):
     from codex.suggestions import sugerir_pergunta_contextual
     monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: (_ for _ in ()).throw(Exception("Erro de sugestão")))
     # Adicionado mock para checar_api_key
-    monkeypatch.setattr("codex.cli_agent.checar_api_key", lambda: "fake_api_key")
+    monkeypatch.setattr("codex.cli_commands.checar_api_key", lambda: "fake_api_key")
     monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
     monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
     monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])
@@ -173,7 +173,7 @@ def test_input_invalido(monkeypatch):
                 text = 'Texto qualquer'
             return Resp()
     with patch("google.genai.Client", return_value=FakeClient()):
-        monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+        monkeypatch.setattr("codex.cli_commands.checar_api_key", lambda: "fake_api_key")
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
         monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: [])
