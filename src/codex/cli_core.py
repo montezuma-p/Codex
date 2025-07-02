@@ -1,18 +1,18 @@
 """
 Core module for Codex CLI: constants, tool registry, and utilities.
 """
-from codex.integrations.wikipedia import consultar_wikipedia
-from codex.integrations.stackoverflow import consultar_stackoverflow
-from codex.integrations.google import consultar_google
-from codex.integrations.github import consultar_github
-from codex.integrations.wolframalpha import consultar_wolframalpha
-from codex.database import buscar_no_historico
+from .integrations.wikipedia import consultar_wikipedia
+from .integrations.stackoverflow import consultar_stackoverflow
+from .integrations.google import consultar_google
+from .integrations.github import consultar_github
+from .integrations.wolframalpha import consultar_wolframalpha
+from .database import buscar_no_historico
 from typing import Any, Optional, Union
 import pathlib
 import os
 import logging
-from codex.log_config import setup_logging
-from locales.i18n import _
+from .log_config import setup_logging
+from .locales.i18n import _
 
 # Global logging configuration
 setup_logging()

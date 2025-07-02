@@ -12,11 +12,11 @@ import pathlib
 import json
 import logging
 from google.genai import types
-from codex import database
-from codex.suggestions import sugerir_pergunta_contextual, buscar_contexto_relevante
-from codex.cli_core import FERRAMENTAS, gerar_documentacao_ferramentas
-from codex.log_config import setup_logging
-from locales.i18n import _
+from . import database
+from .suggestions import sugerir_pergunta_contextual, buscar_contexto_relevante
+from .cli_core import FERRAMENTAS, gerar_documentacao_ferramentas
+from .log_config import setup_logging
+from .locales.i18n import _
 
 # Global logging configuration
 setup_logging()
@@ -105,12 +105,12 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
             break
         # Simplified approach: use direct Python functions as tools
         # This uses automatic function calling which is more reliable
-        from codex.cli_core import escrever_arquivo, listar_arquivos, ler_arquivo
-        from codex.integrations.wikipedia import consultar_wikipedia
-        from codex.integrations.stackoverflow import consultar_stackoverflow  
-        from codex.integrations.google import consultar_google
-        from codex.integrations.github import consultar_github
-        from codex.integrations.wolframalpha import consultar_wolframalpha
+        from .cli_core import escrever_arquivo, listar_arquivos, ler_arquivo
+        from .integrations.wikipedia import consultar_wikipedia
+        from .integrations.stackoverflow import consultar_stackoverflow  
+        from .integrations.google import consultar_google
+        from .integrations.github import consultar_github
+        from .integrations.wolframalpha import consultar_wolframalpha
         
         # Use Python functions directly - SDK will handle schema generation
         tools = [

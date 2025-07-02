@@ -3,7 +3,7 @@ import requests
 import re
 import logging
 from codex.log_config import setup_logging
-from locales.i18n import _
+from ..locales.i18n import _
 
 setup_logging()
 

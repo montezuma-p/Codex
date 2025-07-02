@@ -14,13 +14,14 @@ src/codex/integrations/google.py
 src/codex/integrations/stackoverflow.py
 src/codex/integrations/wikipedia.py
 src/codex/integrations/wolframalpha.py
+src/codex/locales/__init__.py
+src/codex/locales/i18n.py
 src/codex_cli_montezuma.egg-info/PKG-INFO
 src/codex_cli_montezuma.egg-info/SOURCES.txt
 src/codex_cli_montezuma.egg-info/dependency_links.txt
 src/codex_cli_montezuma.egg-info/entry_points.txt
 src/codex_cli_montezuma.egg-info/requires.txt
 src/codex_cli_montezuma.egg-info/top_level.txt
-src/locales/i18n.py
 tests/test_cli_agent.py
 tests/test_cli_agent_extra.py
 tests/test_database.py

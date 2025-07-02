@@ -1,9 +1,9 @@
 from typing import Any, List, Optional
 import datetime
 import logging
-from codex import database
-from codex.log_config import setup_logging
-from locales.i18n import _
+from . import database
+from .log_config import setup_logging
+from .locales.i18n import _
 
 # Global logging configuration
 setup_logging()

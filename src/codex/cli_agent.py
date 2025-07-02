@@ -5,16 +5,16 @@ import json
 import requests
 from google import genai
 from google.genai import types
-from codex import database
-from codex.integrations.wikipedia import consultar_wikipedia
-from codex.integrations.stackoverflow import consultar_stackoverflow
-from codex.integrations.google import consultar_google
-from codex.integrations.github import consultar_github
-from codex.integrations.wolframalpha import consultar_wolframalpha
-from codex.cli_commands import executar_comando_cli
-from codex.suggestions import buscar_contexto_relevante
-from codex.cli_core import FERRAMENTAS, gerar_documentacao_ferramentas
-from locales.i18n import _
+from . import database
+from .integrations.wikipedia import consultar_wikipedia
+from .integrations.stackoverflow import consultar_stackoverflow
+from .integrations.google import consultar_google
+from .integrations.github import consultar_github
+from .integrations.wolframalpha import consultar_wolframalpha
+from .cli_commands import executar_comando_cli
+from .suggestions import buscar_contexto_relevante
+from .cli_core import FERRAMENTAS, gerar_documentacao_ferramentas
+from .locales.i18n import _
 
 def checar_api_key():
     API_KEY = os.getenv("GOOGLE_API_KEY")
