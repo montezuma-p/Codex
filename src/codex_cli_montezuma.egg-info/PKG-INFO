@@ -15,7 +15,7 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: requests
 Requires-Dist: sqlalchemy
-Requires-Dist: google-generativeai
+Requires-Dist: google-genai
 Requires-Dist: google-api-python-client
 Requires-Dist: google-auth
 Requires-Dist: google-auth-oauthlib

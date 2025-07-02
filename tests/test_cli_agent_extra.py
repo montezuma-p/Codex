@@ -65,12 +65,15 @@ def test_main_json_decode_error(monkeypatch):
 
 def test_main_ferramenta_inexistente(monkeypatch):
     # Testa branch de ferramenta inexistente
-    class FakeModel:
+    class FakeClient:
+        def __init__(self):
+            self.models = self
+        
         def generate_content(self, *args, **kwargs):
             class Resp:
                 text = '{"ferramenta": "inexistente", "argumentos": {}}'
             return Resp()
-    with patch("google.generativeai.GenerativeModel", return_value=FakeModel()):
+    with patch("google.genai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
@@ -83,14 +86,17 @@ def test_main_ferramenta_inexistente(monkeypatch):
 def test_ferramenta_erro(monkeypatch):
     # Simula erro ao executar uma ferramenta
     from unittest.mock import patch, MagicMock
-    class FakeModel:
+    class FakeClient:
+        def __init__(self):
+            self.models = self
+        
         def generate_content(self, *args, **kwargs):
             class Resp:
                 text = '{"ferramenta": "escrever_arquivo", "argumentos": {"nome_do_arquivo": "fail.txt"}}'
             return Resp()
     def ferramenta_erro(**kwargs):
         raise Exception("Erro simulado na ferramenta")
-    with patch("google.generativeai.GenerativeModel", return_value=FakeModel()):
+    with patch("google.genai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
@@ -120,12 +126,15 @@ def test_main_commit_erro(monkeypatch):
                 def limit(self, n): return self
                 def all(self): return []
             return DummyQuery()
-    class FakeModel:
+    class FakeClient:
+        def __init__(self):
+            self.models = self
+        
         def generate_content(self, *args, **kwargs):
             class Resp:
                 text = '{"ferramenta": "consultar_wikipedia", "argumentos": {"termo": "Python"}}'
             return Resp()
-    with patch("google.generativeai.GenerativeModel", return_value=FakeModel()):
+    with patch("google.genai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: FakeSession())
@@ -154,12 +163,15 @@ def test_sugerir_pergunta_contextual_erro(monkeypatch):
 def test_input_invalido(monkeypatch):
     # Simula input inválido do usuário
     from unittest.mock import patch, MagicMock
-    class FakeModel:
+    class FakeClient:
+        def __init__(self):
+            self.models = self
+        
         def generate_content(self, *args, **kwargs):
             class Resp:
                 text = 'Texto qualquer'
             return Resp()
-    with patch("google.generativeai.GenerativeModel", return_value=FakeModel()):
+    with patch("google.genai.Client", return_value=FakeClient()):
         monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
         monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
         monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
