@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>Noneen/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/"/>
+    </url>
+    <url>
+        <loc>Noneen/checklist_pr/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/checklist_pr/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/checklist_pr/"/>
+    </url>
+    <url>
+        <loc>Noneen/configuracao-api-keys/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/configuracao-api-keys/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/configuracao-api-keys/"/>
+    </url>
+    <url>
+        <loc>Noneen/diario_de_bordo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/diario_de_bordo/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/diario_de_bordo/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_contribuicao/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_contribuicao/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_contribuicao/"/>
+    </url>
+    <url>
+        <loc>Noneen/indice_geral/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/indice_geral/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/indice_geral/"/>
+    </url>
+    <url>
+        <loc>Noneen/indice_visual/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/indice_visual/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/indice_visual/"/>
+    </url>
+    <url>
+        <loc>Noneen/proxima_missao/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/proxima_missao/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/proxima_missao/"/>
+    </url>
+    <url>
+        <loc>Noneen/publicacao_pypi_api/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/publicacao_pypi_api/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/publicacao_pypi_api/"/>
+    </url>
+    <url>
+        <loc>Noneen/roadmap/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/roadmap/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/roadmap/"/>
+    </url>
+    <url>
+        <loc>Noneen/secrets-configuration/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/secrets-configuration/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/secrets-configuration/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/auto_documentacao_ferramentas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/auto_documentacao_ferramentas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/auto_documentacao_ferramentas/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/como_escrever_testes/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/como_escrever_testes/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/como_escrever_testes/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/ferramentas_externas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/ferramentas_externas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/ferramentas_externas/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/ler_arquivo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/ler_arquivo/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/ler_arquivo/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/percepcao_arquivos/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/percepcao_arquivos/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/percepcao_arquivos/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/pytest/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/pytest/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/pytest/"/>
+    </url>
+    <url>
+        <loc>Nonept/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/"/>
+    </url>
+    <url>
+        <loc>Nonept/checklist_pr/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/checklist_pr/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/checklist_pr/"/>
+    </url>
+    <url>
+        <loc>Nonept/configuracao-api-keys/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/configuracao-api-keys/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/configuracao-api-keys/"/>
+    </url>
+    <url>
+        <loc>Nonept/diario_de_bordo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/diario_de_bordo/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/diario_de_bordo/"/>
+    </url>
+    <url>
+        <loc>Nonept/guia_contribuicao/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_contribuicao/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_contribuicao/"/>
+    </url>
+    <url>
+        <loc>Nonept/indice_geral/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/indice_geral/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/indice_geral/"/>
+    </url>
+    <url>
+        <loc>Nonept/indice_visual/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/indice_visual/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/indice_visual/"/>
+    </url>
+    <url>
+        <loc>Nonept/proxima_missao/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/proxima_missao/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/proxima_missao/"/>
+    </url>
+    <url>
+        <loc>Nonept/publicacao_pypi_api/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/publicacao_pypi_api/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/publicacao_pypi_api/"/>
+    </url>
+    <url>
+        <loc>Nonept/roadmap/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/roadmap/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/roadmap/"/>
+    </url>
+    <url>
+        <loc>Nonept/guia_didatico/auto_documentacao_ferramentas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/auto_documentacao_ferramentas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/auto_documentacao_ferramentas/"/>
+    </url>
+    <url>
+        <loc>Nonept/guia_didatico/como_escrever_testes/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/como_escrever_testes/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/como_escrever_testes/"/>
+    </url>
+    <url>
+        <loc>Nonept/guia_didatico/ferramentas_externas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/ferramentas_externas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/ferramentas_externas/"/>
+    </url>
+    <url>
+        <loc>Nonept/guia_didatico/ler_arquivo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/ler_arquivo/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/ler_arquivo/"/>
+    </url>
+    <url>
+        <loc>Nonept/guia_didatico/percepcao_arquivos/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/percepcao_arquivos/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/percepcao_arquivos/"/>
+    </url>
+    <url>
+        <loc>Nonept/guia_didatico/pytest/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/pytest/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/pytest/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/checklist_pr/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/checklist_pr/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/checklist_pr/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/configuracao-api-keys/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/configuracao-api-keys/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/configuracao-api-keys/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/diario_de_bordo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/diario_de_bordo/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/diario_de_bordo/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/guia_contribuicao/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_contribuicao/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_contribuicao/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/indice_geral/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/indice_geral/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/indice_geral/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/indice_visual/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/indice_visual/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/indice_visual/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/proxima_missao/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/proxima_missao/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/proxima_missao/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/publicacao_pypi_api/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/publicacao_pypi_api/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/publicacao_pypi_api/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/roadmap/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/roadmap/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/roadmap/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/secrets-configuration/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/secrets-configuration/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/secrets-configuration/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/guia_didatico/auto_documentacao_ferramentas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/auto_documentacao_ferramentas/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/auto_documentacao_ferramentas/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/guia_didatico/como_escrever_testes/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/como_escrever_testes/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/como_escrever_testes/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/guia_didatico/ferramentas_externas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/ferramentas_externas/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/ferramentas_externas/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/guia_didatico/ler_arquivo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/ler_arquivo/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/ler_arquivo/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/guia_didatico/percepcao_arquivos/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/percepcao_arquivos/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/percepcao_arquivos/"/>
+    </url>
+    <url>
+        <loc>Noneen/en/guia_didatico/pytest/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/en/guia_didatico/pytest/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Noneen/guia_didatico/pytest/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/auto_documentacao_ferramentas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/guia_didatico/auto_documentacao_ferramentas/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/como_escrever_testes/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/guia_didatico/como_escrever_testes/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/ferramentas_externas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/guia_didatico/ferramentas_externas/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/ler_arquivo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/guia_didatico/ler_arquivo/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/percepcao_arquivos/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/guia_didatico/percepcao_arquivos/"/>
+    </url>
+    <url>
+        <loc>Noneen/guia_didatico/pytest/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/guia_didatico/pytest/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/checklist_pr/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/checklist_pr/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/checklist_pr/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/configuracao-api-keys/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/configuracao-api-keys/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/configuracao-api-keys/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/diario_de_bordo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/diario_de_bordo/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/diario_de_bordo/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/guia_contribuicao/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_contribuicao/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_contribuicao/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/indice_geral/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/indice_geral/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/indice_geral/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/indice_visual/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/indice_visual/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/indice_visual/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/proxima_missao/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/proxima_missao/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/proxima_missao/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/publicacao_pypi_api/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/publicacao_pypi_api/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/publicacao_pypi_api/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/roadmap/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/roadmap/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/roadmap/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/guia_didatico/auto_documentacao_ferramentas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/auto_documentacao_ferramentas/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/auto_documentacao_ferramentas/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/guia_didatico/como_escrever_testes/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/como_escrever_testes/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/como_escrever_testes/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/guia_didatico/ferramentas_externas/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/ferramentas_externas/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/ferramentas_externas/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/guia_didatico/ler_arquivo/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/ler_arquivo/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/ler_arquivo/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/guia_didatico/percepcao_arquivos/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/percepcao_arquivos/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/percepcao_arquivos/"/>
+    </url>
+    <url>
+        <loc>Noneen/pt/guia_didatico/pytest/</loc>
+        <lastmod>2025-07-02</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/pt/guia_didatico/pytest/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="Nonept/guia_didatico/pytest/"/>
+    </url>
+</urlset>
