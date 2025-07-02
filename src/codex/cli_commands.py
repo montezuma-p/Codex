@@ -11,21 +11,26 @@ import sys
 import pathlib
 import json
 import logging
+from google import genai
 from google.genai import types
 from . import database
 from .suggestions import sugerir_pergunta_contextual, buscar_contexto_relevante
 from .cli_core import FERRAMENTAS, gerar_documentacao_ferramentas
 from .log_config import setup_logging
 from .locales.i18n import _
+from .cli_core import checar_api_key
 
 # Global logging configuration
 setup_logging()
 
 logger = logging.getLogger("codex.cli_commands")
 
-def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
+
+def executar_comando_cli(args: List[str]) -> None:
     """
-    Interprets arguments and executes special commands or starts the CLI loop.
+    Interpreta argumentos e executa comandos especiais ou inicia o loop da CLI.
+    A inicialização do cliente da IA e a verificação da chave são feitas aqui
+    para garantir que ocorram apenas quando necessário.
     """
     modo_limpo = '--clean' in args
     modo_verbose = '--verbose' in args
@@ -48,7 +53,8 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
     if len(args) > 1 and args[1] == "--relatorio-uso":
         session = database.Session()
         logger.info(_("Generating usage report..."))
-        print(database.gerar_relatorio_uso(session, n_mensagens=200))
+        relatorio = database.gerar_relatorio_uso(session, n_mensagens=200)
+        print(relatorio)
         return
     if len(args) > 1 and args[1] == "--exportar-jsonl":
         session = database.Session()
@@ -63,7 +69,12 @@ def executar_comando_cli(args: List[str], client: Any, modelo_ia: str) -> None:
         for k, v in perfil.items():
             print(f"- {k}: {v}")
         return
-    # Main CLI loop
+
+    # A partir deste ponto, os comandos exigem a API do Google.
+    API_KEY = checar_api_key()
+    client = genai.Client(api_key=API_KEY)
+    modelo_ia = "gemini-1.5-flash"
+
     database.criar_banco_e_tabelas()
     session = database.Session()
     logger.info(_("Welcome to Codex CLI! Main loop started."))

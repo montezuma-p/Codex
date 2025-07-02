@@ -96,6 +96,15 @@ def ler_arquivo(nome_do_arquivo: str, **kwargs: Any) -> str:
         logger.error(_("Error reading file '{file}': {err}").format(file=nome_do_arquivo, err=e))
         return _("[TOOL ERROR]: {err}").format(err=e)
 
+import sys
+
+def checar_api_key():
+    API_KEY = os.getenv("GOOGLE_API_KEY")
+    if not API_KEY:
+        print(_("CRITICAL ERROR: API key not found. Please set GOOGLE_API_KEY environment variable."))
+        sys.exit(1)
+    return API_KEY
+
 PROMPT_MESTRA = _(
     """
 You are Codex, an AI programming partner agent for Montezuma (🇧🇷 Proudly made in Brazil).

@@ -149,7 +149,8 @@ def test_sugerir_pergunta_contextual_erro(monkeypatch):
     # Simula erro ao sugerir pergunta contextual
     from codex.suggestions import sugerir_pergunta_contextual
     monkeypatch.setattr("codex.suggestions.sugerir_pergunta_contextual", lambda session: (_ for _ in ()).throw(Exception("Erro de sugestão")))
-    monkeypatch.setattr(cli_agent, "checar_api_key", lambda: None)
+    # Adicionado mock para checar_api_key
+    monkeypatch.setattr("codex.cli_agent.checar_api_key", lambda: "fake_api_key")
     monkeypatch.setattr(cli_agent.database, "criar_banco_e_tabelas", lambda: None)
     monkeypatch.setattr(cli_agent.database, "Session", lambda: MagicMock())
     monkeypatch.setattr("codex.suggestions.buscar_contexto_relevante", lambda session, pergunta_usuario, n=5: [])

@@ -13,22 +13,14 @@ from .integrations.github import consultar_github
 from .integrations.wolframalpha import consultar_wolframalpha
 from .cli_commands import executar_comando_cli
 from .suggestions import buscar_contexto_relevante
-from .cli_core import FERRAMENTAS, gerar_documentacao_ferramentas
+from .cli_core import FERRAMENTAS, gerar_documentacao_ferramentas, checar_api_key
 from .locales.i18n import _
-
-def checar_api_key():
-    API_KEY = os.getenv("GOOGLE_API_KEY")
-    if not API_KEY:
-        print(_("CRITICAL ERROR: API key not found. Please set GOOGLE_API_KEY environment variable."))
-        sys.exit(1)
-    return API_KEY
 
 def main():
     """Entry point for Codex global CLI."""
-    API_KEY = checar_api_key()
-    client = genai.Client(api_key=API_KEY)
-    MODELO_IA = "gemini-2.5-flash"  # ou o modelo correto para seu uso
-    executar_comando_cli(sys.argv, client, MODELO_IA)
+    # A inicialização do cliente e a verificação da chave foram movidas
+    # para cli_commands.py para serem executadas apenas quando necessário.
+    executar_comando_cli(sys.argv)
 
 if __name__ == "__main__":
     main()

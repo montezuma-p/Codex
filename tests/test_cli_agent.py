@@ -115,6 +115,8 @@ def test_cli_agent_branch_resposta_padrao(mock_genai_client, monkeypatch):
 def test_cli_agent_print_saida(monkeypatch, capsys):
     # Simula resposta inválida para forçar JSONDecodeError
     from unittest.mock import patch, MagicMock
+    # Adicionado mock para checar_api_key
+    monkeypatch.setattr("codex.cli_agent.checar_api_key", lambda: "fake_api_key")
     with patch("google.genai.Client") as mock_genai_client:
         mock_response = MagicMock()
         mock_response.text = "resposta inválida"
